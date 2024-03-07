@@ -83,6 +83,8 @@ Have fun creating your portfolio on this template!!! -->
       src="./javascript/scrollveal.js"
     ></script>
 
+
+
     <!-- Remove Google Analytics once you have your portfolio website set-up -->
     <!-- End of Google Analytics -->
   </head>
@@ -93,7 +95,7 @@ Have fun creating your portfolio on this template!!! -->
       <section class="container">
         <h1 class="hero-title">
           <span class="text-color-main name">TheDabCorner&trade; LLC</span>
-          <br />Luxury <span class="text-color-main name">Graphic Designer</span>
+          <br /><span id="animated-word">Luxury</span> <span class="text-color-main name">Graphic Design</span>
         </h1>
         <p class="hero-cta">
           <a class="cta-btn cta-btn--hero" href="#about">About Me</a>
@@ -103,6 +105,58 @@ Have fun creating your portfolio on this template!!! -->
         <div class="scroll-down"></div
       ></a>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const words = [
+          "Luxury", "Elegant", "Creative", "Exotic", "Cosmic", "Scientific", "Professional",
+          "Innovative", "Minimalist", "Abstract", "Dynamic", "Sophisticated", "Bold", "Artistic", "Vibrant",
+          "Sleek", "Retro", "Modern", "Futuristic", "Classic", "Geometric", "Organic", "Rustic", "Vintage",
+          "Award-Winning", "Attractive", "Hashy", "Surreal", "Decorative", "Functional", "Expressive", "Eclectic", "Modular",
+          "Narrative", "Interactive", "Digital", "Analog", "Kinetic", "Photorealistic", "Textural", "Monochromatic",
+          "Colorful", "Pastoral", "Neon", "Glitch", "Psychedelic", "Metallic", "Illuminated", "Legacy",
+          "Flat", "Dimensional", "Hand-drawn", "Cartoony", "Realistic", "Symbolic", "Typographic", "Cinematic",
+          "Monumental", "Intuitive", "Layered", "Printed", "Collage", "Filtered", "Refined", "Raw", "Gritty", "Polished",
+          "Matte", "Glossy", "Embossed", "Dotted", "Authentic", "Patterned", "Custom", "Branded", "Experimental",
+          "Global", "Cultural", "Historic", "Multifaceted", "Mythic", "Fantasy", "Sci-Fi", "Technological", "Mechanical",
+          "Naturalistic", "Original", "Urban", "Rural", "Alchemical", "Aerial", "Celestial", "Microscopic",
+          "Macroscopic", "Thematic", "Conceptual", "Stunning", "Emotional", "Philosophical", "Cannabis", "Educational",
+        ];
+
+        // Array to store indices of recently displayed words
+        let recentWords = [];
+
+        function changeWord() {
+          const animatedWord = document.getElementById('animated-word');
+          animatedWord.style.animationName = 'fadeOut';
+
+          animatedWord.addEventListener('animationend', function() {
+            let randomIndex;
+            let attempts = 0;
+
+            do {
+              randomIndex = Math.floor(Math.random() * words.length);
+              // Avoid infinite loop
+              if (++attempts > 100) break;
+            } while (recentWords.includes(randomIndex));
+
+            // Add the new index to the recentWords and remove old entries if necessary
+            recentWords.push(randomIndex);
+            if (recentWords.length > 45) { // Adjust based on how many words you show in 3 minutes
+              recentWords.shift(); // Remove the oldest word index to maintain the size
+            }
+
+            animatedWord.textContent = words[randomIndex];
+            animatedWord.style.animationName = 'fadeIn';
+          }, { once: true });
+        }
+
+        // Start the loop
+        setInterval(changeWord, 4000); // Adjust interval to match the total animation duration
+      });
+    </script>
+
+
     <!-- /END Hero Section -->
 
     <!-- About Section -->
@@ -343,15 +397,15 @@ Have fun creating your portfolio on this template!!! -->
         </a>
         <div class="social-links">
           <a
-            href="#!"
+            href="mailto:thedabcorner@outlook.com"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="twitter"
+            aria-label="email"
           >
-            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-solid fa-envelope"></i>
           </a>
           <a
-            href="#!"
+            href="https://instagram.com/huealchemy"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="instagram"
@@ -359,15 +413,15 @@ Have fun creating your portfolio on this template!!! -->
             <i class="fa-brands fa-instagram"></i>
           </a>
           <a
-            href="#!"
+            href="https://t.me/thedabcorner"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="codepen"
+            aria-label="telegram"
           >
-            <i class="fa-brands fa-codepen"></i>
+            <i class="fa-brands fa-telegram"></i>
           </a>
           <a
-            href="#!"
+            href="https://www.linkedin.com/in/thelabcorner/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="linkedin"
@@ -375,7 +429,7 @@ Have fun creating your portfolio on this template!!! -->
             <i class="fa-brands fa-linkedin"></i>
           </a>
           <a
-            href="#!"
+            href="https://github.com/thelabcorner/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="github"
@@ -386,7 +440,7 @@ Have fun creating your portfolio on this template!!! -->
         <hr />
         <p class="footer__text"> &copy; <span id="year"></span>
           -
-          <a href="https://github.com/AnilSeervi" target="_blank" rel="noopener noreferrer">TheDabCorner LLC</a>. <br />
+          <a href="https://thedabcorner.site" target="_blank" rel="noopener noreferrer">TheDabCorner LLC</a>. <br />
         </p>
       </div>
     </footer>

@@ -46,7 +46,7 @@ a:hover {
 }
 
 .dark-blue-color {
-    color: #272341
+    color: #fff
 }
 
 .text-color-main {
@@ -87,7 +87,7 @@ a:hover {
 }
 
 .cta-btn:hover {
-    box-shadow: 1.5px 1.5px 3px rgba(174, 174, 192, .4), -1px -1px 3px #fff
+    box-shadow: 1.5px 1.5px 3px rgba(174, 174, 192, .4), -1px -1px 3px #000
 }
 
 @media(max-width: 37.5em) {
@@ -142,7 +142,7 @@ screen and (-ms-high-contrast: none) {
         color: #31DA07
     }
     .cta-btn--hero:hover {
-        color: #fff
+        color: #000
     }
 }
 
@@ -162,7 +162,7 @@ screen and (-ms-high-contrast: none) {
 }
 
 .cta-btn--hero:hover {
-    -webkit-text-fill-color: #fff;
+    -webkit-text-fill-color: #000;
     text-decoration: none
 }
 
@@ -178,12 +178,12 @@ screen and (-ms-high-contrast: none) {
 
 .cta-btn--resume {
     border-radius: 0;
-    color: #fff;
-    border: 2px solid #fff
+    color: #000;
+    border: 2px solid #000
 }
 
 .cta-btn--resume::after {
-    background: #fff
+    background: #000
 }
 
 .cta-btn--resume:hover {
@@ -194,7 +194,7 @@ screen and (-ms-high-contrast: none) {
 
 @media(max-width: 37.5em) {
     .cta-btn--resume:hover {
-        color: #fff
+        color: #000
     }
 }
 
@@ -210,7 +210,7 @@ screen and (-ms-high-contrast: none) {
 @media(max-width: 37.5em) {
     .cta-btn--projects {
         border: none;
-        box-shadow: 1.5px 1.5px 3px rgba(174, 174, 192, .4), -1px -1px 3px #fff
+        box-shadow: 1.5px 1.5px 3px rgba(174, 174, 192, .4), -1px -1px 3px #000
     }
 }
 
@@ -224,7 +224,7 @@ screen and (-ms-high-contrast: none) {
 }
 
 .cta-btn--projects:hover {
-    box-shadow: 1.5px 1.5px 3px rgba(174, 174, 192, .4), -1px -1px 3px #fff
+    box-shadow: 1.5px 1.5px 3px rgba(174, 174, 192, .4), -1px -1px 3px #000
 }
 
 .cta-btn--projects:hover::after {
@@ -270,7 +270,7 @@ screen and (-ms-high-contrast: none) {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: #fff;
+    color: #000;
     width: 5rem;
     height: 5rem;
     margin: 1.6rem 1.6rem;
@@ -297,12 +297,12 @@ screen and (-ms-high-contrast: none) {
     color: #4875b4
 }
 
-.social-links a:hover .fa-codepen {
-    color: #212121
+.social-links a:hover .fa-telegram {
+    color: #33A8E1
 }
 
 .back-to-top i {
-    color: #fff;
+    color: #000;
     margin: 1rem 0 1.6rem;
     transition: all 200ms ease
 }
@@ -391,7 +391,7 @@ section .row span {
 #about {
     background-color: #31DA07;
     background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
-    color: #fff;
+    color: #000;
     height: 100%;
     -webkit-clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
@@ -463,7 +463,7 @@ section .row span {
     padding: 15rem 0 10rem 0;
     margin-top: -15rem;
     margin-bottom: -1px;
-    color: #fff
+    color: #000
 }
 
 @media(max-width: 75em) {
@@ -503,9 +503,9 @@ section .row span {
     height: 100vh;
     display: flex;
     align-items: center;
-    background: #fff;
+    background: #000;
     font-weight: 400;
-    color: #272341;
+    color: #fff;
     padding: 0rem 5.6rem;
     top: 0;
     left: 0;
@@ -651,7 +651,7 @@ section .row span {
 
 #projects {
     background-color: #e5e5e5;
-    color: #272341;
+    color: #fff;
     margin-top: -15rem;
     padding-top: 15rem
 }
@@ -744,7 +744,7 @@ section .row span {
 
 #projects .project-wrapper__image .thumbnail {
     border: none;
-    box-shadow: 8px 8px 9px 7px rgba(174, 174, 192, .4), -5px -5px 15px 7px #fff
+    box-shadow: 8px 8px 9px 7px rgba(174, 174, 192, .4), -5px -5px 15px 7px #000
 }
 
 #projects .project-wrapper__image .thumbnail .img-fluid {
@@ -761,4 +761,19 @@ section .row span {
         margin-bottom: 3.2rem;
         transform: none
     }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(20px); }
+}
+
+#animated-word {
+    display: inline-block; /* Allows transformation */
+    animation-duration: 2s; /* Adjust timing to your liking */
 }

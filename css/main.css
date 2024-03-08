@@ -55,6 +55,19 @@ a:hover {
     -webkit-text-fill-color: #31DA07
 }
 
+
+/* Gradient Text */
+
+#gd_label {
+    display: inline-block; /* Ensure it can be transformed */
+    transition: transform 2s ease; /* Smooth transition for movement */
+    background: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+
 @supports((-webkit-background-clip: text) or (background-clip: text)) or (-webkit-background-clip: text) {
     .text-color-main {
         background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);

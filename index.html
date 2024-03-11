@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="-Ktlgi2T4GbkhI00fV7M59N1hChvHOKM_LI_G_cqSVA" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
@@ -246,10 +247,11 @@
     </section>
     <!-- /END About Section -->
 
+    <script src="javascript/i_will_sue_you.js"></script>
 
     <!-- Portfolio Section -->
     <br /><br /><br />
-    <div class="portfolio-gallery">
+    <div class="portfolio-gallery" oncontextmenu="return false;">
       <div class="portfolio-item" onclick="openModal(this)">
         <img src="./project_images/RKO_example.svg" alt="Project Description 1">
         <div class="portfolio-description">Project Description 1</div>
@@ -282,13 +284,14 @@
         <img src="./project_images/RKO_example.svg" alt="Project Description 2">
         <div class="portfolio-description">Project Description 2</div>
       </div>
+
 
       <!-- Add more items as needed -->
     </div>
 
 
     <!-- Modal for Mobile Click -->
-    <div id="portfolio-modal" class="portfolio-modal">
+    <div id="portfolio-modal" class="portfolio-modal" oncontextmenu="return false;">
       <span class="close-modal" onclick="closeModal()">&times;</span>
 
       <!-- Backward Icon -->
@@ -303,6 +306,7 @@
 
 
     <script>
+
         var currentIndex = 0; // Track the current index of the portfolio item
         var isModalOpen = false; // Track the state of the modal
 

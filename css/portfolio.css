@@ -18,6 +18,10 @@
     width: 100%;
     height: auto;
     aspect-ratio: 7.625 / 1.09;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
 }
 
 

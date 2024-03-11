@@ -69,6 +69,10 @@
     width: 100%;
     max-width: 2000px;
     opacity: 0; /* Initialize opacity to 0 for animation */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
 }
 
 .modal-description {
@@ -80,13 +84,6 @@
     text-align: center;
     padding: 10px 20px;
     opacity: 0; /* Initialize opacity to 0 for animation */
-}
-
-.modal-content img {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-    pointer-events: none;
 }
 
 

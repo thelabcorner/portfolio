@@ -406,8 +406,8 @@ section .row span {
     background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
     color: #000;
     height: 100%;
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    -webkit-clip-path: none;
+    clip-path: none;
     padding-bottom: 10%
 }
 
@@ -470,13 +470,13 @@ section .row span {
 }
 
 #contact {
-    background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
+    background-color: #000;
     -webkit-clip-path: polygon(0 15vh, 100% 0, 100% 100%, 0 100%);
     clip-path: polygon(0 15vh, 100% 0, 100% 100%, 0 100%);
     padding: 15rem 0 10rem 0;
-    margin-top: -15rem;
+    margin-top: 1rem;
     margin-bottom: -1px;
-    color: #000
+    color: #31DA07
 }
 
 @media(max-width: 75em) {

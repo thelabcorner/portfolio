@@ -1,0 +1,173 @@
+/* Portfolio Gallery Styles */
+.portfolio-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.portfolio-item {
+    flex: 1 1 calc(33.333% - 20px);
+    margin: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 7.625 / 1.09;
+}
+
+
+.portfolio-description {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+
+.portfolio-item:hover .portfolio-description {
+    display: block;
+}
+
+/* Modal Styles */
+.portfolio-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0,0.9);
+}
+
+.modal-content, .modal-description {
+    transition: opacity 0.5s, transform 0.5s;
+    opacity: 0; /* Initialize opacity to 0 for animation */
+}
+
+/* Updated Modal Styles for animation */
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9); /* Initial scale down */
+    margin: auto;
+    padding: 20px;
+    display: block;
+    width: 100%;
+    max-width: 2000px;
+    opacity: 0; /* Initialize opacity to 0 for animation */
+}
+
+.modal-description {
+    position: fixed;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    opacity: 0; /* Initialize opacity to 0 for animation */
+}
+
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .portfolio-item {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .portfolio-item {
+        flex: 1 1 100%;
+    }
+}
+
+
+.nav-icon {
+    cursor: pointer;
+    position: fixed;
+    top: 50%;
+    font-size: 30px;
+    color: #fff;
+    user-select: none;
+}
+
+.nav-icon.left {
+    left: 30px;
+}
+
+.nav-icon.right {
+    right: 30px;
+}
+
+/* Hide icons initially */
+.nav-icon {
+    display: none;
+}
+
+
+
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-150%) scale(0.9);
+    }
+}
+
+
+.modal-animation-enter-reverse {
+    animation: slideOutLeft 0.45s reverse;
+}
+.modal-animation-exit-reverse {
+    animation: slideInRight 0.45s reverse;
+}
+
+
+
+
+/* Adjust these keyframes similarly if they're used */
+
+
+.modal-animation-enter {
+    animation: slideInRight 0.45s forwards;
+}
+
+.modal-animation-exit {
+    animation: slideOutLeft 0.45s forwards;
+}

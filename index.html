@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="-Ktlgi2T4GbkhI00fV7M59N1hChvHOKM_LI_G_cqSVA" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
-    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+
+    <script disable-devtool-auto src='./javascript/disable-devtool.js'></script>
+
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
@@ -81,12 +83,26 @@
     ></script>
 
 
+<!--    <script src="javascript/smoothscroll.js"></script>-->
+
+
+
 
     <!-- Remove Google Analytics once you have your portfolio website set-up -->
     <!-- End of Google Analytics -->
   </head>
 
   <body>
+  <!-- Error Notification -->
+  <div id="error-notification" class="error-notification hidden">
+    <a href="./tos.html" class="error-notification-link" target="_blank">
+      <p><i class="fas fa-exclamation-circle"></i> Error: Copying, printing, saving, etc., is disabled for copyright purposes.</p>
+    </a>
+  </div>
+
+
+
+
     <!-- Hero Section -->
     <div id="hero">
       <section class="container">
@@ -251,38 +267,14 @@
 
     <!-- Portfolio Section -->
     <br /><br /><br />
+    <h2 class="section-title">PROJECT GALLERY</h2>
     <div class="portfolio-gallery" oncontextmenu="return false;">
+
+      <!-- Project:  -->
       <div class="portfolio-item" onclick="openModal(this)">
         <img src="./project_images/RKO_example.svg" alt="Project Description 1">
-        <div class="portfolio-description">Project Description 1</div>
-      </div>
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img src="./project_images/RKO_example.svg" alt="Project Description 2">
-        <div class="portfolio-description">Project Description 2</div>
-      </div>
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img src="./project_images/RKO_example.svg" alt="Project Description 1">
-        <div class="portfolio-description">Project Description 1</div>
-      </div>
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img src="./project_images/RKO_example.svg" alt="Project Description 2">
-        <div class="portfolio-description">Project Description 2</div>
-      </div>
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img src="./project_images/RKO_example.svg" alt="Project Description 1">
-        <div class="portfolio-description">Project Description 1</div>
-      </div>
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img src="./project_images/RKO_example.svg" alt="Project Description 2">
-        <div class="portfolio-description">Project Description 2</div>
-      </div>
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img src="./project_images/RKO_example.svg" alt="Project Description 1">
-        <div class="portfolio-description">Project Description 1</div>
-      </div>
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img src="./project_images/RKO_example.svg" alt="Project Description 2">
-        <div class="portfolio-description">Project Description 2</div>
+        <div class="portfolio-item-title">Project Title 1</div>
+        <div class="portfolio-item-description">Project Description 1</div>
       </div>
 
 
@@ -298,6 +290,7 @@
       <span class="nav-icon left" onclick="navigate(-1)">&#60;</span>
 
       <img class="modal-content" id="modal-image">
+      <div id="modal-title" class="modal-title"></div>
       <div id="modal-description" class="modal-description"></div>
 
       <!-- Forward Icon -->

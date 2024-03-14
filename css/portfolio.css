@@ -25,7 +25,7 @@
 }
 
 
-.portfolio-description {
+.portfolio-item-description, .portfolio-item-title {
     display: none;
     position: absolute;
     bottom: 0;
@@ -35,9 +35,13 @@
     text-align: center;
 }
 
-.portfolio-item:hover .portfolio-description {
-    display: block;
+/* Use media query to target devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+    .portfolio-item:hover .portfolio-item-title {
+        display: block;
+    }
 }
+
 
 /* Modal Styles */
 .portfolio-modal {
@@ -75,9 +79,22 @@
     pointer-events: none;
 }
 
-.modal-description {
+.modal-title {
     position: fixed;
     top: 65%;
+    left: 50%;
+    font-size: large;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    opacity: 0; /* Initialize opacity to 0 for animation */
+}
+
+.modal-description {
+    position: fixed;
+    top: 66.5%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;

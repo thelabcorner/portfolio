@@ -15,14 +15,18 @@ function openModal(item) {
 function updateModalContent(index) {
     var portfolioItems = document.getElementsByClassName('portfolio-item');
     var image = portfolioItems[index].getElementsByTagName('img')[0];
-    var description = portfolioItems[index].getElementsByClassName('portfolio-description')[0].innerText;
+    var description = portfolioItems[index].getElementsByClassName('portfolio-item-description')[0].innerText;
+    var title = portfolioItems[index].getElementsByClassName('portfolio-item-title')[0].innerText;
     var modalImage = document.getElementById('modal-image');
     var modalDescription = document.getElementById('modal-description');
+    var modalTitle = document.getElementById('modal-title');
 
     modalImage.style.opacity = '0';
     modalDescription.style.opacity = '0';
+    modalTitle.style.opacity = '0';
 
     modalImage.src = image.src;
+    modalTitle.innerText = title;
     modalDescription.innerText = description;
 
     setTimeout(function() {
@@ -30,6 +34,8 @@ function updateModalContent(index) {
         modalImage.style.transform = 'translate(-50%, -50%) scale(1)';
         modalDescription.style.opacity = '1';
         modalDescription.style.transform = 'translate(-50%, -50%)';
+        modalTitle.style.opacity = '1';
+        modalTitle.style.transform = 'translate(-50%, -50%)';
     }, 10);
 
     document.getElementById('portfolio-modal').style.display = "block";
@@ -45,6 +51,7 @@ function navigate(direction) {
     var portfolioItems = document.getElementsByClassName('portfolio-item');
     var modalImage = document.getElementById('modal-image');
     var modalDescription = document.getElementById('modal-description');
+    var modalTitle = document.getElementById('modal-title');
     var newIndex = currentIndex + direction;
 
     // Choose animation direction based on the navigation direction
@@ -61,6 +68,7 @@ function navigate(direction) {
     // Apply exit animation
     modalImage.classList.add(exitAnimation);
     modalDescription.classList.add(exitAnimation);
+    modalTitle.classList.add(exitAnimation);
 
     setTimeout(() => {
         currentIndex = newIndex;
@@ -70,13 +78,16 @@ function navigate(direction) {
         updateNavigationIcons(currentIndex);
 
         // Apply enter animation
+        modalTitle.classList.remove(exitAnimation);
         modalImage.classList.remove(exitAnimation);
         modalDescription.classList.remove(exitAnimation);
+        modalTitle.classList.add(enterAnimation);
         modalImage.classList.add(enterAnimation);
         modalDescription.classList.add(enterAnimation);
 
         // Clean up enter animation to allow for subsequent navigations
         setTimeout(() => {
+            modalTitle.classList.remove(enterAnimation);
             modalImage.classList.remove(enterAnimation);
             modalDescription.classList.remove(enterAnimation);
         }, 450); // Match the duration of the CSS animation
@@ -87,15 +98,19 @@ function navigate(direction) {
 function updateModalContentWithoutAnimation(index) {
     var portfolioItems = document.getElementsByClassName('portfolio-item');
     var image = portfolioItems[index].getElementsByTagName('img')[0];
-    var description = portfolioItems[index].getElementsByClassName('portfolio-description')[0].innerText;
+    var description = portfolioItems[index].getElementsByClassName('portfolio-item-description')[0].innerText;
+    var title = portfolioItems[index].getElementsByClassName('portfolio-item-title')[0].innerText;
     var modalImage = document.getElementById('modal-image');
+    var modalTitle = document.getElementById('modal-title');
     var modalDescription = document.getElementById('modal-description');
 
     // Directly update the src and innerText without triggering opacity or transform animations
     modalImage.src = image.src;
     modalDescription.innerText = description;
+    modalTitle.innerText = title;
 
     // Ensure any existing animation classes are removed to reset the state
+    modalTitle.classList.remove('modal-animation-enter', 'modal-animation-exit', 'modal-animation-enter-reverse', 'modal-animation-exit-reverse');
     modalImage.classList.remove('modal-animation-enter', 'modal-animation-exit', 'modal-animation-enter-reverse', 'modal-animation-exit-reverse');
     modalDescription.classList.remove('modal-animation-enter', 'modal-animation-exit', 'modal-animation-enter-reverse', 'modal-animation-exit-reverse');
 

@@ -790,3 +790,45 @@ section .row span {
     display: inline-block; /* Allows transformation */
     animation-duration: 2s; /* Adjust timing to your liking */
 }
+
+
+.error-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: red;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: visibility 0.5s, opacity 0.5s linear;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add this line */
+}
+
+.error-notification i {
+    margin-right: 8px;
+    color: white; /* Optional: if you want to explicitly set the icon's color */
+}
+
+.error-notification a.error-notification-link {
+    color: white; /* Ensures text color remains white */
+    text-decoration: none; /* Removes underline from the link */
+    display: block; /* Makes the whole area clickable */
+}
+
+.error-notification a.error-notification-link:hover,
+.error-notification a.error-notification-link:focus {
+    text-decoration: underline; /* Optional: Adds any hover effect like underline or color change */
+    color: white; /* Change if you want a different hover color */
+}
+
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.visible {
+    visibility: visible;
+    opacity: 1;
+}

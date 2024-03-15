@@ -11,5 +11,6 @@
     <orderEntry type="library" name="disable-devtool" level="application" />
     <orderEntry type="library" name="smoothscroll" level="application" />
     <orderEntry type="library" name="disable-devtool" level="application" />
+    <orderEntry type="library" name="splitting" level="application" />
   </component>
 </module>

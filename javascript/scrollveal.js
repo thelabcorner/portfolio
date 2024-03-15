@@ -41,12 +41,42 @@ ScrollReveal().reveal(".about-wrapper__image", {
   scale: 0.5,
 });
 
+/* About Section */
+ScrollReveal().reveal(".about-section-title", {
+  ...defaultProps,
+  delay: 400,
+  distance: "0px",
+});
+
+/* About Section */
+ScrollReveal().reveal(".about-section-content", {
+  ...defaultProps,
+  delay: 400,
+  distance: "0px",
+});
+
+/* About Section */
+ScrollReveal().reveal(".about-section-detail", {
+  ...defaultProps,
+  delay: 400,
+  distance: "0px",
+});
+
+
 ScrollReveal().reveal(".about-wrapper__info", {
   ...defaultProps,
   delay: 700,
   distance: "100px",
   origin: window.innerWidth > 768 ? "left" : "top",
 });
+
+ScrollReveal().reveal(".portfolio-item", {
+  ...defaultProps,
+  delay: 900,
+  scale: 0.9,
+  origin: window.innerWidth > 768 ? "right" : "bottom",
+});
+
 
 /* Projects Section */
 ScrollReveal().reveal(".project-wrapper__text", {

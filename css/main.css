@@ -401,73 +401,94 @@ section .row span {
     }
 }
 
+
+
+
+
+
 #about {
     background-color: #31DA07;
     background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
     color: #000;
-    height: 100%;
-    -webkit-clip-path: none;
-    clip-path: none;
-    padding-bottom: 10%
+    padding: 2% 0;
 }
 
-@media(max-width: 75em) {
-    #about {
-        height: 100%;
-        -webkit-clip-path: none;
-        clip-path: none
-    }
+.about-section-title {
+    cursor: pointer;
+    padding: 15px;
+    text-align: center;
+    outline: none;
+    font-weight: bold;
+    font-size: xx-large;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#about .about-wrapper {
-    grid-template-columns: 1fr 1fr
+.about-section-title:hover {
+    background-color: #29b806;
+    transform: scale(1.05);
 }
 
-@media(max-width: 37.5em) {
-    #about .about-wrapper {
-        padding-bottom: 5rem;
-        grid-template-columns: 1fr
-    }
+.about-section-content {
+    padding: 20px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    transition: opacity 0.5s, visibility 0s linear 0.5s, max-height 0.5s ease-out, transform 0.3s ease-out; /* Adjusted transitions */
 }
 
-#about .about-wrapper__image {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center
+.about-section-detail.active .about-section-content {
+    opacity: 1;
+    visibility: visible;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    max-height: 1000px; /* Adjust this based on your content's actual height */
+    transform: scale(1.02);
+    transition: opacity 0.5s, max-height 0.5s ease-out, transform 0.3s ease-out; /* Ensure visibility transitions instantly on activation */
 }
 
-#about .about-wrapper__image img {
-    max-width: 350px;
-    width: 100%
+
+
+
+
+
+
+
+.cta-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #000;
+    padding: 10px 15px;
+    margin-top: 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-@media(max-width: 75em) {
-    #about .about-wrapper__image {
-        height: 100%
-    }
+.cta-btn:hover {
+    background-color: #555;
+    transform: translateY(-2px); /* Slight lift */
 }
 
-@media(max-width: 48em) {
-    #about .about-wrapper__image {
-        padding-bottom: 4rem
-    }
+/* Optional: Adding a general container transition to enhance visual effect */
+.container {
+    transition: transform 0.3s ease;
 }
 
-#about .about-wrapper__info {
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    flex-direction: column;
-    text-align: left
+.container:hover {
+    transform: translateY(-5px); /* Entire container reacts */
 }
 
-@media(max-width: 48em) {
-    #about .about-wrapper__info {
-        align-items: center;
-        text-align: center
-    }
-}
+
+
+
+
 
 #contact {
     background-color: #000;

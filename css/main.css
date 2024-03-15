@@ -408,7 +408,7 @@ section .row span {
 #about {
     background-color: #31DA07;
     background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
-    color: #000;
+    color: #000; /* Ensures base color is black */
     padding: 2% 0;
 }
 
@@ -424,46 +424,48 @@ section .row span {
     background-color: transparent;
     border: none;
     width: 100%;
-    position: relative; /* Required for positioning the pseudo-element */
+    position: relative;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    color: #000; /* Explicitly set text color to black */
 }
 
-.about-section-title::after {
-    content: '▼'; /* Unicode arrow */
-    font-size: 20px;
-    position: absolute;
-    right: 20px; /* Adjust as needed */
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.3s ease;
-}
-
-.about-section-title:hover {
+.about-section-title:hover, .about-section-title:focus {
     background-color: #fff;
+    color: #000; /* Ensure text color is black on hover/focus */
     transform: scale(1.05);
 }
 
+.about-section-title::after {
+    content: '▼';
+    font-size: 20px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+    color: #000; /* Ensure the arrow icon color is black */
+}
+
 .about-section-detail.active .about-section-title::after {
-    transform: translateY(-50%) rotate(90deg); /* Arrow flips to indicate open state */
+    transform: translateY(-50%) rotate(90deg);
 }
 
 .about-section-content {
-    padding: 0; /* Initially no padding */
+    padding: 0;
     background-color: #000;
     color: #fff;
     border-radius: 15px;
     overflow: hidden;
-    max-height: 0; /* Initially collapse content */
-    transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Transition for max-height and padding */
+    max-height: 0;
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
 }
 
 .about-section-detail.active .about-section-content {
-    padding: 20px; /* Apply padding when active */
-    max-height: 1000px; /* Set to maximum content height */
+    padding: 20px;
+    max-height: 1000px; /* Adjust based on the content size */
     margin-bottom: 20px;
-    transition: max-height 0.5s ease-in, padding 0.5s ease-in; /* Smooth transition for expanding */
+    transition: max-height 0.5s ease-in, padding 0.5s ease-in;
 }
-
 
 
 

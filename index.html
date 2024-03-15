@@ -9,10 +9,6 @@
 
 <!--    <script disable-devtool-auto src='./javascript/disable-devtool.js'></script>-->
 
-    <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting.css" />
-    <link rel="stylesheet" href="https://unpkg.com/splitting/dist/splitting-cells.css" />
-    <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
-
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
@@ -28,8 +24,23 @@
     Specializing in custom logos, jar wraps, and tailored illustrations using professional design software, I deliver finishes that elevate brands beyond their perception. Have a look at my portfolio!">
 
 
-    <!-- Add a your png Logo to the assets folder and change the href attr accordingly  -->
-    <link rel="icon" type="image/png" href="./assets/TDC.svg" />
+    <!-- Highest priority: SVG for browsers that support it -->
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon/TDC-favico.svg">
+
+    <!-- Fallback for extremely high-resolution displays: 8000px PNG -->
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-8000.png" sizes="8000x8000">
+
+    <!-- Recommended icon sizes -->
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-48x48.png" sizes="48x48">
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-144x144.png" sizes="144x144">
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-256x256.png" sizes="256x256">
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-384x384.png" sizes="384x384">
+    <link rel="icon" type="image/png" href="./assets/favicon/TDC-favico-512x512.png" sizes="512x512">
+
+
+
 
     <!-- Add your primary-theme color for the value of content -->
     <meta name="theme-color" content="#6fff00" />

@@ -405,7 +405,6 @@ section .row span {
 
 
 
-
 #about {
     background-color: #31DA07;
     background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
@@ -414,43 +413,55 @@ section .row span {
 }
 
 .about-section-title {
+    -webkit-appearance: none; /* Disable iOS default button styling */
     cursor: pointer;
-    padding: 15px;
     text-align: center;
     outline: none;
+    margin-bottom: 20px;
     font-weight: bold;
+    border-radius: 10px;
     font-size: xx-large;
     background-color: transparent;
     border: none;
     width: 100%;
+    position: relative; /* Required for positioning the pseudo-element */
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+.about-section-title::after {
+    content: '▼'; /* Unicode arrow */
+    font-size: 20px;
+    position: absolute;
+    right: 20px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
 .about-section-title:hover {
-    background-color: #29b806;
+    background-color: #fff;
     transform: scale(1.05);
 }
 
+.about-section-detail.active .about-section-title::after {
+    transform: translateY(-50%) rotate(90deg); /* Arrow flips to indicate open state */
+}
+
 .about-section-content {
-    padding: 20px;
+    padding: 0; /* Initially no padding */
     background-color: #000;
     color: #fff;
     border-radius: 15px;
     overflow: hidden;
-    opacity: 0;
-    visibility: hidden;
-    max-height: 0;
-    transition: opacity 0.5s, visibility 0s linear 0.5s, max-height 0.5s ease-out, transform 0.3s ease-out; /* Adjusted transitions */
+    max-height: 0; /* Initially collapse content */
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Transition for max-height and padding */
 }
 
 .about-section-detail.active .about-section-content {
-    opacity: 1;
-    visibility: visible;
+    padding: 20px; /* Apply padding when active */
+    max-height: 1000px; /* Set to maximum content height */
     margin-bottom: 20px;
-    margin-top: 20px;
-    max-height: 1000px; /* Adjust this based on your content's actual height */
-    transform: scale(1.02);
-    transition: opacity 0.5s, max-height 0.5s ease-out, transform 0.3s ease-out; /* Ensure visibility transitions instantly on activation */
+    transition: max-height 0.5s ease-in, padding 0.5s ease-in; /* Smooth transition for expanding */
 }
 
 

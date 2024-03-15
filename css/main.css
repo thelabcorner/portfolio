@@ -365,7 +365,7 @@ section .row span {
     margin-top: 2rem
 }
 
-.container {
+.container, .about-container {
     width: 100%;
     padding: 0 1.5rem;
     margin: 0 auto;
@@ -373,14 +373,14 @@ section .row span {
 }
 
 @media(max-width: 75em) {
-    .container {
+    .container, .about-container  {
         max-width: 960px;
         width: 100%
     }
 }
 
 @media(max-width: 56.25em) {
-    .container {
+    .container, .about-container  {
         max-width: 720px;
         width: 100%;
         justify-content: center
@@ -388,14 +388,14 @@ section .row span {
 }
 
 @media(max-width: 48em) {
-    .container {
+    .container, .about-container  {
         max-width: 720px;
         width: 100%
     }
 }
 
 @media(max-width: 37.5em) {
-    .container {
+    .container, .about-container  {
         max-width: 540px;
         width: 100%
     }
@@ -404,69 +404,76 @@ section .row span {
 
 
 
-
 #about {
     background-color: #31DA07;
     background-image: linear-gradient(135deg, #31DA07 0%, #0b7200 100%);
-    color: #000; /* Ensures base color is black */
+    color: #000;
     padding: 2% 0;
 }
 
-.about-section-title {
-    -webkit-appearance: none; /* Disable iOS default button styling */
-    cursor: pointer;
-    text-align: center;
-    outline: none;
-    margin-bottom: 20px;
-    font-weight: bold;
-    border-radius: 10px;
-    font-size: xx-large;
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    position: relative;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    color: #000; /* Explicitly set text color to black */
+.about-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allows the items to wrap if needed */
+    align-items: stretch; /* Ensures that the child elements have equal height */
 }
 
-.about-section-title:hover, .about-section-title:focus {
-    background-color: #fff;
-    color: #000; /* Ensure text color is black on hover/focus */
-    transform: scale(1.05);
-}
-
-.about-section-title::after {
-    content: '▼';
-    font-size: 20px;
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: transform 0.3s ease;
-    color: #000; /* Ensure the arrow icon color is black */
-}
-
-.about-section-detail.active .about-section-title::after {
-    transform: translateY(-50%) rotate(90deg);
-}
-
-.about-section-content {
-    padding: 0;
+.about-section-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Aligns content to top and button to bottom */
     background-color: #000;
     color: #fff;
     border-radius: 15px;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-}
-
-.about-section-detail.active .about-section-content {
     padding: 20px;
-    max-height: 1000px; /* Adjust based on the content size */
-    margin-bottom: 20px;
-    transition: max-height 0.5s ease-in, padding 0.5s ease-in;
+    width: 48%; /* Adjust based on the desired width */
+    margin-bottom: 20px; /* Space between the boxes */
+    min-height: 300px; /* Set a minimum height or fixed height as needed */
 }
 
+.about-section-title {
+    font-weight: bold;
+    color: #fff;
+    font-size: large;
+    margin-bottom: 20px; /* Space between title and content */
+}
+
+.about-section-content {
+    color: #fff; /* Ensure content text is white */
+}
+
+.cta-btn--resume {
+    align-self: center; /* Center the button horizontally */
+    margin-top: auto; /* Pushes the button to the bottom */
+}
+
+/* Media query for mobile devices */
+@media (max-width: 901px) { /* Adjust this max-width to suit your breakpoint for mobile devices */
+    .about-container {
+        flex-direction: column;
+        align-items: center; /* Center the boxes when they are stacked */
+    }
+
+    .about-section-detail {
+        width: 100%; /* Full width for smaller screens */
+        height: calc(100vw - 40px); /* Maintain 1:1 aspect ratio, subtracting the padding */
+        margin-bottom: 20px; /* Space between stacked boxes */
+        font-size: 5vw; /* Title font size based on viewport width */
+    }
+
+    .about-section-content {
+        font-size: 4vw; /* Font size based on viewport width */
+        overflow: auto; /* Add scroll bar if content is too long */
+    }
+
+    .about-section-title {
+        font-size: 5vw; /* Title font size based on viewport width */
+    }
+
+    .cta-btn--resume {
+        margin-top: auto; /* Ensure the button stays at the bottom */
+    }
+}
 
 
 

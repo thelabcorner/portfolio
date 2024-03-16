@@ -2,11 +2,126 @@
     font-size: 1.6rem;
     color: #666666;
     margin-bottom: 1.5rem;
+    transition: color 0.3s ease; /* Add this line */
 }
+
+.update-date {
+    transition: color 0.3s ease; /* Add this line */
+}
+
+.update-date:hover {
+    color: #ff6161; /* Change this to the color you want on hover */
+}
+
+@media(max-width: 375px) {
+    .tos-last-update {
+        font-size: 1.3rem
+    }
+}
+
+@media(max-width: 275px) {
+    .tos-last-update {
+        font-size: 1.0rem
+    }
+}
+
+
+
+
+
+
 
 #hero .hero-title {
     font-size: 5.6rem;
     font-weight: 00;
     margin-bottom: 0.1rem;
     text-align: left
+}
+
+.hero-logo {
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 45%;
+}
+
+@media(max-width: 56.25em) {
+    #hero {
+        justify-content: center
+    }
+}
+
+@media(max-width: 37.5em) {
+    #hero {
+        padding: 0rem 1.6rem
+    }
+}
+
+#hero .hero-title {
+    font-size: 5.6rem;
+    font-weight: 700;
+    margin-bottom: 3.2rem;
+    text-align: left
+}
+
+#hero .hero-title span {
+    margin: 0;
+    display: inline-block
+}
+
+@media(max-width: 75em) {
+    #hero .hero-title {
+        font-size: 4rem
+    }
+}
+
+@media(max-width: 56.25em) {
+    #hero .hero-title {
+        font-size: 3.6rem;
+        text-align: center
+    }
+}
+
+@media(max-width: 37.5em) {
+    #hero .hero-title {
+        font-size: 3.2rem;
+        line-height: 1.5
+    }
+}
+
+@media(max-width: 30em) {
+    #hero .hero-title {
+        font-size: 2.8rem
+    }
+}
+
+@media(max-width: 375px) {
+    #hero .hero-title {
+        font-size: 2.0rem
+    }
+}
+
+@media(max-width: 275px) {
+    #hero .hero-title {
+        font-size: 1.65rem
+    }
+}
+
+#hero .hero-cta {
+    display: flex
+}
+
+@media(max-width: 56.25em) {
+    #hero .hero-cta {
+        justify-content: center
+    }
+}
+
+#hero .hero-cta a {
+    font-size: 2.4rem
+}
+
+@media(max-width: 37.5em) {
+    #hero .hero-cta a {
+        font-size: 2rem
+    }
 }

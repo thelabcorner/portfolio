@@ -263,7 +263,11 @@ screen and (-ms-high-contrast: none) {
 
 .footer__text a:hover,
 .footer__text a:active {
-    color: #36d1dc
+    color: #31DA07;
+}
+
+.back-to-top:hover .fa-angle-up {
+    color: #31DA07;
 }
 
 .footer hr {

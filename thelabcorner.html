@@ -70,22 +70,412 @@
             <br />
             <span class="text-color-main name">TheLabCorner&trade;</span>
             <br />
-            <span id="animated-word">Crystallization</span> <span id="gd_label">Process Engineer</span>
+            <span id="animated-word">Crystallization & Extraction</span> <span id="gd_label">Process Engineering</span>
             <br />
-            <span class="tos-last-update">Last Updated:&nbsp;</span><span class="tos-last-update update-date"> 3/15/2024</span>
+            <span class="tos-last-update">Last Updated:&nbsp;</span><span class="tos-last-update update-date"> 6/25/2024</span>
         </h1>
         <p class="hero-cta">
-            <a class="cta-btn cta-btn--hero" href="#about">Read Me</a>
+            <a class="cta-btn cta-btn--hero" href="javascript:openModal('readMeModal')" id="readMeBtn">Read Me</a>
         </p>
     </section>
     <a href="#about" class="scroll-down-link" aria-label="scroll-down">
-        <div class="scroll-down"></div
-        ></a>
+        <div class="scroll-down"></div>
+    </a>
 </div>
 
 
+<div class="container">
+    <div class="row">
+        <div class="section-heading text-center col-md-12">
+            <br/>
+            <h2>Research & Development <strong>Portfolio</strong></h2>
 
+        </div>
+    </div>
+    <div class="filters">
+        <ul>
+            <li class="active" data-filter="*">All Projects</li>
+            <li data-filter=".process-optimization">Process Optimization</li>
+            <li data-filter=".equipment">Equipment</li>
+            <li data-filter=".data-management">Data Management</li>
+        </ul>
+        <br/>
+    </div>
+    <div class="filters-content">
+        <div class="row grid">
+            <!-- Decarboxylation Optimization Project -->
+            <div class="single-portfolio col-sm-4 all process-optimization">
+                <div class="project-card">
+                    <img src="assets/decarboxulator-logo.svg" alt="Decarboxylation Optimization" class="project-image">
+                    <div class="project-info">
+                        <h3>Decarboxylation Optimization</h3>
+                        <p>Advanced algorithms for precise cannabinoid decarboxylation</p>
+                        <a href="#" class="project-link" onclick="openModal('decarboxulatorModal')">Learn More</a>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Crystallization Suite Project -->
+            <div class="single-portfolio col-sm-4 all equipment">
+                <div class="project-card">
+                    <img src="assets/carboxyl.png" alt="Crystallization Suite" class="project-image">
+                    <div class="project-info">
+                        <h3>Crystallization Suite</h3>
+                        <p>Comprehensive reactor for optimizing cannabinoid crystallization</p>
+                        <a href="#" class="project-link" onclick="openModal('carboxylModal')">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extraction Database Project -->
+            <div class="single-portfolio col-sm-4 all data-management">
+                <div class="project-card">
+                    <img src="assets/pressblack.svg" alt="Extraction Database" class="project-image">
+                    <div class="project-info">
+                        <h3>Extraction Database</h3>
+                        <p>Robust data management system for solventless extractions</p>
+                        <a href="#" class="project-link" onclick="openModal('hashAppModal')">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="decarboxulatorModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('decarboxulatorModal')">&times;</span>
+        <h2>Decarboxulator&trade;</h2>
+        <img src="assets/decarboxulator-logo.svg" alt="Decarboxulator Preview" class="modal-preview">
+        <p>Decarboxulator&trade; is a cutting-edge decarboxylation calculator that empowers users to optimize their cannabis extraction processes. This innovative tool leverages advanced algorithms to calculate the ideal time and temperature settings for decarboxylating cannabis, ensuring maximum potency and efficiency.</p>
+        <p>Decarboxylation is a crucial step in the cannabis extraction process, as it activates the cannabinoids and terpenes present in the plant material. By using Decarboxulator&trade;, users can achieve precise and consistent results, leading to higher-quality extracts and products.</p>
+        <a href="http://dcxr.thedabcorner.site" class="modal-btn">Visit Project</a>
+    </div>
+</div>
+
+<div id="carboxylModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('carboxylModal')">&times;</span>
+        <h2>Carboxyl&trade; Crystal Suite</h2>
+        <img src="assets/carboxyl.png" alt="Carboxyl Preview" class="modal-preview">
+        <p>Carboxyl&trade; Crystal Suite is a revolutionary crystallization reactor that enables users to optimize their extraction processes and produce high-quality crystals. This cutting-edge tool leverages advanced algorithms and profiles to produce ideal conditions for crystallizing cannabinoids, ensuring maximum purity, size, and yield.</p>
+        <p>Crystallization is a key step in the extraction process, as it allows users to isolate and purify specific compounds from the cannabis plant. By using Carboxyl&trade; Crystal Suite, users can achieve precise and consistent results, leading to superior crystals and extracts.</p>
+        <a href="#" class="modal-btn">Visit Project</a>
+    </div>
+</div>
+
+<div id="hashAppModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('hashAppModal')">&times;</span>
+        <h2>HashAPP&trade;</h2>
+        <img src="assets/pressblack.svg" alt="HashAPP Preview" class="modal-preview">
+        <p>HashAPP&trade; is a comprehensive database management platform that empowers users to organize, analyze, and optimize their solventless resin cultivation and extraction data. This innovative tool leverages advanced data management techniques to store, track, and visualize extraction data, ensuring maximum efficiency, profitability, and productivity.</p>
+        <p>Data management is a critical component of the extraction process, as it allows users to track and analyze key metrics and parameters across different genetic lineages of cannabis. By using HashAPP&trade;, users can streamline their data management workflows, leading to improved decision-making and enhanced results.</p>
+        <a href="#" class="modal-btn">Visit Project</a>
+    </div>
+</div>
+
+<!-- Read Me Modal -->
+<div id="readMeModal" class="modal">
+    <div class="modal-content read-me-content">
+        <span class="close" onclick="closeModal('readMeModal')">&times;</span>
+        <h2 class="modal-title">Welcome to TheLabCorner&trade;</h2>
+        <div class="modal-body">
+            <p class="intro">Welcome to TheLabCorner&trade;! This site reflects my passion for the cannabis industry, where science and innovation converge. As an independent researcher and designer, I am dedicated to exploring and advancing this field through various groundbreaking projects and research endeavors.</p>
+
+            <h3 class="section-title">Expertise</h3>
+            <p>My expertise spans:</p>
+            <div class="expertise-grid">
+                <div class="expertise-item">
+                    <i class="fas fa-flask"></i>
+                    Solvation Chemistry
+                </div>
+                <div class="expertise-item">
+                    <i class="fas fa-atom"></i>
+                    Reaction Kinetics
+                </div>
+                <div class="expertise-item">
+                    <i class="fas fa-cogs"></i>
+                    Thermal and Electrical Design
+                </div>
+                <div class="expertise-item">
+                    <i class="fas fa-paint-brush"></i>
+                    Graphic Design
+                </div>
+                <div class="expertise-item">
+                    <i class="fas fa-code"></i>
+                    Software Development
+                </div>
+            </div>
+            <br/>
+            <p>Coupled with a strong foundation in information technology and applied sciences, these diverse skills empower me to engineer unique tools and equipment, develop advanced calculators and algorithms, and create sophisticated data management platforms that push the boundaries of cannabis research and extraction methodologies.</p>
+
+            <h3 class="section-title">What You'll Find Here</h3>
+            <p>Here, you'll discover a rich collection of:</p>
+            <div class="content-list">
+                <div class="content-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Self-led research endeavors</span>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-vial"></i>
+                    <span>Pioneering extraction techniques</span>
+                </div>
+                <div class="content-item">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Innovative solutions</span>
+                </div>
+            </div>
+            <p>These showcase my commitment to excellence and discovery. This platform is designed to share valuable insights and the latest advancements, offering resources that can help shape the future of the cannabis industry.</p>
+            <br/>
+            <p class="conclusion">Explore, learn, and be inspired by the work presented here. Welcome to the cutting edge of cannabis science!</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .read-me-content {
+        max-width: 800px;
+        margin: 5% auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .modal-title {
+        color: #333;
+        font-size: 28px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .modal-body {
+        color: #444;
+        line-height: 1.6;
+    }
+
+    .section-title {
+        color: #555;
+        font-size: 22px;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+
+    .intro, .conclusion {
+        font-style: italic;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .expertise-grid, .content-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .expertise-item, .content-item {
+        flex: 1 1 calc(33% - 10px);
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    .expertise-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.expertise-item i {
+    color: #ffb400;
+    font-size: 20px;
+}
+
+    .content-item i {
+        margin-right: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .read-me-content {
+            padding: 20px;
+            margin: 10% auto;
+        }
+
+        .modal-title {
+            font-size: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+        }
+
+        .modal-body {
+            font-size: 14px;
+        }
+
+        .expertise-item, .content-item {
+            flex: 1 1 100%;
+        }
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .filters ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 0;
+        list-style-type: none;
+    }
+    .filters ul li {
+        font-size: 1.3rem;
+        margin: 5px;
+        padding: 10px 30px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .filters ul li.active {
+        background-color: #ffb400;
+        color: white;
+    }
+    .row.grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    .single-portfolio {
+        width: 100%;
+        max-width: 350px;
+        margin-bottom: 20px;
+    }
+    .project-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+    }
+    .project-card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .project-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .project-info {
+        padding: 15px;
+    }
+    .project-link {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: #ffb400;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 10px;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .modal-preview {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    .modal-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ffb400;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+    @media (max-width: 768px) {
+        .single-portfolio {
+            width: 100%;
+        }
+        .modal-content {
+            width: 95%;
+            margin: 5% auto;
+        }
+    }
+</style>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    window.onclick = function(event) {
+        if (event.target.className === "modal") {
+            event.target.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var filters = document.querySelectorAll('.filters ul li');
+        var items = document.querySelectorAll('.single-portfolio');
+
+        filters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                filters.forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+
+                var filterValue = this.getAttribute('data-filter');
+
+                items.forEach(item => {
+                    if (item.classList.contains(filterValue.substring(1)) || filterValue === '*') {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 
 

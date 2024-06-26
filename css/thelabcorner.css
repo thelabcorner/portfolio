@@ -141,7 +141,7 @@ screen and (-ms-high-contrast: none) {
 }
 
 .update-date:hover {
-    color: #ff6161; /* Change this to the color you want on hover */
+    color: #ffa600; /* Change this to the color you want on hover */
 }
 
 @media(max-width: 375px) {

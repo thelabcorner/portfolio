@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THEDABCORNER&trade; LLC | Creative Engineering</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XZKWEQ44R9"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-      gtag('config', 'G-XZKWEQ44R9');
+        gtag('config', 'G-XZKWEQ44R9');
     </script>
 
     <meta charset="UTF-8" />
@@ -18,20 +25,17 @@
     <meta name="google-site-verification" content="-Ktlgi2T4GbkhI00fV7M59N1hChvHOKM_LI_G_cqSVA" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
 
-<!--    <script disable-devtool-auto src='./javascript/disable-devtool.js'></script>-->
+    <!--    <script disable-devtool-auto src='./javascript/disable-devtool.js'></script>-->
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
-    <!-- Title: add your Portfolio websites's title here -->
-    <title>TheDabCorner&trade; LLC | Luxury Graphic Design</title>
 
     <!-- Add some coding keywords below, Ex: (javascript, yourusername, etc) -->
     <meta name="keywords" content="thedabcorner, thedabcorner llc, thelabcorner, graphic design, st. louis graphic designer, cannabis designer, highrise artist, high rise extracts artist, high rise artist, highrise extracts artist, highrise okc, packaging design, luxury design, jackson cummings, jackson thedabcorner, portfolio, cannabis packaging, custom logo design, chemistry logo, solventless designer, cannabis logo design, branding specialist, Adobe Creative Suite expert, embossed packaging, glossy packaging, luxury jar wrap, cannabis illustration, cannabis illustration packaging, graffiti packaging design">
 
-
     <!-- Improve your SEO by adding a small descrption of you -->
-    <meta name="description" content="Master luxury branding and packaging design with TheDabCorner™ LLC, St. Louis's top graphic design expert!
+    <meta name="description" content="Master luxury branding and packaging design with TheDabCorner™ LLC, St. Louis's graphic design expert!
     Specializing in custom logos, jar wraps, and tailored illustrations using professional design software, I deliver finishes that elevate brands beyond their perception. Have a look at my portfolio!">
 
 
@@ -64,11 +68,11 @@
     <meta property="og:title" content="Portfolio | TheDabCorner&trade; LLC" />
     <!-- Give a short description that'll show up when you/someone shares your portfolio on different platform -->
     <meta property="og:description" content="Portfolio | TheDabCorner&trade; LLC" />
-    <!-- Add a thumbnail image in assets folder and fill the content attr with URL to that thumbnail 
+    <!-- Add a thumbnail image in assets folder and fill the content attr with URL to that thumbnail
       so that a thumbnail image of your portfolio is shown while shared on other platform -->
     <meta
-      property="og:image"
-      content="./assets/site-thumbnail.png"
+            property="og:image"
+            content="./assets/site-thumbnail.png"
     />
 
     <!-- Twitter -->
@@ -79,458 +83,905 @@
     <meta property="twitter:title" content="Portfolio | TheDabCorner&trade; LLC" />
     <!-- short description that shows up while your portfolio is shared -->
     <meta
-      property="twitter:description"
-      content="Portfolio | TheDabCorner&trade; LLC"
+            property="twitter:description"
+            content="Portfolio | TheDabCorner&trade; LLC"
     />
     <!-- Fill content with the URL to the thumbnail image that you'll put in the assets folder -->
     <meta
-      property="twitter:image"
-      content="./assets/site-thumbnail.png"
+            property="twitter:image"
+            content="./assets/site-thumbnail.png"
     />
 
-    <!-- link tag -->
-    <link rel="preload" as="style" href="./css/main.css" />
-    <link rel="stylesheet" href="./css/main.css" />
-    <link rel="stylesheet" href="./css/portfolio.css" />
 
-    <!-- FontAwesome Icons link -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script defer src="./javascript/scrollreveal.min.js"></script>
-    <script
-      defer
-      type="text/javascript"
-      src="./javascript/scrollveal.js"
-    ></script>
+    <style>
+        :root {
+            --accent-color: #77FF00;
+            --dark-color: #0f0f0f;
+            --light-color: #f8f9fa;
+        }
 
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+        }
 
-<!--    <script src="javascript/smoothscroll.js"></script>-->
+        .accent-text {
+            color: var(--accent-color);
+        }
 
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
 
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
 
+        .nav-link {
+            margin: 0 10px;
+            position: relative;
+            font-weight: 500;
+        }
 
-    <!-- Remove Google Analytics once you have your portfolio website set-up -->
-    <!-- End of Google Analytics -->
-  </head>
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s;
+        }
 
-  <body>
-  <!-- Error Notification -->
-  <div id="error-notification" class="error-notification hidden">
-    <a href="https://thedabcorner.site/tos" class="error-notification-link" target="_blank">
-      <p><i class="fas fa-exclamation-circle"></i> Error: Copying, printing, saving, etc., is disabled for copyright purposes.</p>
-    </a>
-  </div>
+        .nav-link:hover::after {
+            width: 100%;
+        }
 
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
 
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/api/placeholder/1600/900');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.3);
+            z-index: -1;
+        }
 
+        .hero-content h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
 
-    <!-- Hero Section -->
-    <div id="hero">
-      <section class="container">
-        <h1 class="hero-title">
-          <!-- SVG file embedded here -->
-          <img src="./assets/TDC.svg" alt="TheDabCorner LLC Logo" />
+        .hero-content p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
 
-<!--          <span class="text-color-main name">TheDabCorner&trade; LLC</span>-->
-          <br /><span id="animated-word">Luxury</span> <span id="gd_label">Graphic Design</span>
-        </h1>
-        <p class="hero-cta">
-          <a class="cta-btn cta-btn--hero" href="#about">About Me</a>
-        </p>
-      </section>
-      <a href="#about" class="scroll-down-link" aria-label="scroll-down">
-        <div class="scroll-down"></div
-      ></a>
-    </div>
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const words = [
-          "Luxury", "Elegant", "Creative", "Exotic", "Cosmic", "Scientific", "Professional",
-          "Innovative", "Minimalist", "Abstract", "Dynamic", "Sophisticated", "Bold", "Artistic", "Vibrant",
-          "Sleek", "Retro", "Modern", "Futuristic", "Classic", "Geometric", "Organic", "Rustic", "Vintage",
-          "Award-Winning", "Attractive", "Hashy", "Surreal", "Decorative", "Functional", "Expressive", "Eclectic", "Modular",
-          "Narrative", "Interactive", "Digital", "Analog", "Kinetic", "Photorealistic", "Textural", "Monochromatic",
-          "Colorful", "Dank", "Neon", "Glitch", "Psychedelic", "Metallic", "Illuminated", "Legacy",
-          "Flat", "Dimensional", "Hand-drawn", "Cartoony", "Realistic", "Symbolic", "Typographic", "Cinematic",
-          "Monumental", "Intuitive", "Layered", "Printable", "Collage", "Meaningful", "Refined", "Raw", "Gritty", "Polished",
-          "Matte", "Glossy", "Embossed", "Dotted", "Authentic", "Patterned", "Custom", "Branded", "Experimental",
-          "International", "Cultural", "Historic", "Multifaceted", "Mysterious", "Graffiti", "Sci-Fi", "Technological", "Mechanical",
-          "Naturalistic", "Original", "Urban", "Rural", "Alchemical", "Aerial", "Celestial", "Microscopic",
-          "Macroscopic", "Thematic", "Conceptual", "Stunning", "Emotional", "Philosophical", "Cannabis", "Educational",
-        ];
+        .btn-accent:hover {
+            background-color: #5fcc00;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(119, 255, 0, 0.2);
+        }
 
-        // Array to store indices of recently displayed words
-        let recentWords = [];
+        .btn-outline {
+            border: 2px solid var(--light-color);
+            color: var(--light-color);
+            padding: 12px 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            margin-left: 15px;
+        }
 
-        function changeWord() {
-          const animatedWord = document.getElementById('animated-word');
-          animatedWord.style.animationName = 'fadeOut';
+        .btn-outline:hover {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
 
-          animatedWord.addEventListener('animationend', function() {
-            let randomIndex;
-            let attempts = 0;
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 4rem;
+            position: relative;
+            display: inline-block;
+        }
 
-            do {
-              randomIndex = Math.floor(Math.random() * words.length);
-              // Avoid infinite loop
-              if (++attempts > 100) break;
-            } while (recentWords.includes(randomIndex));
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: var(--accent-color);
+            left: 0;
+            bottom: -10px;
+        }
 
-            // Add the new index to the recentWords and remove old entries if necessary
-            recentWords.push(randomIndex);
-            if (recentWords.length > 45) { // Adjust based on how many words you show in 3 minutes
-              recentWords.shift(); // Remove the oldest word index to maintain the size
+        .service-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(119, 255, 0, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-filter {
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--light-color);
+            font-weight: 500;
+            padding: 8px 15px;
+            margin: 0 5px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .filter-btn::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            transition: width 0.3s;
+        }
+
+        .filter-btn.active::after, .filter-btn:hover::after {
+            width: 80%;
+        }
+
+        .portfolio-item {
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: all 0.5s;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-category {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .client-logo {
+            height: 80px;
+            object-fit: contain;
+            filter: grayscale(100%) brightness(200%);
+            transition: all 0.3s;
+            margin: 20px 0;
+            opacity: 0.6;
+        }
+
+        .client-logo:hover {
+            filter: grayscale(0%) brightness(100%);
+            opacity: 1;
+        }
+
+        .testimonial-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2.5rem;
+            position: relative;
+            margin: 40px 20px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .testimonial-text::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-size: 5rem;
+            color: var(--accent-color);
+            opacity: 0.2;
+        }
+
+        .client-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .client-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .contact-info {
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-color);
+            box-shadow: none;
+            color: white;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            margin-right: 10px;
+            text-align: center;
+            line-height: 40px;
+            color: var(--light-color);
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            transform: translateY(-5px);
+        }
+
+        .skill-progress {
+            height: 6px;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: visible;
+        }
+
+        .skill-bar {
+            height: 100%;
+            border-radius: 3px;
+            position: relative;
+            background: var(--accent-color);
+        }
+
+        .skill-percentage {
+            position: absolute;
+            right: 0;
+            top: -25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--light-color);
+        }
+
+        @media (max-width: 991.98px) {
+            .hero-content h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
             }
 
-            animatedWord.textContent = words[randomIndex];
-            animatedWord.style.animationName = 'fadeIn';
-          }, { once: true });
+            .section-title {
+                font-size: 2rem;
+            }
         }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar">
 
-        // Start the loop
-        setInterval(changeWord, 4000); // Adjust interval to match the total animation duration
-      });
-    </script>
-
-
-    <!-- /END Hero Section -->
-
-  <!-- About Section -->
-  <section id="about">
-    <div class="about-container">
-      <div class="about-section-detail" data-section="about">
-        <div class="about-section-content">
-          <div class="about-section-title">ABOUT ME</div>
-          <p class="glitch-text">Nice to meet you! I'm Jackson; a 20-year-old creative innovator and graphic designer with a strong passion for cannabis, science, and design!</p>
-          <br/>
-          <p class="glitch-text">I am constantly seeking new opportunities to learn, grow, and collaborate with forward-thinking and inspiring clients. With a solid foundation in graphic design, chemistry, and an unwavering commitment to excellence, I am eager to help my clients achieve their objectives and make a significant impact on their businesses!</p>
+<!-- Navigation -->
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><span class="accent-text">THEDABCORNER</span>.LLC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#portfolio">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#testimonials">Testimonials</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+            </ul>
         </div>
-      </div>
-
-<!--      <div class="about-section-detail" data-section="graphic-design">-->
-<!--        <div class="about-section-content">-->
-<!--          <div class="about-section-title">GRAPHIC DESIGN</div>-->
-<!--          <p class="glitch-text">As the proud owner of TheDabCorner&trade; LLC. based in St. Louis, MO, I've built a successful career in graphic design, offering unique solutions to a wide range of clients in all industries.</p>-->
-<!--          <br/>-->
-<!--          <p class="glitch-text">I am constantly seeking new opportunities to learn, grow, and collaborate with forward-thinking and inspiring clients. With a solid foundation in graphic design, chemistry, and an unwavering commitment to professionalism, I am eager to help my clients achieve their objectives and make a significant impact on their businesses.</p>-->
-<!--        </div>-->
-      </div>
-
     </div>
-  </section>
+</nav>
 
-  <script>
-    document.querySelectorAll('.about-section-detail').forEach(detail => {
-      detail.querySelector('.about-section-title').addEventListener('click', () => {
-        // Close all sections
-        document.querySelectorAll('.about-section-detail').forEach(otherDetail => {
-          if (otherDetail !== detail) {
-            otherDetail.classList.remove('active');
-          }
-        });
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="hero-content">
+                    <h1 id="hero-headline">Elevate Your Brand <span class="accent-text">Experience</span></h1>
+                    <p>Transforming visions into realities through precision design, strategic thinking, & the powers of modern technology.</p>
+                    <div class="hero-buttons">
+                        <a href="#portfolio" class="btn btn-accent">View Portfolio</a>
+                        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        // Delay the opening of the clicked section
-        setTimeout(() => {
-          detail.classList.toggle('active');
-
-          // Apply the glitchy text effect if the detail is now active
-          if (detail.classList.contains('active')) {
-            let paragraphs = detail.querySelectorAll('.about-section-content p');
-            paragraphs.forEach((p) => {
-              let originalText = p.innerText;
-              // Initialize a masked version of the text
-              let maskedText = originalText.replace(/\S/g, () => String.fromCharCode(33 + Math.random() * (127 - 33)));
-              p.innerText = maskedText;
-              // Start glitching and revealing text
-              glitchAndRevealText(p, originalText);
-            });
-          }
-        }, 300); // Adjust this delay to match the transition duration
-      });
-    });
-
-    function glitchAndRevealText(element, originalText) {
-      let index = originalText.length - 1;
-      let glitchInterval = setInterval(() => {
-        // Glitch masked characters
-        let textArray = element.innerText.split('');
-        for (let i = 0; i <= index; i++) {
-          textArray[i] = textArray[i].replace(/\S/g, () => String.fromCharCode(33 + Math.random() * (127 - 33)));
-        }
-        element.innerText = textArray.join('');
-
-        if (index < 0) {
-          clearInterval(glitchInterval); // Stop glitching when all characters are revealed
-        }
-      }, 6); // Glitch speed
-
-      let revealInterval = setInterval(() => {
-        if (index >= 0) {
-          element.innerText = element.innerText.substring(0, index) + originalText[index] + element.innerText.substring(index + 1);
-          index--; // Move to the next character to reveal
-        } else {
-          clearInterval(revealInterval); // Stop revealing when all characters are static
-        }
-      }, 1); // Reveal speed, adjust as necessary
+<style>
+    #hero-headline {
+        opacity: 1;
+        transform: translateY(0); /* Initial position */
+        transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Shorter, smoother transition */
+        overflow: hidden; /* Prevent content jump during animation */
+        line-height: 1.3; /* Improve line spacing for animation */
     }
 
+    #hero-headline.slide-out {
+        opacity: 0;
+        transform: translateY(-20px); /* Slide up by 20px while fading out */
+    }
 
+    #hero-headline.slide-in {
+        opacity: 1;
+        transform: translateY(0); /* Slide back to original position while fading in */
+    }
+</style>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const heroHeadline = document.getElementById('hero-headline');
+        const phrases = [
+            "Building Innovative <span class='accent-text'>Solutions</span>",
+            "Designing Future <span class='accent-text'>Experiences</span>",
+            "Engineering Creative <span class='accent-text'>Impact</span>",
+            "Crafting Digital <span class='accent-text'>Worlds</span>",
+            "Developing Brands That <span class='accent-text'>Connect</span>",
+            "Architecting Digital <span class='accent-text'>Growth</span>",
+            "Solving Problems Through <span class='accent-text'>Design</span>",
+            "Innovating with Purpose & <span class='accent-text'>Precision</span>",
+            "Let's Build Something <span class='accent-text'>Amazing</span>",
+            "Your Vision, Our <span class='accent-text'>Expertise</span>",
+            "Creating Digital <span class='accent-text'>Value</span>",
+            "From Concept to <span class='accent-text'>Creation</span>",
+            "Shaping the Digital <span class='accent-text'>Landscape</span>",
+            "Empowering Ideas with <span class='accent-text'>Technology</span>"
+            // Add more phrases as needed
+        ];
 
+        // Function to get a random index
+        function getRandomIndex(arrayLength) {
+            return Math.floor(Math.random() * arrayLength);
+        }
 
-  </script>
+        // Get a random index from the phrases array
+        const randomIndex = getRandomIndex(phrases.length);
 
-    <!-- /END About Section -->
+        // Set the headline text to the random phrase with fade-in animation
+        heroHeadline.innerHTML = phrases[randomIndex];
+        heroHeadline.classList.add('slide-in'); // Add slide-in class to start animation
 
-    <script src="javascript/i_will_sue_you.js"></script>
+        setTimeout(() => {
+            heroHeadline.classList.remove('slide-in'); // Remove slide-in class after animation
+        }, 500); // Match the CSS transition duration (fadeDuration)
+    });
+</script>
 
-    <!-- Portfolio Section -->
-    <br /><br /><br />
-    <h2 class="section-title">PROJECT GALLERY</h2>
-    <div class="portfolio-gallery" oncontextmenu="return false;">
-
-      <!-- Project: Prairie State Organics - "Cap Junky" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/PRAIRIESTATE_CAPJUNKY.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/prairiestateorganics">Prairie State Organics</a> - "Cap Junky"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: Prairie State Organics - "Trop Cherry" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/PRAIRIESTATE_TROPCHERRY.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/prairiestateorganics">Prairie State Organics</a> - "Trop Cherry"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: Prairie State Organics - "Tri-Tip #4" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/PRAIRIESTATE_TRITIP.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/prairiestateorganics">Prairie State Organics</a> - "Tri-Tip #4"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: Prairie State Organics - "Jokerz #31" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/PRAIRIESTATE_JOKERZ.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/prairiestateorganics">Prairie State Organics</a> - "Jokerz #31"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: Prairie State Organics - "GUAVA BARZ" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/PRAIRIESTATE_GUAVABARZ.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/prairiestateorganics">Prairie State Organics</a> - "Guava Barz"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: Prairie State Organics - "FL ORANGES" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/PRAIRIESTATE_FLORANGE.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/prairiestateorganics">Prairie State Organics</a> - "Florida Oranges"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Cheeseburgers" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/HIGHRISE_CHEESEBURGERS.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Cheeseburgers"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Maple Bacon Burger" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/HIGHRISE_MAPLEBACONBURGER.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Maple Bacon Burger"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Black Maple" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/HIGHRISE_BLACKMAPLE.webp" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Black Maple"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-
-      <!-- Project: HighRise Extracts OKC - "Black Belt" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/BLACKBELT_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Black Belt"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "RKO" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/RKO_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "RKO"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Papaya Crush" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/PAPAYACRUSH_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Papaya Crush"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Apple Jax" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/APPLEJAX_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Apple Jax"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Melted Strawberries" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/MELTSTRAWB_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Melted Strawberries"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Milk n' Cookiez" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/MILKCOOKIES_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Milk n' Cookiez"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Funk Flight" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/FUNKFLIGHT_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Funk Flight"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Fast-Food Milkshake" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/FASTSHAKE_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Fast-Food Milkshake"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Blueberry Cotton Candy" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/BBCC_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Blueberry Cotton Candy"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Zereal Milk" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/ZERMILK_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Zereal Milk"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-      <!-- Project: HighRise Extracts OKC - "Red Wedding" -->
-      <div class="portfolio-item" onclick="openModal(this)">
-        <img class="portfolio-item-svg" src="assets/nest/nest/project_images/REDWED_HighRise.svg" alt="Project Description 1">
-        <div class="portfolio-item-title"><a href="http://instagram.com/highriseextractsokc">HighRise Extracts OKC</a> - "Red Wedding"</div>
-        <div class="portfolio-item-description">Project Description 1</div>
-      </div>
-
-
-
-
-      <!-- Add more items as needed -->
-    </div>
-
-
-    <!-- Modal for Mobile Click -->
-    <div id="portfolio-modal" class="portfolio-modal" oncontextmenu="return false;">
-      <span class="close-modal" onclick="closeModal()">&times;</span>
-
-      <!-- Backward Icon -->
-      <span class="nav-icon left" onclick="navigate(-1)">&#60;</span>
-
-      <img class="modal-content" id="modal-image">
-      <div id="modal-title" class="modal-title"></div>
-      <div id="modal-description" class="modal-description"></div>
-
-      <!-- Forward Icon -->
-      <span class="nav-icon right" onclick="navigate(1)">&#62;</span>
-    </div>
-
-
-    <script src="javascript/modal.js"></script>
-
-    <!-- /END Portfolio Section -->
-
-
-
-    <!-- Contact Section -->
-    <section id="contact">
-      <div class="container">
-        <h2 class="section-title">Contact</h2>
-        <div class="contact-wrapper">
-          <p class="contact-wrapper__text"></p>
-          <a href="#" class="cta-btn cta-btn--hero">Contact Me!</a>
+<!-- Services Section -->
+<section id="services" class="py-5 my-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">My Services</h2>
+            <p class="text-muted">Comprehensive creative solutions for modern businesses</p>
         </div>
-      </div>
-    </section>
-    <!-- END Contact Section -->
 
-    <!-- Footer Section -->
-    <footer class="footer">
-      <div class="container">
-        <a href="#hero" class="back-to-top" aria-label="go back to top">
-          <i class="fa fa-angle-up fa-2x" aria-hidden="true"></i>
-        </a>
-        <div class="social-links">
-          <a
-            href="mailto:thedabcorner@outlook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="email"
-          >
-            <i class="fa-solid fa-envelope"></i>
-          </a>
-          <a
-            href="https://instagram.com/huealchemy"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="instagram"
-          >
-            <i class="fa-brands fa-instagram"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/thelabcorner/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="linkedin"
-          >
-            <i class="fa-brands fa-linkedin"></i>
-          </a>
-          <a
-            href="https://github.com/thelabcorner/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="github"
-          >
-            <i class="fa-brands fa-github"></i>
-          </a>
+            <div class="row">
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-pen-nib"></i>
+                    </div>
+                    <h3 class="service-title">Graphic Design</h3>
+                    <p>From logos to flyers, letterhead, and more, I provide strategic visual communication that conveys your message with impact and elegance.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3 class="service-title">Packaging + Print</h3>
+                    <p>Distinctive packaging and print designs that make a lasting impression on your audiences.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="service-title">Branding</h3>
+                    <p>Comprehensive brand development that creates authentic connections with your audience.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="service-title">Web Design</h3>
+                    <p>Intuitive web experiences that engage visitors and convert them into loyal customers.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3 class="service-title">Web Hosting</h3>
+                    <p>Reliable hosting solutions that ensure your digital presence remains secure and accessible.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="service-title">Software + App Development</h3>
+                    <p>Custom software and mobile applications to extend your ideas into the palm of your customers.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="service-title">Tech Support</h3>
+                    <p>Professional tech support and troubleshooting services</p>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3 p-2">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="service-title">Automation & Engineering</h3>
+                    <p>Intelligent solutions to streamline processes and enhance productivity with technology.</p>
+                </div>
+            </div>
         </div>
-        <hr />
-        <p class="footer__text">
-          <a href="https://thedabcorner.site/tos" target="_blank" rel="noopener noreferrer"> &copy;<span id="year"></span></a>
-          -
-          <a href="https://thedabcorner.site/tos" target="_blank" rel="noopener noreferrer">TheDabCorner LLC.</a> <br />
-        </p>
-      </div>
-    </footer>
-    <!-- END Footer Section -->
+    </div>
+</section>
 
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear()
-  </script>
-  <script src="./javascript/vanilla-tilt.min.js"></script>
-    <script type="text/javascript" src="./javascript/valtilt.js"></script>
-  </body>
+<!-- Portfolio Section -->
+<section id="portfolio" class="py-5 my-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Recent Projects</h2>
+            <p class="text-light">2025 Portfolio update in progress. Check back soon!</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <p class="lead text-muted">Working on some exciting stuff. Stay tuned!</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-accent">Check Back Soon</a>
+        </div>
+    </div>
+</section>
+
+
+<section id="about" class="py-5 my-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <h2 class="section-title">About Me</h2>
+                <p class="mb-4">
+                    Hiya! I’m Jackson, a 21-year-old creative & tech enthusiast who’s all about mixing art and code to make cool stuff. A dabble of this & a dab of that! Whether I'm reading an article or building digital experiences, I love turning raw ideas into real projects.
+                </p>
+                <p class="mb-4">
+                    I’m driven by curiosity and a passion for experimenting, always looking for the next challenge that lets me blend design, development, and a bit of scientific insight.
+                </p>
+                <p class="mb-4">
+                    I’m here to push boundaries, learn as much as I can, and create work that’s not just technically solid but genuinely engaging!
+                </p>
+
+                <div class="skill-tree mt-5">
+                    <h4 class="mb-4">My Skills</h4>
+
+                    <div class="skill-category mb-4">
+                        <h5 class="mb-3">Creative Tech</h5>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Adobe Creative Suite</span>
+                                <span>98%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 98%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>UX Design</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Branding & Marketing</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skill-category mb-4">
+                        <h5 class="mb-3">Engineering & Coding</h5>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Software Engineering</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Thermodynamics & Kinetics</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Control Systems</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Process Automation</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skill-category">
+                        <h5 class="mb-3">Tech & Support</h5>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Systems Architecture & Integration</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Research & Analysis</span>
+                                <span>100%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Technical Troubleshooting</span>
+                                <span>98%</span>
+                            </div>
+                            <div class="skill-progress bg-dark">
+                                <div class="skill-bar" style="width: 98%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Professional portrait section commented out -->
+        </div>
+    </div>
+</section>
+
+
+<!-- Testimonials Section (Work in Progress) -->
+<section id="testimonials" class="py-5 my-5 bg-black">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Client Testimonials</h2>
+            <p class="text-muted">Coming soon</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 mb-4 text-center">
+                <div class="work-in-progress-card p-5">
+                    <i class="fas fa-tools fa-4x mb-4" style="color: #77FF00"></i>
+                    <h3 class="mb-4">Work in Progress</h3>
+                    <p class="mb-4">Currently collecting testimonials from my valued clients! Check back soon!</p>
+                    <div class="progress mb-4">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%;background-color:#6fea02" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p class="small text-muted">Last updated: March 2025</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6 text-center">
+                <p class="mb-3">Interested in sharing your experience?</p>
+                <a href="#contact" class="btn btn-outline-light">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-1 my-3">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="contact-card p-4" style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px;">
+                    <div class="text-center mb-3">
+                        <div class="display-4 mb-3 accent-text">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <h3 class="mb-2">Ready to elevate your brand?</h3>
+                        <p class="mb-3">Choose your preferred way to connect with me</p>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="contact-method text-center p-3" style="border: 1px solid rgba(119, 255, 0, 0.3); border-radius: 10px; transition: all 0.3s;">
+                                <div class="contact-icon mb-3">
+                                    <i class="fab fa-instagram fa-2x accent-text"></i>
+                                </div>
+                                <h5 class="mb-2">Social Media</h5>
+                                <p class="mb-2">Send me a DM on Instagram</p>
+                                <a href="https://instagram.com/huealchemy" target="_blank" class="btn btn-sm btn-accent">@huealchemy</a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="contact-method text-center p-3" style="border: 1px solid rgba(119, 255, 0, 0.3); border-radius: 10px; transition: all 0.3s;">
+                                <div class="contact-icon mb-3">
+                                    <i class="fas fa-envelope fa-2x accent-text"></i>
+                                </div>
+                                <h5 class="mb-2">Email</h5>
+                                <p class="mb-2">Send project details directly</p>
+                                <a href="mailto:quote@thedabcorner.site" class="btn btn-sm btn-accent">quote@thedabcorner.site</a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="contact-method text-center p-3" style="border: 1px solid rgba(119, 255, 0, 0.3); border-radius: 10px; transition: all 0.3s;">
+                                <div class="contact-icon mb-3">
+                                    <i class="fas fa-sms fa-2x accent-text"></i>
+                                </div>
+                                <h5 class="mb-2">Text Only</h5>
+                                <p class="mb-2">Quick questions or inquiries</p>
+                                <a href="sms:+13143251750" class="btn btn-sm btn-accent">(314) 325-1750</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-3">Based in St. Louis, Missouri — Serving clients worldwide</p>
+                        <div class="social-links">
+                            <a href="https://instagram.com/huealchemy" class="mx-2" target="_blank" style="color: var(--accent-color); font-size: 1.5rem; transition: all 0.3s;">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://github.com/thelabcorner" class="mx-2" target="_blank" style="color: var(--accent-color); font-size: 1.5rem; transition: all 0.3s;">
+                                                <i class="fab fa-github"></i>
+                            <a href="#" class="mx-2" target="_blank" style="color: var(--accent-color); font-size: 1.5rem; transition: all 0.3s;">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center py-4">
+    <div class="container">
+        <p id="footer-year" class="mb-0 opacity-25">© 2024 THEDABCORNER.LLC. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    document.getElementById('footer-year').textContent = `© ${new Date().getFullYear()} THEDABCORNER.LLC. All Rights Reserved.`;
+
+    // Portfolio Filtering
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const filterValue = button.getAttribute('data-filter');
+
+            portfolioItems.forEach(item => {
+                if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
 </html>

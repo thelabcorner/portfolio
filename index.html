@@ -320,13 +320,29 @@
         max-width: 650px;
     }
 
-    .hero-quote {
-        margin: 2rem 0;
-        padding: 0 0 0 1.2rem;
-        border-left: 3px solid var(--primary-purple);
-        position: relative;
-    }
+.hero-quote {
+    margin: 2rem 0;
+    padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+    background: #160829c2;
+    border-radius: 4px;
+    border-left: 3px solid var(--primary-purple);
+    position: relative;
+    overflow: hidden;
+    animation: heroQuoteGlow 2.5s ease-in-out infinite alternate;
+    box-shadow: 0 0 0px 0px var(--primary-purple);
+    transition: box-shadow 0.3s;
+}
 
+@keyframes heroQuoteGlow {
+    0% {
+        background: #160829c2;
+        box-shadow: 0 0 0px 2px var(--primary-purple);
+    }
+    100% {
+        background: rgba(42, 17, 112, 0.44);
+        box-shadow: 0 0 0px 3px var(--primary-purple);
+    }
+}
     .hero-quote p {
         font-style: italic;
         color: var(--text-muted);
@@ -420,17 +436,17 @@
             <div class="col-lg-6">
                 <div class="hero-content">
                     <h1>
-                        Hi, I'm <span class="text-purple">Jackson</span>
-                        <span class="text-light-purple">[xHue]</span>
+                        Hi, I'm <span class="text-purple">Jackson.</span>
+                        <span class="text-light-purple" style="font-size: 0.6em;">[xHue]</span>
                     </h1>
                     <h2>
-                        Creative Engineer, Full-Stack Developer & Science Enthusiast
+                        Full-Stack Developer | Creative Engineer | Scientist
                     </h2>
                     <p class="lead">
-                        I blend creative design, full-stack development, and scientific curiosity to build solutions that unite artistic vision, technical precision, and a love for discovery.
+                        Creative engineer building solutions with artistic vision and technical precision.
                     </p>
                     <div class="hero-quote">
-                        <p>"Science is simply the word we use to describe a method of organizing our curiosity." – Tim Minchin</p>
+                        <p>"See a need, fill a need." – Bigweld <span style="opacity: 0.5;">(Robots, 2005)</span></p>
                     </div>
                     <div class="hero-buttons">
                         <a href="#contact" class="btn btn-purple">Get In Touch</a>

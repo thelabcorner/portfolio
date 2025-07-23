@@ -174,7 +174,7 @@
         height: 100vh;
         background: #000;
         perspective: 1000px;
-        overflow: clip ;
+        overflow: hidden;
     }
 
     /* Deep space gradient */
@@ -191,11 +191,10 @@
     /* 3D Scene Container */
     .scene {
         position: absolute;
-        top: 50%;
-        left: 50%;
         width: 800px;
         height: 800px;
-        transform: translate(-50%, -50%);
+        z-index: 50;
+
         transform-style: preserve-3d;
     }
 
@@ -430,6 +429,368 @@
     </div>
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const isMobile = window.innerWidth < 768;
+
+
+
+        function createWireframeSphere() {
+            const radius = isMobile ? 120 : 160;
+            const widthSeg = 32;
+            const heightSeg = 30;
+            const geo = new THREE.SphereGeometry(radius, widthSeg, heightSeg);
+            const wfGeo = new THREE.WireframeGeometry(geo);
+            const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6, linewidth: 1, side: THREE.FRONT });
+
+            const glowMat = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.08,
+                side: THREE.BackSide
+            });
+            const glowGeo = new THREE.SphereGeometry(radius * 1.05, widthSeg, heightSeg);
+            const glowMesh = new THREE.Mesh(glowGeo, glowMat);
+
+            const group = new THREE.Group();
+            group.add(new THREE.LineSegments(wfGeo, mat));
+            group.add(glowMesh);
+
+            // Move sphere slightly right
+            group.position.x = 60;
+
+            group.userData.animate = function() {
+                group.rotation.y += 0.003;
+                group.rotation.x += 0.001;
+            };
+
+            return group;
+        }
+
+        function createRings() {
+            const group = new THREE.Group();
+            const numRings = 3;
+            const baseRadius = 175;
+            const radiusIncrement = 15;
+            const ringThickness = 5;
+            const detail = 64;
+            const color = 0xffffff;
+            const opacity = 0.3;
+
+            const glowColor = 0x9e46ff; // Soft purple
+            const glowOpacity = 0.18;
+            const glowScale = 1.08; // Slightly larger than the ring
+
+            const tiltAngle = Math.PI / 2.4; // ~75 degrees
+
+            // Move sphere slightly right
+            group.position.x = 60;
+
+            for (let i = 0; i < numRings; i++) {
+                const innerRadius = baseRadius + i * radiusIncrement;
+                const outerRadius = innerRadius + ringThickness;
+                const ringGeo = new THREE.RingGeometry(innerRadius, outerRadius, detail);
+                const mat = new THREE.MeshBasicMaterial({
+                    color: color,
+                    transparent: true,
+                    opacity: opacity + i * 0.1,
+                    side: THREE.DoubleSide
+                });
+                const ring = new THREE.Mesh(ringGeo, mat);
+
+                ring.rotation.x = tiltAngle;
+                ring.rotation.z = - (i - 1) * 0.07;
+                group.add(ring);
+
+                // Add glow mesh behind the ring
+                const glowGeo = new THREE.RingGeometry(
+                    innerRadius * glowScale,
+                    outerRadius * glowScale,
+                    detail
+                );
+                const glowMat = new THREE.MeshBasicMaterial({
+                    color: glowColor,
+                    transparent: true,
+                    opacity: glowOpacity,
+                    side: THREE.BackSide
+                });
+                const glowMesh = new THREE.Mesh(glowGeo, glowMat);
+                glowMesh.rotation.x = tiltAngle;
+                glowMesh.rotation.z = ring.rotation.z;
+                glowMesh.position.z = 0.075; // Slightly offset behind the ring
+                group.add(glowMesh);
+
+                // Add a smaller, thinner ring between each main ring
+                if (i < numRings - 1) {
+                    const smallInner = outerRadius + 2;
+                    const smallOuter = smallInner + 2; // thinner
+                    const smallGeo = new THREE.RingGeometry(smallInner, smallOuter, detail);
+                    const smallMat = new THREE.MeshBasicMaterial({
+                        color: color,
+                        transparent: true,
+                        opacity: 0.15,
+                        side: THREE.DoubleSide
+                    });
+                    const smallRing = new THREE.Mesh(smallGeo, smallMat);
+                    smallRing.rotation.x = tiltAngle;
+                    smallRing.rotation.z = - (i - 1) * 0.07 + 0.035;
+                    group.add(smallRing);
+
+                    // Glow for small ring
+                    const smallGlowGeo = new THREE.RingGeometry(
+                        smallInner * glowScale,
+                        smallOuter * glowScale,
+                        detail
+                    );
+                    const smallGlowMat = new THREE.MeshBasicMaterial({
+                        color: glowColor,
+                        transparent: true,
+                        opacity: glowOpacity * 0.7,
+                        side: THREE.BackSide
+                    });
+                    const smallGlowMesh = new THREE.Mesh(smallGlowGeo, smallGlowMat);
+                    smallGlowMesh.rotation.x = tiltAngle;
+                    smallGlowMesh.rotation.z = smallRing.rotation.z;
+                    smallGlowMesh.position.z = 0.075;
+                    group.add(smallGlowMesh);
+                }
+            }
+
+            group.rotation.x = -0.2;
+            group.rotation.y = -0.1;
+
+            return group;
+        }
+
+        function addStars(scene) {
+            const count = isMobile ? 500 : 2000;
+            const geo = new THREE.BufferGeometry();
+            const pos = [];
+            const uniforms = {
+                uTime: { value: 0 },
+                uOpacity: { value: 1 },
+            };
+
+            for (let i = 0; i < count; i++) {
+                const R = 500 + Math.random() * 500;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                pos.push(
+                    R * Math.sin(phi) * Math.cos(theta),
+                    R * Math.sin(phi) * Math.sin(theta),
+                    R * Math.cos(phi)
+                );
+            }
+
+            geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+
+            const mat = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader: `
+            varying vec3 vPosition;
+            void main() {
+                vPosition = position;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                gl_PointSize = 2.0;
+            }
+        `,
+                fragmentShader: `
+            uniform float uTime;
+            varying vec3 vPosition;
+            void main() {
+                float twinkle = abs(sin(uTime + length(vPosition) * 0.1));
+                gl_FragColor = vec4(vec3(1.0) * twinkle, 1.0);
+            }
+        `,
+                transparent: true,
+            });
+
+            const stars = new THREE.Points(geo, mat);
+            scene.add(stars);
+
+            // Animation loop for twinkling and movement
+            function animateStars() {
+                uniforms.uTime.value += 0.01;
+
+                // Randomly move stars slightly
+                const positions = geo.attributes.position.array;
+                for (let i = 0; i < positions.length; i += 3) {
+                    positions[i] += (Math.random() - 0.5) * 0.1; // X-axis
+                    positions[i + 1] += (Math.random() - 0.5) * 0.1; // Y-axis
+                    positions[i + 2] += (Math.random() - 0.5) * 0.1; // Z-axis
+                }
+                geo.attributes.position.needsUpdate = true;
+
+                requestAnimationFrame(animateStars);
+            }
+
+            animateStars();
+        }
+
+
+        function addOrbitingParticles(scene) {
+            const group1 = new THREE.Group();
+            const group2 = new THREE.Group();
+
+            const createParticles = (group, count, baseRadius, radiusVariance, speedRange, reverse = false) => {
+                for (let i = 0; i < count; i++) {
+                    const radius = baseRadius + Math.random() * radiusVariance;
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = (speedRange[0] + Math.random() * (speedRange[1] - speedRange[0])) * (reverse ? -1 : 1);
+
+                    // Create a particle with random geometry
+                    const size = Math.random() * 3 + 1;
+                    const particleGeo = Math.random() > 0.5
+                        ? new THREE.IcosahedronGeometry(size, 0)
+                        : new THREE.BoxGeometry(size, size, size);
+                    const particleMat = new THREE.MeshStandardMaterial({
+                        color: new THREE.Color('hsl(270, 70%, 80%)'), // Purple color
+                        emissive: new THREE.Color('hsl(270, 70%, 50%)'), // Purple emissive
+                        emissiveIntensity: 0.5,
+                        metalness: 0.3,
+                        roughness: 0.7,
+                    });
+                    const particle = new THREE.Mesh(particleGeo, particleMat);
+
+                    // Set initial position
+                    particle.userData = { radius, angle, speed };
+                    particle.position.set(
+                        radius * Math.cos(angle),
+                        Math.random() * 50 - 25,
+                        radius * Math.sin(angle)
+                    );
+
+                    // Add rotation
+                    particle.rotationSpeed = Math.random() * 0.02;
+                    group.add(particle);
+                }
+            };
+
+            createParticles(group1, 40, 200, 60, [0.01, 0.03]);
+            createParticles(group2, 30, 300, 70, [0.005, 0.02], true);
+
+            scene.add(group1);
+            scene.add(group2);
+
+            function animateParticles() {
+                [group1, group2].forEach((group) => {
+                    group.children.forEach((particle) => {
+                        const { radius, speed } = particle.userData;
+                        particle.userData.angle += speed * 0.6;
+                        particle.position.x = radius * Math.cos(particle.userData.angle);
+                        particle.position.z = radius * Math.sin(particle.userData.angle);
+
+                        // Rotate particles
+                        particle.rotation.x += particle.rotationSpeed;
+                        particle.rotation.y += particle.rotationSpeed;
+                    });
+                });
+
+                requestAnimationFrame(animateParticles);
+            }
+
+            animateParticles();
+        }
+
+        function initThreeJS() {
+            const container = document.querySelector('.scene');
+            container.innerHTML = '';
+
+            const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
+            renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 3.6) : window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+            camera.position.z = 500;
+
+            addStars(scene);
+            const sphere = createWireframeSphere();
+            scene.add(sphere);
+
+            // Create and add rings
+            const rings = createRings();
+            scene.add(rings);
+
+            // {#if (!isMobile) addOrbitingParticles(scene);#}
+
+            scene.add(new THREE.AmbientLight(0x404040));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            dirLight.position.set(1, 1, 1);
+            scene.add(dirLight);
+
+            let targetRotX = 0, targetRotY = 0;
+            let currRotX = 0, currRotY = 0;
+
+            let parallaxX = 0, parallaxY = 0;
+            let targetParallaxX = 0, targetParallaxY = 0;
+
+            // Update onPointerMove to set parallax targets
+            function onPointerMove(e) {
+                const x = e.clientX ?? (e.touches?.[0]?.clientX) ?? window.innerWidth/2;
+                const y = e.clientY ?? (e.touches?.[0]?.clientY) ?? window.innerHeight/2;
+                targetRotY = ((x - window.innerWidth/2) / window.innerWidth) * Math.PI * 0.2;
+                targetRotX = ((y - window.innerHeight/2) / window.innerHeight) * Math.PI * 0.2;
+                targetParallaxX = (x - window.innerWidth/2) / window.innerWidth * 40;
+                targetParallaxY = (y - window.innerHeight/2) / window.innerHeight * 40;
+            }
+            window.addEventListener(isMobile ? 'touchmove' : 'mousemove', onPointerMove);
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                currRotX += (targetRotX - currRotX) * 0.02;
+                currRotY += (targetRotY - currRotY) * 0.02;
+                parallaxX += (targetParallaxX - parallaxX) * 0.08;
+                parallaxY += (targetParallaxY - parallaxY) * 0.08;
+
+                camera.position.x = parallaxX;
+                camera.position.y = -parallaxY;
+                camera.lookAt(0, 0, 0);
+
+                const t = Date.now() * 0.001;
+                const earthSpin = t * 0.12;
+
+                sphere.rotation.x = currRotX * 0.15 + Math.sin(t * 0.7) * 0.08;
+                sphere.rotation.y = earthSpin + Math.cos(t * 0.5) * 0.05;
+                sphere.rotation.z = currRotY * 0.12 + Math.sin(t * 1.2) * 0.04;
+
+                // Always pitch the ring downward (negative X)
+                const baseTilt = -0.33; // adjust for desired downward angle
+                rings.rotation.x = -Math.min(baseTilt, currRotX * 0.02 + Math.sin(t * 0.8) * 0.04);
+                rings.rotation.y = earthSpin * 0.7 + Math.cos(t * 0.6) * 0.03;
+                rings.rotation.z = Math.min(0, Math.sin(t * 0.5) * 0.02);
+
+                // {#console.log(`Sphere Rotation: X=${sphere.rotation.x.toFixed(4)}, Y=${sphere.rotation.y.toFixed(4)}, Z=${sphere.rotation.z.toFixed(4)}`);#}
+                // {#        console.log(`Rings Rotation: X=${rings.rotation.x.toFixed(4)}, Y=${rings.rotation.y.toFixed(4)}, Z=${rings.rotation.z.toFixed(4)}`);#}
+
+                renderer.render(scene, camera);
+            }
+
+
+            animate();
+        }
+
+        document.addEventListener('DOMContentLoaded', initThreeJS);
+    </script>
+
+
+
+
+
+
+
+
+
+
+
     <style>
         .hero-content {
             position: absolute;
@@ -438,12 +799,6 @@
             transform: translateY(-50%);
             z-index: 100;
             max-width: 500px;
-        }
-
-        @media (max-width: 768px) {
-            .hero-content {
-                left: 5%;
-            }
         }
 
         .hero-title {
@@ -552,13 +907,77 @@
             font-weight: 700;
             font-size: 1.2rem;
         }
+
+        @media (max-width: 768px) {
+
+
+            .hero-content {
+                left: 0.33rem;
+                max-width: 98vw;
+                background: rgb(0 0 0 / 85%);
+                padding: 1.5rem 1rem;
+                border-radius: 14px;
+                border: 2px solid #8B5CF6;
+                box-shadow: 0 4px 24px rgba(139, 92, 246, 0.18);
+            }
+
+
+            .hero-title {
+                font-size: 2.1rem !important;
+                letter-spacing: -1px;
+                margin-bottom: 1rem;
+                text-align: left;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 0.7rem;
+                text-align: left;
+            }
+            .hero-description {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+                text-align: left;
+            }
+            .hero-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 0.7rem;
+                margin-bottom: 1.2rem;
+            }
+            .hero-buttons .btn-glow,
+            .hero-buttons .btn-outline-glow {
+                width: 100%;
+                padding: 0.7rem 0;
+                font-size: 1rem;
+                margin-right: 0;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 1.2rem;
+                align-items: flex-start;
+            }
+            .stat-divider {
+                display: none;
+            }
+            .stat-item {
+                align-items: flex-start;
+                font-size: 1rem;
+            }
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            .stat-label {
+                font-size: 0.95rem;
+            }
+        }
     </style>
     <div class="hero-content">
         <div class="hero-badge">
             <span><i class="fas fa-code me-1"></i> Available for hire</span>
         </div>
         <h1 class="hero-title">
-<!--            <i class="fas fa-rocket me-2"></i>--> I'm <span class="text-purple">Jackson Cummings</span>
+            <!--            <i class="fas fa-rocket me-2"></i>--> I'm <span class="text-purple">Jackson Cummings</span>
         </h1>
         <div class="hero-subtitle opacity-50">
             <i class="fas fa-lightbulb me-2"></i> Creative Engineer & Full-Stack Developer
@@ -599,179 +1018,13 @@
 </div>
 
 
-<script>
-
-    function createPlanetSphere() {
-        const container = document.getElementById('sphereContainer');
-        container.innerHTML = '';
-
-        const segments = 24;
-        const rings = 12;
-        const radius = 160;
-
-        // Horizontal rings (latitude)
-        for (let i = 1; i < rings; i++) {
-            const phi = (Math.PI * i) / rings;
-            const y = radius * Math.cos(phi);
-            const r = radius * Math.sin(phi);
-
-            const ring = document.createElement('div');
-            ring.className = 'planet-sphere-ring';
-            ring.style.width = `${2 * r}px`;
-            ring.style.height = `${2 * r}px`;
-            ring.style.marginLeft = `${-r}px`;
-            ring.style.marginTop = `${-y - r}px`;
-            ring.style.transform = `rotateX(90deg)`;
-
-            container.appendChild(ring);
-        }
-
-        // Vertical lines (longitude)
-        for (let i = 0; i < segments; i++) {
-            const theta = (360 / segments) * i;
-            const arc = document.createElement('div');
-            arc.className = 'planet-sphere-ring';
-            arc.style.width = `${2 * radius}px`;
-            arc.style.height = `${2 * radius}px`;
-            arc.style.marginLeft = `${-radius}px`;
-            arc.style.marginTop = `${-radius}px`;
-            arc.style.transform = `rotateY(${theta}deg)`;
-
-            container.appendChild(arc);
-        }
+<style>
+    .star, .space-particle, .planet-sphere-ring {
+        will-change: transform, opacity;
     }
 
-    // Create realistic star field with varying depths
-    function createStarField() {
-        const starField = document.getElementById('starField');
-        const starCount = 200;
+</style>
 
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-
-            // Varying sizes for depth perception
-            const size = Math.random() * 2.5;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-
-            // Random positioning
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-
-            // Varying opacity based on "distance"
-            star.style.opacity = 0.3 + (size / 2.5) * 0.7;
-
-            // Subtle glow for brighter stars
-            if (size > 1.5) {
-                star.style.boxShadow = `0 0 ${size * 2}px rgba(255, 255, 255, 0.5)`;
-            }
-
-            // Twinkle animation for some stars
-            if (Math.random() > 0.7) {
-                const duration = 2 + Math.random() * 3;
-                star.style.animation = `twinkle ${duration}s ease-in-out infinite`;
-            }
-
-            starField.appendChild(star);
-        }
-    }
-
-    function create3DParticles() {
-        const particleField = document.getElementById('particleField');
-        const particleCount = 125;
-
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'space-particle';
-
-            // Size based on "distance"
-            const size = 1 + Math.random() * 3;
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-
-            // More random 3D positioning with extra spread
-            const phi = Math.acos(2 * Math.random() - 1) + (Math.random() - 0.5) * 0.5;
-            const theta = Math.random() * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
-            const radius = 300 + Math.random() * 500;
-
-            // Extra random offsets for wider spread
-            const offsetX = (Math.random() - 0.5) * 120;
-            const offsetY = (Math.random() - 0.5) * 120;
-            const offsetZ = (Math.random() - 0.5) * 120;
-
-            const x = radius * Math.sin(phi) * Math.cos(theta) + offsetX;
-            const y = radius * Math.sin(phi) * Math.sin(theta) + offsetY;
-            const z = radius * Math.cos(phi) + offsetZ;
-
-            particle.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-
-            // Depth-based opacity
-            const normalizedDist = radius / 800;
-            particle.style.opacity = 0.3 + (1 - normalizedDist) * 0.7;
-
-            // Orbital animation with varying speeds and directions
-            const duration = 30 + Math.random() * 50;
-            const direction = Math.random() > 0.5 ? 1 : -1;
-            particle.style.animation = `orbit${direction > 0 ? '' : 'Rev'} ${duration}s linear infinite`;
-
-            particleField.appendChild(particle);
-        }
-    }
-
-    // Add CSS for animations
-    const style = document.createElement('style');
-    style.textContent = `
-            @keyframes twinkle {
-                0%, 100% { opacity: inherit; transform: scale(1); }
-                50% { opacity: 0.3; transform: scale(0.8); }
-            }
-
-            @keyframes orbit {
-                from { transform: rotate3d(1, 1, 0.5, 0deg) translateZ(300px); }
-                to { transform: rotate3d(1, 1, 0.5, 360deg) translateZ(300px); }
-            }
-
-            @keyframes orbitRev {
-                from { transform: rotate3d(0.5, 1, 1, 360deg) translateZ(300px); }
-                to { transform: rotate3d(0.5, 1, 1, 0deg) translateZ(300px); }
-            }
-        `;
-    document.head.appendChild(style);
-
-    // Initialize all elements
-    createPlanetSphere();
-    createStarField();
-    create3DParticles();
-
-    // Enhanced mouse parallax with proper 3D transformation
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
-
-    function animateParallax() {
-        targetX += (mouseX - targetX) * 0.05;
-        targetY += (mouseY - targetY) * 0.05;
-
-        const scene = document.querySelector('.scene');
-        scene.style.transform = `
-                translate(-50%, -50%)
-                perspective(1200px)
-                rotateY(${targetX * 10}deg)
-                rotateX(${-targetY * 10}deg)
-            `;
-
-        requestAnimationFrame(animateParallax);
-    }
-
-    animateParallax();
-</script>
 
 
 
@@ -913,391 +1166,391 @@
 </script>
 
 <!-- Enhanced Work Experience Section Styles -->
-        <style>
-            #experience {
-                padding: 7rem 0;
-                background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
-                position: relative;
-            }
+<style>
+    #experience {
+        padding: 7rem 0;
+        background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+        position: relative;
+    }
 
-            #experience::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 1px;
-                background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
-            }
+    #experience::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
+    }
 
-            #experience h2 {
-                font-size: 2.8rem;
-                font-weight: 700;
-                margin-bottom: 4rem;
-                color: var(--text-light);
-                text-align: center;
-                position: relative;
-                text-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-            }
+    #experience h2 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 4rem;
+        color: var(--text-light);
+        text-align: center;
+        position: relative;
+        text-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+    }
 
-            #experience h2::after {
-                content: '';
-                display: block;
-                width: 120px;
-                height: 4px;
-                background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
-                margin: 1rem auto 0;
-                border-radius: 2px;
-            }
+    #experience h2::after {
+        content: '';
+        display: block;
+        width: 120px;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
+        margin: 1rem auto 0;
+        border-radius: 2px;
+    }
 
-            .experience-container {
-                position: relative;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
+    .experience-container {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
-            .experience-container::before {
-                content: '';
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 2px;
-                height: calc(100% - 100px);
-                background: linear-gradient(to bottom, transparent, var(--primary-purple), transparent);
-                top: 50px;
-                z-index: 0;
-                opacity: 0.4;
-            }
+    .experience-container::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: calc(100% - 100px);
+        background: linear-gradient(to bottom, transparent, var(--primary-purple), transparent);
+        top: 50px;
+        z-index: 0;
+        opacity: 0.4;
+    }
 
-            .experience-item {
-                margin-bottom: 3.5rem;
-                padding: 2.5rem;
-                background: rgba(30, 41, 59, 0.85);
-                border-radius: 1rem;
-                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-                transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                position: relative;
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(139, 92, 246, 0.15);
-                overflow: hidden;
-            }
+    .experience-item {
+        margin-bottom: 3.5rem;
+        padding: 2.5rem;
+        background: rgba(30, 41, 59, 0.85);
+        border-radius: 1rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.15);
+        overflow: hidden;
+    }
 
-            .experience-item:hover {
-                transform: translateY(-12px);
-                box-shadow: 0 15px 35px rgba(139, 92, 246, 0.45);
-                border: 1px solid rgba(139, 92, 246, 0.3);
-            }
+    .experience-item:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 15px 35px rgba(139, 92, 246, 0.45);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+    }
 
-            .experience-item::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 6px;
-                height: 100%;
-                background: linear-gradient(to bottom, var(--primary-purple), var(--light-purple));
-                border-radius: 0 4px 4px 0;
-            }
+    .experience-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--primary-purple), var(--light-purple));
+        border-radius: 0 4px 4px 0;
+    }
 
-            .experience-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 1.5rem;
-                border-bottom: 1px solid rgba(139, 92, 246, 0.2);
-                padding-bottom: 1.5rem;
-            }
+    .experience-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        padding-bottom: 1.5rem;
+    }
 
-            .experience-title h3 {
-                font-size: 2rem;
-                font-weight: 600;
-                margin-bottom: 0.75rem;
-                color: var(--primary-purple);
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
-            }
+    .experience-title h3 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--primary-purple);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    }
 
-            .experience-title h3 i {
-                font-size: 1.75rem;
-                width: 45px;
-                height: 45px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: rgba(139, 92, 246, 0.15);
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
-            }
+    .experience-title h3 i {
+        font-size: 1.75rem;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(139, 92, 246, 0.15);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+    }
 
-            .experience-title h4 {
-                font-size: 1.4rem;
-                font-weight: 500;
-                margin-bottom: 0.75rem;
-                color: var(--text-light);
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
+    .experience-title h4 {
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
 
-            .experience-title h4 i {
-                color: var(--light-purple);
-                font-size: 1.1rem;
-            }
+    .experience-title h4 i {
+        color: var(--light-purple);
+        font-size: 1.1rem;
+    }
 
-            .experience-badges {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-                margin-top: 0.75rem;
-            }
+    .experience-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
 
-            .exp-badge {
-                padding: 0.35rem 0.75rem;
-                border-radius: 50px;
-                font-size: 0.75rem;
-                font-weight: 600;
-                letter-spacing: 0.5px;
-                text-transform: uppercase;
-                display: inline-flex;
-                align-items: center;
-                gap: 0.35rem;
-            }
+    .exp-badge {
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
 
-            .badge-remote {
-                background: rgba(139, 92, 246, 0.15);
-                color: var(--light-purple);
-                border: 1px solid rgba(139, 92, 246, 0.3);
-            }
+    .badge-remote {
+        background: rgba(139, 92, 246, 0.15);
+        color: var(--light-purple);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+    }
 
-            .badge-hybrid {
-                background: rgba(56, 189, 248, 0.15);
-                color: #38BDF8;
-                border: 1px solid rgba(56, 189, 248, 0.3);
-            }
+    .badge-hybrid {
+        background: rgba(56, 189, 248, 0.15);
+        color: #38BDF8;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+    }
 
-            .badge-tech {
-                background: rgba(34, 197, 94, 0.15);
-                color: #22C55E;
-                border: 1px solid rgba(34, 197, 94, 0.3);
-            }
+    .badge-tech {
+        background: rgba(34, 197, 94, 0.15);
+        color: #22C55E;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+    }
 
-            .badge-nda {
-                background: rgba(248, 113, 113, 0.15);
-                color: #F87171;
-                border: 1px solid rgba(248, 113, 113, 0.3);
-            }
+    .badge-nda {
+        background: rgba(248, 113, 113, 0.15);
+        color: #F87171;
+        border: 1px solid rgba(248, 113, 113, 0.3);
+    }
 
-            .timeline-info {
-                display: flex;
-                align-items: center;
-                margin-bottom: 1.5rem;
-                color: var(--text-muted);
-            }
+    .timeline-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        color: var(--text-muted);
+    }
 
-            .timeline-info i {
-                margin-right: 0.5rem;
-                color: var(--light-purple);
-            }
+    .timeline-info i {
+        margin-right: 0.5rem;
+        color: var(--light-purple);
+    }
 
-            .timeline-date {
-                padding: 0.5rem 1rem;
-                background: rgba(30, 41, 59, 0.5);
-                border-radius: 50px;
-                font-size: 0.9rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                border: 1px solid rgba(139, 92, 246, 0.2);
-            }
+    .timeline-date {
+        padding: 0.5rem 1rem;
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+    }
 
-            .experience-content {
-                position: relative;
-            }
+    .experience-content {
+        position: relative;
+    }
 
-            .experience-content p {
-                font-size: 1rem;
-                color: var(--text-muted);
-                margin-bottom: 1.25rem;
-            }
+    .experience-content p {
+        font-size: 1rem;
+        color: var(--text-muted);
+        margin-bottom: 1.25rem;
+    }
 
-            .portfolio-link {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem;
-                background: rgba(139, 92, 246, 0.1);
-                border: 1px solid rgba(139, 92, 246, 0.2);
-                padding: 0.5rem 1rem;
-                border-radius: 50px;
-                font-weight: 500;
-                margin-bottom: 1.5rem;
-                transition: all 0.3s ease;
-            }
+    .portfolio-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
 
-            .portfolio-link:hover {
-                background: rgba(139, 92, 246, 0.2);
-                box-shadow: 0 5px 15px rgba(139, 92, 246, 0.25);
-                transform: translateY(-3px);
-            }
+    .portfolio-link:hover {
+        background: rgba(139, 92, 246, 0.2);
+        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.25);
+        transform: translateY(-3px);
+    }
 
-            .experience-content ul {
-                padding-left: 0;
-                margin-top: 1rem;
-                list-style-type: none;
-            }
+    .experience-content ul {
+        padding-left: 0;
+        margin-top: 1rem;
+        list-style-type: none;
+    }
 
-            .experience-content ul li {
-                margin-bottom: 1rem;
-                color: var(--text-light);
-                position: relative;
-                padding-left: 2rem;
-                display: flex;
-                align-items: flex-start;
-            }
+    .experience-content ul li {
+        margin-bottom: 1rem;
+        color: var(--text-light);
+        position: relative;
+        padding-left: 2rem;
+        display: flex;
+        align-items: flex-start;
+    }
 
-            .experience-content ul li i {
-                color: var(--primary-purple);
-                position: absolute;
-                left: 0;
-                top: 0.25rem;
-                font-size: 1rem;
-            }
+    .experience-content ul li i {
+        color: var(--primary-purple);
+        position: absolute;
+        left: 0;
+        top: 0.25rem;
+        font-size: 1rem;
+    }
 
-            .experience-footer {
-                margin-top: 1.5rem;
-                padding-top: 1.5rem;
-                border-top: 1px solid rgba(139, 92, 246, 0.15);
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-            }
+    .experience-footer {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(139, 92, 246, 0.15);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
 
-            .skill-tag {
-                background: rgba(30, 41, 59, 0.7);
-                border: 1px solid rgba(139, 92, 246, 0.2);
-                color: var(--text-muted);
-                padding: 0.35rem 0.75rem;
-                border-radius: 50px;
-                font-size: 0.8rem;
-                transition: all 0.3s ease;
-            }
+    .skill-tag {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        color: var(--text-muted);
+        padding: 0.35rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+    }
 
-            .skill-tag:hover {
-                background: rgba(139, 92, 246, 0.2);
-                color: var(--text-light);
-                transform: translateY(-2px);
-            }
-        </style>
+    .skill-tag:hover {
+        background: rgba(139, 92, 246, 0.2);
+        color: var(--text-light);
+        transform: translateY(-2px);
+    }
+</style>
 
-        <!-- Enhanced Work Experience Section -->
-        <section id="experience">
-            <div class="container">
-                <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+<!-- Enhanced Work Experience Section -->
+<section id="experience">
+    <div class="container">
+        <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
 
-                <div class="experience-container">
-                    <div class="experience-item">
-                        <div class="experience-header">
-                            <div class="experience-title">
-                                <h3><i class="fas fa-paint-brush"></i> Freelance Graphic Design Specialist</h3>
-                                <h4><i class="fas fa-building"></i> TheDabCorner™ LLC, St. Louis, MO</h4>
-                                <div class="experience-badges">
-                                    <span class="exp-badge badge-remote"><i class="fas fa-wifi"></i> Remote</span>
-                                    <span class="exp-badge badge-hybrid"><i class="fas fa-building"></i> Hybrid</span>
-                                    <span class="exp-badge badge-tech"><i class="fas fa-laptop-code"></i> Full-Stack</span>
-                                </div>
-                            </div>
-                            <div class="timeline-date">
-                                <i class="far fa-calendar-alt me-2 opacity-50"></i> Sep 2021 – Present
-                            </div>
-                        </div>
-
-                        <div class="experience-content">
-                            <ul>
-                                <li><i class="fas fa-rocket"></i> Founded and grew my own freelance design business straight out of high school</li>
-                                <li><i class="fas fa-tasks"></i> Delivered 50+ projects: logos, product packaging, brand guidelines, event posters, and full-stack web/embedded systems</li>
-                                <li><i class="fas fa-print"></i> Supervised sticker printing operations (Feb 2022 – Mar 2023, Hybrid)</li>
-                                <li><i class="fas fa-tools"></i> Skilled in Adobe Creative Suite, Illustrator, and 25+ design/dev tools</li>
-                                <li><i class="fas fa-images"></i> (See latest work; images below are from earlier projects)</li>
-                            </ul>
-                        </div>
-
-                        <div class="experience-footer">
-                            <span class="skill-tag"><i class="fab fa-adobe"></i> Adobe Suite</span>
-                            <span class="skill-tag"><i class="fab fa-figma"></i> Figma</span>
-                            <span class="skill-tag"><i class="fab fa-html5"></i> Web Dev</span>
-                            <span class="skill-tag"><i class="fas fa-palette"></i> Design</span>
-                            <span class="skill-tag"><i class="fas fa-print"></i> Print</span>
+        <div class="experience-container">
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div class="experience-title">
+                        <h3><i class="fas fa-paint-brush"></i> Freelance Graphic Design Specialist</h3>
+                        <h4><i class="fas fa-building"></i> TheDabCorner™ LLC, St. Louis, MO</h4>
+                        <div class="experience-badges">
+                            <span class="exp-badge badge-remote"><i class="fas fa-wifi"></i> Remote</span>
+                            <span class="exp-badge badge-hybrid"><i class="fas fa-building"></i> Hybrid</span>
+                            <span class="exp-badge badge-tech"><i class="fas fa-laptop-code"></i> Full-Stack</span>
                         </div>
                     </div>
-
-                    <div class="experience-item">
-                        <div class="experience-header">
-                            <div class="experience-title">
-                                <h3><i class="fas fa-cogs"></i> Process Engineer</h3>
-                                <h4><i class="fas fa-flask"></i> Private R&D Facility, St. Louis, MO</h4>
-                                <div class="experience-badges">
-                                    <span class="exp-badge badge-tech"><i class="fas fa-microchip"></i> IoT</span>
-                                    <span class="exp-badge badge-hybrid"><i class="fas fa-building"></i> Hybrid</span>
-                                    <span class="exp-badge badge-nda"><i class="fas fa-user-secret"></i> NDA</span>
-                                </div>
-                            </div>
-                            <div class="timeline-date">
-                                <i class="far fa-calendar-alt me-2 opacity-50"></i> 2022 – 2024
-                            </div>
-                        </div>
-
-                        <div class="experience-content">
-                            <ul>
-                                <li><i class="fas fa-project-diagram"></i> Lead engineer of an IoT crystallization incubator concept for lab-scale production</li>
-                                <li><i class="fas fa-chart-line"></i> Reverse engineered freeze-drying systems and developed optimized batch recipes, increasing efficiency by ~50% and reducing processing times from 8+ hours to ~4.5 hours</li>
-                                <li><i class="fas fa-thermometer-half"></i> Developed a reliable IoT thermometer using NTC thermistors and Raspberry Pi for precise lab monitoring</li>
-                                <li><i class="fas fa-tools"></i> Developed a calculator for decarboxylation reactions + measuring their rate of change using gravimetrics.</li>
-                            </ul>
-                        </div>
-
-                        <div class="experience-footer">
-                            <span class="skill-tag"><i class="fab fa-raspberry-pi"></i> Raspberry Pi</span>
-                            <span class="skill-tag"><i class="fas fa-microchip"></i> IoT</span>
-                            <span class="skill-tag"><i class="fas fa-code"></i> Python</span>
-                            <span class="skill-tag"><i class="fas fa-vial"></i> R&D</span>
-                            <span class="skill-tag"><i class="fas fa-spinner"></i> Process Optimization</span>
-                        </div>
-                    </div>
-
-                    <div class="experience-item">
-                        <div class="experience-header">
-                            <div class="experience-title">
-                                <h3><i class="fas fa-users"></i> Moderator</h3>
-                                <h4><i class="fas fa-graduation-cap"></i> Engineering Minds Study Group</h4>
-                                <div class="experience-badges">
-                                    <span class="exp-badge badge-tech"><i class="fas fa-atom"></i> STEM</span>
-                                    <span class="exp-badge badge-remote"><i class="fas fa-wifi"></i> Remote</span>
-                                </div>
-                            </div>
-                            <div class="timeline-date">
-                                <i class="far fa-calendar-alt me-2 opacity-50"></i> January 2025 – Present
-                            </div>
-                        </div>
-
-                        <div class="experience-content">
-                            <ul>
-                                <li><i class="fas fa-share-alt"></i> Share real-world examples and practical study resources to help members succeed</li>
-                                <li><i class="fas fa-users-cog"></i> Foster a positive, collaborative environment for academic growth</li>
-                                <li><i class="fas fa-chalkboard-teacher"></i> Assist students in understanding coursework and applying concepts beyond the classroom</li>
-                            </ul>
-                        </div>
-
-                        <div class="experience-footer">
-                            <span class="skill-tag"><i class="fas fa-users"></i> 200+ Members</span>
-                            <span class="skill-tag"><i class="fas fa-book"></i> Education</span>
-                            <span class="skill-tag"><i class="fas fa-atom"></i> STEM</span>
-                            <span class="skill-tag"><i class="fas fa-lightbulb"></i> Mentoring</span>
-                        </div>
+                    <div class="timeline-date">
+                        <i class="far fa-calendar-alt me-2 opacity-50"></i> Sep 2021 – Present
                     </div>
                 </div>
+
+                <div class="experience-content">
+                    <ul>
+                        <li><i class="fas fa-rocket"></i> Founded and grew my own freelance design business straight out of high school</li>
+                        <li><i class="fas fa-tasks"></i> Delivered 50+ projects: logos, product packaging, brand guidelines, event posters, and full-stack web/embedded systems</li>
+                        <li><i class="fas fa-print"></i> Supervised sticker printing operations (Feb 2022 – Mar 2023, Hybrid)</li>
+                        <li><i class="fas fa-tools"></i> Skilled in Adobe Creative Suite, Illustrator, and 25+ design/dev tools</li>
+                        <li><i class="fas fa-images"></i> (See latest work; images below are from earlier projects)</li>
+                    </ul>
+                </div>
+
+                <div class="experience-footer">
+                    <span class="skill-tag"><i class="fab fa-adobe"></i> Adobe Suite</span>
+                    <span class="skill-tag"><i class="fab fa-figma"></i> Figma</span>
+                    <span class="skill-tag"><i class="fab fa-html5"></i> Web Dev</span>
+                    <span class="skill-tag"><i class="fas fa-palette"></i> Design</span>
+                    <span class="skill-tag"><i class="fas fa-print"></i> Print</span>
+                </div>
             </div>
-        </section>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div class="experience-title">
+                        <h3><i class="fas fa-cogs"></i> Process Engineer</h3>
+                        <h4><i class="fas fa-flask"></i> Private R&D Facility, St. Louis, MO</h4>
+                        <div class="experience-badges">
+                            <span class="exp-badge badge-tech"><i class="fas fa-microchip"></i> IoT</span>
+                            <span class="exp-badge badge-hybrid"><i class="fas fa-building"></i> Hybrid</span>
+                            <span class="exp-badge badge-nda"><i class="fas fa-user-secret"></i> NDA</span>
+                        </div>
+                    </div>
+                    <div class="timeline-date">
+                        <i class="far fa-calendar-alt me-2 opacity-50"></i> 2022 – 2024
+                    </div>
+                </div>
+
+                <div class="experience-content">
+                    <ul>
+                        <li><i class="fas fa-project-diagram"></i> Lead engineer of an IoT crystallization incubator concept for lab-scale production</li>
+                        <li><i class="fas fa-chart-line"></i> Reverse engineered freeze-drying systems and developed optimized batch recipes, increasing efficiency by ~50% and reducing processing times from 8+ hours to ~4.5 hours</li>
+                        <li><i class="fas fa-thermometer-half"></i> Developed a reliable IoT thermometer using NTC thermistors and Raspberry Pi for precise lab monitoring</li>
+                        <li><i class="fas fa-tools"></i> Developed a calculator for decarboxylation reactions + measuring their rate of change using gravimetrics.</li>
+                    </ul>
+                </div>
+
+                <div class="experience-footer">
+                    <span class="skill-tag"><i class="fab fa-raspberry-pi"></i> Raspberry Pi</span>
+                    <span class="skill-tag"><i class="fas fa-microchip"></i> IoT</span>
+                    <span class="skill-tag"><i class="fas fa-code"></i> Python</span>
+                    <span class="skill-tag"><i class="fas fa-vial"></i> R&D</span>
+                    <span class="skill-tag"><i class="fas fa-spinner"></i> Process Optimization</span>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div class="experience-title">
+                        <h3><i class="fas fa-users"></i> Moderator</h3>
+                        <h4><i class="fas fa-graduation-cap"></i> Engineering Minds Study Group</h4>
+                        <div class="experience-badges">
+                            <span class="exp-badge badge-tech"><i class="fas fa-atom"></i> STEM</span>
+                            <span class="exp-badge badge-remote"><i class="fas fa-wifi"></i> Remote</span>
+                        </div>
+                    </div>
+                    <div class="timeline-date">
+                        <i class="far fa-calendar-alt me-2 opacity-50"></i> January 2025 – Present
+                    </div>
+                </div>
+
+                <div class="experience-content">
+                    <ul>
+                        <li><i class="fas fa-share-alt"></i> Share real-world examples and practical study resources to help members succeed</li>
+                        <li><i class="fas fa-users-cog"></i> Foster a positive, collaborative environment for academic growth</li>
+                        <li><i class="fas fa-chalkboard-teacher"></i> Assist students in understanding coursework and applying concepts beyond the classroom</li>
+                    </ul>
+                </div>
+
+                <div class="experience-footer">
+                    <span class="skill-tag"><i class="fas fa-users"></i> 200+ Members</span>
+                    <span class="skill-tag"><i class="fas fa-book"></i> Education</span>
+                    <span class="skill-tag"><i class="fas fa-atom"></i> STEM</span>
+                    <span class="skill-tag"><i class="fas fa-lightbulb"></i> Mentoring</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

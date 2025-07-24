@@ -65,9 +65,17 @@
 
         /* Navigation */
         .navbar {
-            backdrop-filter: blur(10px);
+            background: rgba(16, 9, 33, 0.85); /* Fallback for unsupported browsers */
             padding: 1rem 0;
             transition: all 0.3s ease;
+        }
+
+        @supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+            .navbar {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                background: rgb(16 9 33 / 0%); /* More transparent when blur is supported */
+            }
         }
 
         .navbar-brand {
@@ -140,7 +148,7 @@
 <body>
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container" style="max-width: calc(100vw - 15vw);">
+    <div class="container">
         <a class="navbar-brand fw-bold" href="#home">
             <span class="text-purple">Jackson</span> Cummings
         </a>
@@ -408,21 +416,7 @@
     <div class="scene">
         <div class="orbit-container">
             <div class="planet-wrapper">
-                <div class="planet">
-                    <div class="planet-glow"></div>
-                    <div class="sphere-container" id="sphereContainer"></div>
-                </div>
-                <div class="ring-system">
-                    <div class="ring ring-inner">
-                        <div class="ring-detail"></div>
-                    </div>
-                    <div class="ring ring-middle">
-                        <div class="ring-detail"></div>
-                    </div>
-                    <div class="ring ring-outer">
-                        <div class="ring-detail"></div>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="particle-field" id="particleField"></div>
@@ -436,12 +430,12 @@
 
 
         function createWireframeSphere() {
-            const radius = isMobile ? 120 : 160;
+            const radius = isMobile ? 120 : 140;
             const widthSeg = 32;
             const heightSeg = 30;
             const geo = new THREE.SphereGeometry(radius, widthSeg, heightSeg);
             const wfGeo = new THREE.WireframeGeometry(geo);
-            const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6, linewidth: 1, side: THREE.FRONT });
+            const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4, linewidth: 1, side: THREE.FRONT });
 
             const glowMat = new THREE.MeshBasicMaterial({
                 color: 0xffffff,
@@ -768,8 +762,8 @@
                 rings.rotation.y = earthSpin * 0.7 + Math.cos(t * 0.6) * 0.03;
                 rings.rotation.z = Math.min(0, Math.sin(t * 0.5) * 0.02);
 
-                // {#console.log(`Sphere Rotation: X=${sphere.rotation.x.toFixed(4)}, Y=${sphere.rotation.y.toFixed(4)}, Z=${sphere.rotation.z.toFixed(4)}`);#}
-                // {#        console.log(`Rings Rotation: X=${rings.rotation.x.toFixed(4)}, Y=${rings.rotation.y.toFixed(4)}, Z=${rings.rotation.z.toFixed(4)}`);#}
+               // {#console.log(`Sphere Rotation: X=${sphere.rotation.x.toFixed(4)}, Y=${sphere.rotation.y.toFixed(4)}, Z=${sphere.rotation.z.toFixed(4)}`);#}
+                //{#        console.log(`Rings Rotation: X=${rings.rotation.x.toFixed(4)}, Y=${rings.rotation.y.toFixed(4)}, Z=${rings.rotation.z.toFixed(4)}`);#}
 
                 renderer.render(scene, camera);
             }
@@ -821,6 +815,11 @@
             color: #8B5CF6;
             line-height: 1.7;
             letter-spacing: 0.5px;
+            background: rgba(139, 92, 246, 0.08);
+            border-left: 5px solid #8B5CF6;
+            padding: 1rem 1.5rem;
+            font-style: italic;
+            box-shadow: 0 2px 12px rgba(139, 92, 246, 0.07);
         }
         .hero-badge {
             background: #8b5cf62e;
@@ -898,7 +897,7 @@
             background: #8B5CF6;
             color: #fff;
             border-radius: 12px;
-            padding: 2px 8px;
+            padding: 0px 18px;
             font-size: 0.8rem;
             margin-left: 6px;
         }
@@ -908,29 +907,60 @@
             font-size: 1.2rem;
         }
 
-        @media (max-width: 768px) {
+        .navbar .container {
+            max-width: calc(100vw - 15vw);
+        }
 
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.25rem;
+            }
+
+            .navbar .container {
+                max-width: calc(100vw - 2rem) !important;
+            }
+        }
+
+
+
+
+
+        @media (max-height: 650px) {
+            .hero-content {
+                scale: 0.9
+            }
+        }
+
+        @media (max-height: 450px) {
+            .hero-content {
+                scale: 0.6;
+                bottom: -1150px;
+                left: -10vw;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+            /* your styles here */
 
             .hero-content {
                 left: 0.33rem;
                 max-width: 98vw;
-                background: rgb(0 0 0 / 85%);
+                background: rgba(0, 0, 0, 0.63);
                 padding: 1.5rem 1rem;
                 border-radius: 14px;
-                border: 2px solid #8B5CF6;
-                box-shadow: 0 4px 24px rgba(139, 92, 246, 0.18);
+                border: 2px solid transparent;
             }
 
 
             .hero-title {
-                font-size: 2.1rem !important;
+                font-size: 5vw !important;
                 letter-spacing: -1px;
                 margin-bottom: 1rem;
                 text-align: left;
             }
             .hero-subtitle {
-                font-size: 1rem;
-                margin-bottom: 0.7rem;
+                font-size: 0.75rem;
                 text-align: left;
             }
             .hero-description {
@@ -971,7 +1001,20 @@
                 font-size: 0.95rem;
             }
         }
+
+        @media (min-width: 768px) {
+            .hero-content {
+                max-width: 700px;
+                background: rgba(0, 0, 0, 0.63) !important;
+                padding: 1.5rem 1rem;
+                border-radius: 14px;
+                border: 4px solid #2f2f2f45;
+            }
+        }
+
     </style>
+
+
     <div class="hero-content">
         <div class="hero-badge">
             <span><i class="fas fa-code me-1"></i> Available for hire</span>
@@ -979,15 +1022,15 @@
         <h1 class="hero-title">
             <!--            <i class="fas fa-rocket me-2"></i>--> I'm <span class="text-purple">Jackson Cummings</span>
         </h1>
-        <div class="hero-subtitle opacity-50">
+        <div class="hero-subtitle">
             <i class="fas fa-lightbulb me-2"></i> Creative Engineer & Full-Stack Developer
         </div>
         <div class="animated-type">
             <span class="typed-text"></span><span class="cursor">&nbsp;</span>
         </div>
         <p class="hero-description">
-            <i class="fas fa-magic me-2"></i> Transforming complex ideas into <span style="color:#8B5CF6;font-weight:600;">elegant solutions</span> that users love.<br>
-            <i class="fas fa-brain me-2"></i> Blending technical precision with creative vision to build remarkable digital experiences.
+            <i class="fas fa-magic me-2"></i> Let me turn your complex ideas into <span style="color:#8B5CF6;font-weight:600;">elegant solutions</span> you can rely on.<br>
+            <i class="fas fa-brain me-2"></i> Autodidactic engineer—driven by curiosity, I master new technologies and craft inventive solutions from concept to the production-line.
         </p>
         <div class="hero-buttons">
             <a href="#contact" class="btn btn-glow">
@@ -999,18 +1042,18 @@
         </div>
         <div class="hero-stats">
             <div class="stat-item">
-                <span class="stat-number"><i class="fas fa-calendar-check"></i> 5+</span>
-                <span class="stat-label"><i class="fas fa-user-graduate"></i> Years Experience</span>
+                <span class="stat-number"><i class="fas fa-calendar-check"></i> >5</span>
+                <span class="stat-label"><i class="fas fa-user-graduate me-1"></i> Years Experience</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-                <span class="stat-number"><i class="fas fa-project-diagram"></i> 50+</span>
-                <span class="stat-label"><i class="fas fa-check-circle"></i> Projects Completed</span>
+                <span class="stat-number"><i class="fas fa-project-diagram"></i> 112+</span>
+                <span class="stat-label"><i class="fas fa-check-circle me-1"></i> Projects Completed</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <span class="stat-label">St. Louis, MO <br/><span class="remote-badge"><i class="fas fa-wifi"></i> Remote Ready</span></span>
+                <span class="stat-number"><i class="fas fa-map-marker-alt"></i> STL</span>
+                <span class="remote-badge"><i class="fas fa-wifi text-white me-2"></i> Remote Ready</span>
             </div>
         </div>
     </div>
@@ -1165,11 +1208,22 @@
 
 </script>
 
-<!-- Enhanced Work Experience Section Styles -->
+<!-- Material Design Work Experience Section -->
 <style>
+    :root {
+        --bg-primary: #2D1B4E;
+        --bg-secondary: #3D2B5E;
+        --purple-primary: #8B5CF6;
+        --purple-light: #A78BFA;
+        --white: #FFFFFF;
+        --white-87: rgba(255, 255, 255, 0.87);
+        --white-60: rgba(255, 255, 255, 0.6);
+        --white-38: rgba(255, 255, 255, 0.38);
+    }
+
     #experience {
-        padding: 7rem 0;
-        background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+        background: var(--bg-primary);
+        padding: 120px 0;
         position: relative;
     }
 
@@ -1179,378 +1233,535 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
+        height: 4px;
+        background: var(--purple-primary);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
     }
 
     #experience h2 {
-        font-size: 2.8rem;
-        font-weight: 700;
-        margin-bottom: 4rem;
-        color: var(--text-light);
+        font-size: 48px;
+        font-weight: 300;
+        color: var(--white);
         text-align: center;
+        margin: 0 0 96px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .experience-timeline {
         position: relative;
-        text-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        padding-left: 80px;
     }
 
-    #experience h2::after {
-        content: '';
-        display: block;
-        width: 120px;
-        height: 4px;
-        background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
-        margin: 1rem auto 0;
-        border-radius: 2px;
-    }
-
-    .experience-container {
-        position: relative;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .experience-container::before {
+    .experience-timeline::before {
         content: '';
         position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 24px;
+        top: 0;
+        bottom: 0;
         width: 2px;
-        height: calc(100% - 100px);
-        background: linear-gradient(to bottom, transparent, var(--primary-purple), transparent);
-        top: 50px;
-        z-index: 0;
-        opacity: 0.4;
+        background: var(--purple-primary);
     }
 
     .experience-item {
-        margin-bottom: 3.5rem;
-        padding: 2.5rem;
-        background: rgba(30, 41, 59, 0.85);
-        border-radius: 1rem;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         position: relative;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(139, 92, 246, 0.15);
-        overflow: hidden;
+        margin-bottom: 96px;
+        background: var(--bg-secondary);
+        box-shadow:
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
     }
 
     .experience-item:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 15px 35px rgba(139, 92, 246, 0.45);
-        border: 1px solid rgba(139, 92, 246, 0.3);
+        box-shadow:
+                0 16px 32px rgba(0, 0, 0, 0.3),
+                0 8px 16px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
     }
 
     .experience-item::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 6px;
-        height: 100%;
-        background: linear-gradient(to bottom, var(--primary-purple), var(--light-purple));
-        border-radius: 0 4px 4px 0;
+        left: -68px;
+        top: 32px;
+        width: 16px;
+        height: 16px;
+        background: var(--purple-primary);
+        transform: rotate(45deg);
     }
 
     .experience-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid rgba(139, 92, 246, 0.2);
-        padding-bottom: 1.5rem;
+        background: var(--purple-primary);
+        padding: 32px;
+        position: relative;
     }
 
-    .experience-title h3 {
-        font-size: 2rem;
-        font-weight: 600;
-        margin-bottom: 0.75rem;
-        color: var(--primary-purple);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    .experience-header::after {
+        content: '';
+        position: absolute;
+        bottom: -12px;
+        left: 32px;
+        right: 32px;
+        height: 12px;
+        background: var(--purple-primary);
+        clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
     }
 
-    .experience-title h3 i {
-        font-size: 1.75rem;
-        width: 45px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(139, 92, 246, 0.15);
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+    .role-title {
+        font-size: 32px;
+        font-weight: 400;
+        color: var(--white);
+        margin: 0 0 8px 0;
+        letter-spacing: -0.25px;
     }
 
-    .experience-title h4 {
-        font-size: 1.4rem;
+    .company-info {
+        font-size: 18px;
+        color: var(--white-87);
+        margin: 0 0 24px 0;
+        font-weight: 300;
+    }
+
+    .time-period {
+        position: absolute;
+        top: 32px;
+        right: 32px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 16px;
+        font-size: 14px;
+        color: var(--white);
         font-weight: 500;
-        margin-bottom: 0.75rem;
-        color: var(--text-light);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .experience-title h4 i {
-        color: var(--light-purple);
-        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .experience-badges {
         display: flex;
+        gap: 12px;
         flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
     }
 
-    .exp-badge {
-        padding: 0.35rem 0.75rem;
-        border-radius: 50px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-    }
-
-    .badge-remote {
-        background: rgba(139, 92, 246, 0.15);
-        color: var(--light-purple);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-    }
-
-    .badge-hybrid {
-        background: rgba(56, 189, 248, 0.15);
-        color: #38BDF8;
-        border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .badge-tech {
-        background: rgba(34, 197, 94, 0.15);
-        color: #22C55E;
-        border: 1px solid rgba(34, 197, 94, 0.3);
-    }
-
-    .badge-nda {
-        background: rgba(248, 113, 113, 0.15);
-        color: #F87171;
-        border: 1px solid rgba(248, 113, 113, 0.3);
-    }
-
-    .timeline-info {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        color: var(--text-muted);
-    }
-
-    .timeline-info i {
-        margin-right: 0.5rem;
-        color: var(--light-purple);
-    }
-
-    .timeline-date {
-        padding: 0.5rem 1rem;
-        background: rgba(30, 41, 59, 0.5);
-        border-radius: 50px;
-        font-size: 0.9rem;
+    .badge {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--white);
+        padding: 6px 12px;
+        font-size: 12px;
         font-weight: 500;
-        display: flex;
-        align-items: center;
-        border: 1px solid rgba(139, 92, 246, 0.2);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .experience-content {
+        padding: 48px 32px 32px 32px;
+    }
+
+    .achievements-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .achievement {
         position: relative;
+        padding: 20px 0 20px 64px;
+        color: var(--white-87);
+        font-size: 16px;
+        line-height: 1.6;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.2s ease;
     }
 
-    .experience-content p {
-        font-size: 1rem;
-        color: var(--text-muted);
-        margin-bottom: 1.25rem;
+    .achievement:last-child {
+        border-bottom: none;
     }
 
-    .portfolio-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: rgba(139, 92, 246, 0.1);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
-        font-weight: 500;
-        margin-bottom: 1.5rem;
-        transition: all 0.3s ease;
-    }
-
-    .portfolio-link:hover {
-        background: rgba(139, 92, 246, 0.2);
-        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.25);
-        transform: translateY(-3px);
-    }
-
-    .experience-content ul {
-        padding-left: 0;
-        margin-top: 1rem;
-        list-style-type: none;
-    }
-
-    .experience-content ul li {
-        margin-bottom: 1rem;
-        color: var(--text-light);
-        position: relative;
-        padding-left: 2rem;
-        display: flex;
-        align-items: flex-start;
-    }
-
-    .experience-content ul li i {
-        color: var(--primary-purple);
+    .achievement::before {
+        content: '';
         position: absolute;
         left: 0;
-        top: 0.25rem;
-        font-size: 1rem;
-    }
-
-    .experience-footer {
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid rgba(139, 92, 246, 0.15);
+        top: 28px;
+        width: 32px;
+        height: 32px;
+        background: var(--purple-primary);
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
+        align-items: center;
+        justify-content: center;
     }
 
-    .skill-tag {
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        color: var(--text-muted);
-        padding: 0.35rem 0.75rem;
-        border-radius: 50px;
-        font-size: 0.8rem;
+    .achievement i {
+        position: absolute;
+        left: 8px;
+        top: 36px;
+        color: var(--white);
+        font-size: 16px;
+        z-index: 1;
+    }
+
+    .achievement:hover {
+        color: var(--white);
+        transform: translateX(8px);
+    }
+
+    .achievement:hover::before {
+        background: var(--purple-light);
+    }
+
+    .skills-section {
+        margin-top: 32px;
+        padding-top: 32px;
+        border-top: 2px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .skills-title {
+        font-size: 14px;
+        color: var(--white-60);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+        font-weight: 500;
+    }
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 16px;
+    }
+
+    .skill-chip {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 12px 16px;
+        text-align: center;
+        color: var(--white-87);
+        font-size: 14px;
+        font-weight: 400;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .skill-chip::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--purple-primary);
         transition: all 0.3s ease;
+        z-index: -1;
     }
 
-    .skill-tag:hover {
-        background: rgba(139, 92, 246, 0.2);
-        color: var(--text-light);
+    .skill-chip:hover {
+        color: var(--white);
+        border-color: var(--purple-primary);
         transform: translateY(-2px);
+    }
+
+    .skill-chip:hover::before {
+        left: 0;
+    }
+
+    .icon-wrapper {
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 16px;
+    }
+
+    /* Specific role styling */
+    .experience-item:nth-child(1) .experience-header {
+        background: var(--purple-primary);
+    }
+
+    .experience-item:nth-child(2) .experience-header {
+        background: var(--purple-light);
+    }
+
+    .experience-item:nth-child(3) .experience-header {
+        background: var(--purple-primary);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        #experience {
+            padding: 80px 0;
+        }
+
+        .container {
+            padding: 0 16px;
+        }
+
+        #experience h2 {
+            font-size: 36px;
+            margin-bottom: 64px;
+        }
+
+        .experience-timeline {
+            padding-left: 40px;
+        }
+
+        .experience-timeline::before {
+            left: 16px;
+        }
+
+        .experience-item::before {
+            left: 8px;
+            width: 12px;
+            height: 12px;
+        }
+
+        .experience-header {
+            padding: 24px 16px;
+        }
+
+        .experience-header::after {
+            left: 16px;
+            right: 16px;
+        }
+
+        .role-title {
+            font-size: 24px;
+        }
+
+        .time-period {
+            position: static;
+            margin-top: 16px;
+            display: inline-block;
+        }
+
+        .experience-content {
+            padding: 32px 16px 24px 16px;
+        }
+
+        .achievement {
+            padding-left: 48px;
+        }
+
+        .achievement::before {
+            width: 24px;
+            height: 24px;
+        }
+
+        .achievement i {
+            left: 4px;
+            top: 32px;
+            font-size: 14px;
+        }
+    }
+
+    /* Animation for entrance */
+    .experience-item {
+        opacity: 0;
+        transform: translateY(40px);
+        animation: slideInUp 0.6s ease forwards;
+    }
+
+    .experience-item:nth-child(1) { animation-delay: 0.1s; }
+    .experience-item:nth-child(2) { animation-delay: 0.2s; }
+    .experience-item:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes slideInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 
-<!-- Enhanced Work Experience Section -->
+<!-- Material Design Work Experience Section -->
 <section id="experience">
     <div class="container">
-        <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+        <h2>Professional Experience</h2>
 
-        <div class="experience-container">
+        <div class="experience-timeline">
+
             <div class="experience-item">
                 <div class="experience-header">
-                    <div class="experience-title">
-                        <h3><i class="fas fa-paint-brush"></i> Freelance Graphic Design Specialist</h3>
-                        <h4><i class="fas fa-building"></i> TheDabCorner™ LLC, St. Louis, MO</h4>
-                        <div class="experience-badges">
-                            <span class="exp-badge badge-remote"><i class="fas fa-wifi"></i> Remote</span>
-                            <span class="exp-badge badge-hybrid"><i class="fas fa-building"></i> Hybrid</span>
-                            <span class="exp-badge badge-tech"><i class="fas fa-laptop-code"></i> Full-Stack</span>
-                        </div>
-                    </div>
-                    <div class="timeline-date">
-                        <i class="far fa-calendar-alt me-2 opacity-50"></i> Sep 2021 – Present
+                    <div class="time-period">Sep 2021 – Present</div>
+                    <h3 class="role-title">Design & Development Specialist</h3>
+                    <p class="company-info">TheDabCorner™ LLC, St. Louis, MO</p>
+                    <div class="experience-badges">
+                        <span class="badge">Remote</span>
+                        <span class="badge">Hybrid</span>
+                        <span class="badge">Full-Stack</span>
                     </div>
                 </div>
 
                 <div class="experience-content">
-                    <ul>
-                        <li><i class="fas fa-rocket"></i> Founded and grew my own freelance design business straight out of high school</li>
-                        <li><i class="fas fa-tasks"></i> Delivered 50+ projects: logos, product packaging, brand guidelines, event posters, and full-stack web/embedded systems</li>
-                        <li><i class="fas fa-print"></i> Supervised sticker printing operations (Feb 2022 – Mar 2023, Hybrid)</li>
-                        <li><i class="fas fa-tools"></i> Skilled in Adobe Creative Suite, Illustrator, and 25+ design/dev tools</li>
-                        <li><i class="fas fa-images"></i> (See latest work; images below are from earlier projects)</li>
+                    <ul class="achievements-list">
+                        <li class="achievement">
+                            <i class="fas fa-rocket"></i>
+                            Founded and scaled profitable freelance business immediately after high school, establishing consistent revenue streams through strategic client acquisition and exceptional service delivery
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-trophy"></i>
+                            Executed 112+ successful projects across brand identity, product packaging, digital marketing, and full-stack web applications for diverse client portfolio
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-industry"></i>
+                            Managed hybrid printing operations (Feb 2022 – Mar 2023), coordinating production workflows, quality assurance, and vendor relationships
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-tools"></i>
+                            Developed expertise across 25+ professional tools including Adobe Creative Suite, development frameworks, and embedded systems
+                        </li>
                     </ul>
-                </div>
 
-                <div class="experience-footer">
-                    <span class="skill-tag"><i class="fab fa-adobe"></i> Adobe Suite</span>
-                    <span class="skill-tag"><i class="fab fa-figma"></i> Figma</span>
-                    <span class="skill-tag"><i class="fab fa-html5"></i> Web Dev</span>
-                    <span class="skill-tag"><i class="fas fa-palette"></i> Design</span>
-                    <span class="skill-tag"><i class="fas fa-print"></i> Print</span>
+                    <div class="skills-section">
+                        <div class="skills-title">Core Technologies</div>
+                        <div class="skills-grid">
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fab fa-adobe"></i></span>
+                                Adobe Suite
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fab fa-figma"></i></span>
+                                UI/UX Design
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fab fa-html5"></i></span>
+                                Web Development
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-palette"></i></span>
+                                Brand Design
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-print"></i></span>
+                                Print Production
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-business-time"></i></span>
+                                Business Management
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="experience-item">
                 <div class="experience-header">
-                    <div class="experience-title">
-                        <h3><i class="fas fa-cogs"></i> Process Engineer</h3>
-                        <h4><i class="fas fa-flask"></i> Private R&D Facility, St. Louis, MO</h4>
-                        <div class="experience-badges">
-                            <span class="exp-badge badge-tech"><i class="fas fa-microchip"></i> IoT</span>
-                            <span class="exp-badge badge-hybrid"><i class="fas fa-building"></i> Hybrid</span>
-                            <span class="exp-badge badge-nda"><i class="fas fa-user-secret"></i> NDA</span>
-                        </div>
-                    </div>
-                    <div class="timeline-date">
-                        <i class="far fa-calendar-alt me-2 opacity-50"></i> 2022 – 2024
+                    <div class="time-period">2022 – 2024</div>
+                    <h3 class="role-title">Lead Process Engineer</h3>
+                    <p class="company-info">Private R&D Facility, St. Louis, MO</p>
+                    <div class="experience-badges">
+                        <span class="badge">IoT Systems</span>
+                        <span class="badge">Hybrid</span>
+                        <span class="badge">Confidential</span>
                     </div>
                 </div>
 
                 <div class="experience-content">
-                    <ul>
-                        <li><i class="fas fa-project-diagram"></i> Lead engineer of an IoT crystallization incubator concept for lab-scale production</li>
-                        <li><i class="fas fa-chart-line"></i> Reverse engineered freeze-drying systems and developed optimized batch recipes, increasing efficiency by ~50% and reducing processing times from 8+ hours to ~4.5 hours</li>
-                        <li><i class="fas fa-thermometer-half"></i> Developed a reliable IoT thermometer using NTC thermistors and Raspberry Pi for precise lab monitoring</li>
-                        <li><i class="fas fa-tools"></i> Developed a calculator for decarboxylation reactions + measuring their rate of change using gravimetrics.</li>
+                    <ul class="achievements-list">
+                        <li class="achievement">
+                            <i class="fas fa-project-diagram"></i>
+                            Led development of IoT crystallization incubator from concept to prototype, coordinating cross-functional teams for lab-scale production systems
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-chart-line"></i>
+                            Achieved 50% efficiency improvement by reverse-engineering freeze-drying systems and optimizing batch processes, reducing cycle times from 8+ hours to 4.5 hours
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-thermometer-half"></i>
+                            Engineered precision IoT monitoring system using NTC thermistors and Raspberry Pi for critical laboratory temperature control
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-calculator"></i>
+                            Developed specialized analytical tools for decarboxylation kinetics and gravimetric analysis, improving research workflow efficiency
+                        </li>
                     </ul>
-                </div>
 
-                <div class="experience-footer">
-                    <span class="skill-tag"><i class="fab fa-raspberry-pi"></i> Raspberry Pi</span>
-                    <span class="skill-tag"><i class="fas fa-microchip"></i> IoT</span>
-                    <span class="skill-tag"><i class="fas fa-code"></i> Python</span>
-                    <span class="skill-tag"><i class="fas fa-vial"></i> R&D</span>
-                    <span class="skill-tag"><i class="fas fa-spinner"></i> Process Optimization</span>
+                    <div class="skills-section">
+                        <div class="skills-title">Technical Stack</div>
+                        <div class="skills-grid">
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fab fa-raspberry-pi"></i></span>
+                                Raspberry Pi
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-microchip"></i></span>
+                                IoT Development
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fab fa-python"></i></span>
+                                Python
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-vial"></i></span>
+                                R&D Engineering
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-cogs"></i></span>
+                                Process Optimization
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-project-diagram"></i></span>
+                                Systems Integration
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="experience-item">
                 <div class="experience-header">
-                    <div class="experience-title">
-                        <h3><i class="fas fa-users"></i> Moderator</h3>
-                        <h4><i class="fas fa-graduation-cap"></i> Engineering Minds Study Group</h4>
-                        <div class="experience-badges">
-                            <span class="exp-badge badge-tech"><i class="fas fa-atom"></i> STEM</span>
-                            <span class="exp-badge badge-remote"><i class="fas fa-wifi"></i> Remote</span>
-                        </div>
-                    </div>
-                    <div class="timeline-date">
-                        <i class="far fa-calendar-alt me-2 opacity-50"></i> January 2025 – Present
+                    <div class="time-period">Jan 2025 – Present</div>
+                    <h3 class="role-title">Community Moderator & Mentor</h3>
+                    <p class="company-info">Engineering Minds Study Group</p>
+                    <div class="experience-badges">
+                        <span class="badge">STEM Education</span>
+                        <span class="badge">Remote</span>
                     </div>
                 </div>
 
                 <div class="experience-content">
-                    <ul>
-                        <li><i class="fas fa-share-alt"></i> Share real-world examples and practical study resources to help members succeed</li>
-                        <li><i class="fas fa-users-cog"></i> Foster a positive, collaborative environment for academic growth</li>
-                        <li><i class="fas fa-chalkboard-teacher"></i> Assist students in understanding coursework and applying concepts beyond the classroom</li>
+                    <ul class="achievements-list">
+                        <li class="achievement">
+                            <i class="fas fa-share-alt"></i>
+                            Curated comprehensive learning resources and real-world engineering case studies, directly improving member academic performance and industry readiness
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-users-cog"></i>
+                            Built and managed thriving 200+ member STEM community focused on collaborative learning and academic excellence
+                        </li>
+                        <li class="achievement">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            Mentored emerging engineers in translating theoretical coursework into practical applications, bridging academic-industry knowledge gaps
+                        </li>
                     </ul>
-                </div>
 
-                <div class="experience-footer">
-                    <span class="skill-tag"><i class="fas fa-users"></i> 200+ Members</span>
-                    <span class="skill-tag"><i class="fas fa-book"></i> Education</span>
-                    <span class="skill-tag"><i class="fas fa-atom"></i> STEM</span>
-                    <span class="skill-tag"><i class="fas fa-lightbulb"></i> Mentoring</span>
+                    <div class="skills-section">
+                        <div class="skills-title">Leadership Skills</div>
+                        <div class="skills-grid">
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-users"></i></span>
+                                Community Leadership
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-atom"></i></span>
+                                STEM Expertise
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-lightbulb"></i></span>
+                                Mentoring
+                            </div>
+                            <div class="skill-chip">
+                                <span class="icon-wrapper"><i class="fas fa-comments"></i></span>
+                                Communication
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
-
 </body>
 </html>

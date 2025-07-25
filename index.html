@@ -762,8 +762,8 @@
                 rings.rotation.y = earthSpin * 0.7 + Math.cos(t * 0.6) * 0.03;
                 rings.rotation.z = Math.min(0, Math.sin(t * 0.5) * 0.02);
 
-               // {#console.log(`Sphere Rotation: X=${sphere.rotation.x.toFixed(4)}, Y=${sphere.rotation.y.toFixed(4)}, Z=${sphere.rotation.z.toFixed(4)}`);#}
-                //{#        console.log(`Rings Rotation: X=${rings.rotation.x.toFixed(4)}, Y=${rings.rotation.y.toFixed(4)}, Z=${rings.rotation.z.toFixed(4)}`);#}
+                // {#console.log(`Sphere Rotation: X=${sphere.rotation.x.toFixed(4)}, Y=${sphere.rotation.y.toFixed(4)}, Z=${sphere.rotation.z.toFixed(4)}`);#}
+                // {#        console.log(`Rings Rotation: X=${rings.rotation.x.toFixed(4)}, Y=${rings.rotation.y.toFixed(4)}, Z=${rings.rotation.z.toFixed(4)}`);#}
 
                 renderer.render(scene, camera);
             }
@@ -1030,7 +1030,7 @@
         </div>
         <p class="hero-description">
             <i class="fas fa-magic me-2"></i> Let me turn your complex ideas into <span style="color:#8B5CF6;font-weight:600;">elegant solutions</span> you can rely on.<br>
-            <i class="fas fa-brain me-2"></i> Autodidactic engineer—driven by curiosity, I master new technologies and craft inventive solutions from concept to the production-line.
+            <i class="fas fa-brain me-2"></i> Autodidactic engineering—driven by curiosity, I master new technologies and craft inventive solutions from concept to the production-line.
         </p>
         <div class="hero-buttons">
             <a href="#contact" class="btn btn-glow">
@@ -1208,7 +1208,7 @@
 
 </script>
 
-<!-- Material Design Work Experience Section -->
+<!-- Enhanced Material Design Work Experience Section -->
 <style>
     :root {
         --bg-primary: #2D1B4E;
@@ -1225,141 +1225,310 @@
         background: var(--bg-primary);
         padding: 120px 0;
         position: relative;
+        overflow-x: hidden;
     }
 
+    /* Decorative background elements */
     #experience::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
+        height: 6px;
+        background: linear-gradient(90deg, var(--purple-primary), var(--purple-light), var(--purple-primary));
+        animation: pulseGlow 3s ease-in-out infinite alternate;
+    }
+
+    #experience::after {
+        content: '';
+        position: absolute;
+        top: 60px;
+        right: -100px;
+        width: 300px;
+        height: 300px;
         background: var(--purple-primary);
+        opacity: 0.03;
+        transform: rotate(45deg);
+        border-radius: 8px;
+    }
+
+    /* Floating decorative elements */
+    .bg-decoration {
+        position: absolute;
+        background: var(--purple-light);
+        opacity: 0.05;
+        pointer-events: none;
+        border-radius: 6px;
+    }
+
+    .bg-decoration:nth-child(1) {
+        top: 20%;
+        left: -50px;
+        width: 150px;
+        height: 150px;
+        transform: rotate(30deg);
+        animation: float 8s ease-in-out infinite;
+    }
+
+    .bg-decoration:nth-child(2) {
+        bottom: 30%;
+        right: -80px;
+        width: 200px;
+        height: 100px;
+        transform: rotate(-20deg);
+        animation: float 6s ease-in-out infinite reverse;
     }
 
     .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 24px;
+        position: relative;
+        z-index: 2;
     }
 
     #experience h2 {
-        font-size: 48px;
+        font-size: clamp(36px, 5vw, 48px);
         font-weight: 300;
         color: var(--white);
         text-align: center;
         margin: 0 0 96px 0;
         letter-spacing: -0.5px;
+        position: relative;
+    }
+
+    #experience h2::before {
+        content: '\f1b2';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 32px;
+        color: var(--purple-primary);
+        animation: bounce 2s ease-in-out infinite;
+    }
+
+    #experience h2::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--purple-primary), transparent);
     }
 
     .experience-timeline {
         position: relative;
-        padding-left: 80px;
+        padding-left: clamp(60px, 8vw, 80px);
     }
 
     .experience-timeline::before {
         content: '';
         position: absolute;
-        left: 24px;
+        left: 19px;
         top: 0;
         bottom: 0;
-        width: 2px;
-        background: var(--purple-primary);
+        width: 3px;
+        background: linear-gradient(180deg, var(--purple-primary), var(--purple-light), var(--purple-primary));
+        box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
     }
+
+    /* Timeline decorative dots */
+    .timeline-dot {
+        position: absolute;
+        left: 12px;
+        width: 16px;
+        height: 16px;
+        background: var(--purple-primary);
+        border: 3px solid var(--bg-primary);
+        transform: rotate(45deg);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .timeline-dot:nth-child(1) { top: 80px; animation-delay: 0s; }
+    .timeline-dot:nth-child(2) { top: 600px; animation-delay: 0.5s; }
+    .timeline-dot:nth-child(3) { top: 1200px; animation-delay: 1s; }
 
     .experience-item {
         position: relative;
-        margin-bottom: 96px;
+        margin-bottom: clamp(60px, 8vw, 96px);
         background: var(--bg-secondary);
         box-shadow:
-                0 8px 16px rgba(0, 0, 0, 0.2),
-                0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+                0 12px 24px rgba(0, 0, 0, 0.25),
+                0 4px 8px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+        border-left: 4px solid var(--purple-primary);
+        border-radius: 8px;
+        overflow: hidden;
     }
 
     .experience-item:hover {
         box-shadow:
-                0 16px 32px rgba(0, 0, 0, 0.3),
-                0 8px 16px rgba(0, 0, 0, 0.15);
-        transform: translateY(-4px);
+                0 20px 40px rgba(0, 0, 0, 0.35),
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        transform: translateY(-6px);
+        border-left-width: 6px;
     }
 
-    .experience-item::before {
+
+
+    /* Decorative corner elements */
+    .experience-item::after {
         content: '';
         position: absolute;
-        left: -68px;
-        top: 32px;
-        width: 16px;
-        height: 16px;
+        top: 0;
+        right: 0;
+        width: 60px;
+        height: 60px;
         background: var(--purple-primary);
-        transform: rotate(45deg);
+        opacity: 0.1;
+        clip-path: polygon(100% 0, 0 0, 100% 100%);
     }
 
     .experience-header {
-        background: var(--purple-primary);
-        padding: 32px;
+        background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+        padding: clamp(24px, 4vw, 32px);
         position: relative;
+        overflow: hidden;
     }
 
-    .experience-header::after {
+    .experience-header::before {
         content: '';
         position: absolute;
-        bottom: -12px;
-        left: 32px;
-        right: 32px;
-        height: 12px;
-        background: var(--purple-primary);
-        clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        transform: rotate(45deg);
     }
 
+
+
+
     .role-title {
-        font-size: 32px;
+        font-size: clamp(24px, 4vw, 32px);
         font-weight: 400;
         color: var(--white);
         margin: 0 0 8px 0;
         letter-spacing: -0.25px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .role-title::before {
+        content: '\f0b1';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 12px;
+        color: rgba(255, 255, 255, 0.9);
     }
 
     .company-info {
-        font-size: 18px;
+        font-size: clamp(16px, 2.5vw, 18px);
         color: var(--white-87);
         margin: 0 0 24px 0;
         font-weight: 300;
+        position: relative;
+        z-index: 2;
+    }
+
+    .company-info::before {
+        content: '\f1ad';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 8px;
+        color: rgba(255, 255, 255, 0.7);
     }
 
     .time-period {
         position: absolute;
-        top: 32px;
-        right: 32px;
-        background: rgba(255, 255, 255, 0.15);
-        padding: 8px 16px;
-        font-size: 14px;
+        top: clamp(24px, 4vw, 32px);
+        right: clamp(24px, 4vw, 32px);
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 10px 16px;
+        font-size: clamp(12px, 2vw, 14px);
         color: var(--white);
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 1px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        z-index: 2;
+    }
+
+    .time-period::before {
+        content: '\f017';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 8px;
     }
 
     .experience-badges {
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
+        position: relative;
+        z-index: 2;
     }
 
     .badge {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
         color: var(--white);
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 8px 14px;
+        font-size: clamp(10px, 1.5vw, 12px);
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+        transition: all 0.2s ease;
     }
 
-    .experience-content {
-        padding: 48px 32px 32px 32px;
+    .badge:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
     }
+
+    .badge:nth-child(1)::before { content: '\f3ed'; font-family: 'Font Awesome 5 Free'; font-weight: 900; margin-right: 6px; }
+    .badge:nth-child(2)::before { content: '\f0c0'; font-family: 'Font Awesome 5 Free'; font-weight: 900; margin-right: 6px; }
+    .badge:nth-child(3)::before { content: '\f121'; font-family: 'Font Awesome 5 Free'; font-weight: 900; margin-right: 6px; }
+
+    .experience-content {
+        padding: clamp(32px, 5vw, 48px) clamp(16px, 4vw, 32px) clamp(24px, 4vw, 32px);
+        position: relative;
+    }
+
+
+    .experience-content::before {
+        content: '';
+        position: absolute;
+        height: 20px;
+        clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
+    }
+
+    .experience-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 15px;
+        right: 15px;
+        background: linear-gradient(90deg, var(--purple-primary), transparent, var(--purple-primary));
+        opacity: 0.8;
+    }
+
+
+
 
     .achievements-list {
         list-style: none;
@@ -1369,12 +1538,12 @@
 
     .achievement {
         position: relative;
-        padding: 20px 0 20px 64px;
+        padding: clamp(16px, 3vw, 20px) 0 clamp(16px, 3vw, 20px) clamp(48px, 8vw, 64px);
         color: var(--white-87);
-        font-size: 16px;
+        font-size: clamp(14px, 2.2vw, 16px);
         line-height: 1.6;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
     }
 
     .achievement:last-child {
@@ -1385,65 +1554,97 @@
         content: '';
         position: absolute;
         left: 0;
-        top: 28px;
-        width: 32px;
-        height: 32px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: clamp(28px, 4vw, 32px);
+        height: clamp(28px, 4vw, 32px);
         background: var(--purple-primary);
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        border: 2px solid var(--bg-secondary);
     }
 
     .achievement i {
         position: absolute;
-        left: 8px;
-        top: 36px;
+        left: clamp(6px, 1vw, 8px);
+        top: 50%;
+        transform: translateY(-50%);
         color: var(--white);
-        font-size: 16px;
+        font-size: clamp(12px, 2vw, 16px);
         z-index: 1;
     }
 
     .achievement:hover {
         color: var(--white);
         transform: translateX(8px);
+        padding-left: clamp(56px, 10vw, 72px);
     }
 
     .achievement:hover::before {
         background: var(--purple-light);
+        box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
+        transform: translateY(-50%) scale(1.1);
     }
 
     .skills-section {
-        margin-top: 32px;
-        padding-top: 32px;
+        margin-top: clamp(24px, 4vw, 32px);
+        padding-top: clamp(24px, 4vw, 32px);
         border-top: 2px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+    }
+
+    .skills-section::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 80px;
+        height: 2px;
+        background: var(--purple-primary);
     }
 
     .skills-title {
-        font-size: 14px;
+        font-size: clamp(12px, 2vw, 14px);
         color: var(--white-60);
         text-transform: uppercase;
         letter-spacing: 1px;
         margin-bottom: 16px;
         font-weight: 500;
+        position: relative;
+        padding-left: 24px;
+    }
+
+    .skills-title::before {
+        content: '\f013';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        color: var(--purple-primary);
     }
 
     .skills-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(clamp(100px, 20vw, 120px), 1fr));
+        gap: clamp(12px, 2vw, 16px);
     }
 
     .skill-chip {
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 12px 16px;
+        padding: clamp(10px, 2vw, 12px) clamp(12px, 2.5vw, 16px);
         text-align: center;
         color: var(--white-87);
-        font-size: 14px;
+        font-size: clamp(12px, 1.8vw, 14px);
         font-weight: 400;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
+        border-radius: 6px;
+        backdrop-filter: blur(5px);
     }
 
     .skill-chip::before {
@@ -1453,15 +1654,16 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: var(--purple-primary);
-        transition: all 0.3s ease;
+        background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
+        transition: all 0.4s ease;
         z-index: -1;
     }
 
     .skill-chip:hover {
         color: var(--white);
         border-color: var(--purple-primary);
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
     }
 
     .skill-chip:hover::before {
@@ -1471,24 +1673,11 @@
     .icon-wrapper {
         display: inline-block;
         margin-right: 8px;
-        font-size: 16px;
+        font-size: clamp(14px, 2vw, 16px);
     }
 
-    /* Specific role styling */
-    .experience-item:nth-child(1) .experience-header {
-        background: var(--purple-primary);
-    }
-
-    .experience-item:nth-child(2) .experience-header {
-        background: var(--purple-light);
-    }
-
-    .experience-item:nth-child(3) .experience-header {
-        background: var(--purple-primary);
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
+    /* Enhanced mobile responsiveness */
+    @media (max-width: 978px) {
         #experience {
             padding: 80px 0;
         }
@@ -1497,50 +1686,31 @@
             padding: 0 16px;
         }
 
-        #experience h2 {
-            font-size: 36px;
-            margin-bottom: 64px;
-        }
-
         .experience-timeline {
-            padding-left: 40px;
+            padding-left: 50px;
         }
 
         .experience-timeline::before {
             left: 16px;
+            width: 2px;
         }
 
         .experience-item::before {
             left: 8px;
-            width: 12px;
-            height: 12px;
-        }
-
-        .experience-header {
-            padding: 24px 16px;
-        }
-
-        .experience-header::after {
-            left: 16px;
-            right: 16px;
-        }
-
-        .role-title {
-            font-size: 24px;
+            width: 16px;
+            height: 16px;
         }
 
         .time-period {
             position: static;
-            margin-top: 16px;
+            margin-bottom: 15px;
             display: inline-block;
-        }
-
-        .experience-content {
-            padding: 32px 16px 24px 16px;
+            right: auto;
+            top: auto;
         }
 
         .achievement {
-            padding-left: 48px;
+            padding-left: 40px;
         }
 
         .achievement::before {
@@ -1548,23 +1718,93 @@
             height: 24px;
         }
 
-        .achievement i {
-            left: 4px;
-            top: 32px;
-            font-size: 14px;
+        .achievement:hover {
+            padding-left: 48px;
+        }
+
+        .timeline-dot {
+            left: 9px;
+            width: 12px;
+            height: 12px;
+        }
+
+        .bg-decoration {
+            display: none;
         }
     }
 
-    /* Animation for entrance */
+    @media (max-width: 480px) {
+        .experience-timeline {
+            padding-left: 40px;
+        }
+
+        .experience-timeline::before {
+            left: 12px;
+        }
+
+        .experience-item::before {
+            left: 4px;
+            width: 14px;
+            height: 14px;
+        }
+
+        .timeline-dot {
+            left: 6px;
+            width: 10px;
+            height: 10px;
+        }
+
+        .experience-badges {
+            gap: 8px;
+        }
+
+        .achievement {
+            padding-left: 36px;
+        }
+
+        .achievement::before {
+            width: 20px;
+            height: 20px;
+        }
+
+        .skills-grid {
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 10px;
+        }
+    }
+
+    /* Animations */
+    @keyframes pulseGlow {
+        0% { opacity: 0.8; }
+        100% { opacity: 1; }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(30deg); }
+        50% { transform: translateY(-20px) rotate(30deg); }
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+        40% { transform: translateX(-50%) translateY(-10px); }
+        60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+        50% { box-shadow: 0 0 25px rgba(139, 92, 246, 0.8); }
+        100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
+    }
+
     .experience-item {
         opacity: 0;
         transform: translateY(40px);
-        animation: slideInUp 0.6s ease forwards;
+        animation: slideInUp 0.8s ease forwards;
     }
 
-    .experience-item:nth-child(1) { animation-delay: 0.1s; }
-    .experience-item:nth-child(2) { animation-delay: 0.2s; }
-    .experience-item:nth-child(3) { animation-delay: 0.3s; }
+    .experience-item:nth-child(1) { animation-delay: 0.2s; }
+    .experience-item:nth-child(2) { animation-delay: 0.4s; }
+    .experience-item:nth-child(3) { animation-delay: 0.6s; }
 
     @keyframes slideInUp {
         to {
@@ -1574,12 +1814,18 @@
     }
 </style>
 
-<!-- Material Design Work Experience Section -->
+<!-- Enhanced Material Design Work Experience Section -->
 <section id="experience">
+    <div class="bg-decoration"></div>
+    <div class="bg-decoration"></div>
+
     <div class="container">
         <h2>Professional Experience</h2>
 
         <div class="experience-timeline">
+            <div class="timeline-dot"></div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-dot"></div>
 
             <div class="experience-item">
                 <div class="experience-header">
@@ -1594,24 +1840,44 @@
                 </div>
 
                 <div class="experience-content">
-                    <ul class="achievements-list">
-                        <li class="achievement">
-                            <i class="fas fa-rocket"></i>
-                            Founded and scaled profitable freelance business immediately after high school, establishing consistent revenue streams through strategic client acquisition and exceptional service delivery
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-trophy"></i>
-                            Executed 112+ successful projects across brand identity, product packaging, digital marketing, and full-stack web applications for diverse client portfolio
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-industry"></i>
-                            Managed hybrid printing operations (Feb 2022 – Mar 2023), coordinating production workflows, quality assurance, and vendor relationships
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-tools"></i>
-                            Developed expertise across 25+ professional tools including Adobe Creative Suite, development frameworks, and embedded systems
-                        </li>
-                    </ul>
+                    <!-- Tab Switcher -->
+                    <div class="tab-switcher">
+                        <button class="tab-button active" data-tab="achievements-1">Achievements</button>
+                        <button class="tab-button" data-tab="summary-1">Summary</button>
+                    </div>
+
+                    <!-- Achievements Content -->
+                    <div class="tab-content active" id="achievements-1">
+                        <ul class="achievements-list">
+                            <li class="achievement">
+                                <i class="fas fa-rocket"></i>
+                                Founded and scaled profitable freelance business immediately after high school, establishing consistent revenue streams through strategic client acquisition and exceptional service delivery
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-trophy"></i>
+                                Executed 112+ successful projects across brand identity, product packaging, digital marketing, and full-stack web applications for diverse client portfolio
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-industry"></i>
+                                Managed hybrid printing operations (Feb 2022 – Mar 2023), coordinating production workflows, quality assurance, and vendor relationships
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-tools"></i>
+                                Developed expertise across 25+ professional tools including Adobe Creative Suite, development frameworks, and embedded systems
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Summary Content -->
+                    <div class="tab-content" id="summary-1">
+                        <p style="color: var(--white-87); font-size: clamp(14px, 2.2vw, 16px); line-height: 1.6;">
+                            Fresh out of high school, I channeled a lifelong passion for design into TheDabCorner™ LLC, a business I built from the ground up with my own hands and heart. It began as a spark in my school’s graphic design program, but it’s a journey I’ve never taken alone. Every project is a close collaboration, a partnership where I join forces with my clients to bring their vision to life.<br><br>
+                            Growing up, I was the kid obsessed with crafting YouTube graphics and custom desktop backgrounds in Photoshop and Illustrator. That early fascination led me to spend hours in the school computer lab, learning side-by-side with the Art Teachers & Systems Advisors, absorbing the nuances of networks and IT that still inform my problem-solving today.<br><br>
+                            I began my career immersed in branding and packaging, creating designs that told a story you could hold. While I still have a deep love for that tangible work, my passion has increasingly guided me toward web design and engineering. There’s an incredible energy in building digital experiences that have a larger, more direct impact on people. Call me crazy, but my goal is to build things that genuinely change a user's world for the better.<br><br>
+                            TheDabCorner is me in a nutshell: a dab of this and a dab of that. This multidisciplinary approach is my greatest strength. I bring mastery of Adobe Illustrator and UI/UX to every project, but my skills run much deeper. I am fluent in the language of computer science, a passion that has led me from building custom gaming computers for friends to engineering my entire digital ecosystem. From the ground up, I architected and built my own home network, complete with security systems and a powerful homelab server. This server isn't a hobby; it’s the backbone of my operation, hosting my portfolio, client sites, and acting as my personal NAS. My innate ability to master new software allows me to adapt to any challenge, and I even develop my own tools to keep our workflow perfectly efficient.<br><br>
+                            As a solo operator, I’m your direct line: the designer, the developer, and the strategist, all in one. This structure removes the friction of big agencies and allows us to work together seamlessly. My whole business is built around one core mission: **to turn your complex ideas into elegant, reliable solutions.** This isn’t just my job; it’s my craft, and I pour my heart into every partnership.
+                        </p>
+                    </div>
 
                     <div class="skills-section">
                         <div class="skills-title">Core Technologies</div>
@@ -1647,35 +1913,57 @@
 
             <div class="experience-item">
                 <div class="experience-header">
-                    <div class="time-period">2022 – 2024</div>
-                    <h3 class="role-title">Lead Process Engineer</h3>
-                    <p class="company-info">Private R&D Facility, St. Louis, MO</p>
+                    <div class="time-period">May 2022 – 2024</div>
+                    <h3 class="role-title">Process Engineering Lead</h3>
+                    <p class="company-info">Carboxyl R&D Group</p>
                     <div class="experience-badges">
                         <span class="badge">IoT Systems</span>
                         <span class="badge">Hybrid</span>
-                        <span class="badge">Confidential</span>
+                        <span class="badge">Confidential &mdash; N.D.A</span>
                     </div>
                 </div>
 
                 <div class="experience-content">
-                    <ul class="achievements-list">
-                        <li class="achievement">
-                            <i class="fas fa-project-diagram"></i>
-                            Led development of IoT crystallization incubator from concept to prototype, coordinating cross-functional teams for lab-scale production systems
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-chart-line"></i>
-                            Achieved 50% efficiency improvement by reverse-engineering freeze-drying systems and optimizing batch processes, reducing cycle times from 8+ hours to 4.5 hours
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-thermometer-half"></i>
-                            Engineered precision IoT monitoring system using NTC thermistors and Raspberry Pi for critical laboratory temperature control
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-calculator"></i>
-                            Developed specialized analytical tools for decarboxylation kinetics and gravimetric analysis, improving research workflow efficiency
-                        </li>
-                    </ul>
+                    <!-- Tab Switcher -->
+                    <div class="tab-switcher">
+                        <button class="tab-button active" data-tab="achievements-2">Achievements</button>
+                        <button class="tab-button" data-tab="summary-2">Summary</button>
+                    </div>
+
+                    <!-- Achievements Content -->
+                    <div class="tab-content active" id="achievements-2">
+                        <ul class="achievements-list">
+                            <li class="achievement">
+                                <i class="fas fa-project-diagram"></i>
+                                Led development of IoT crystallization incubator from concept to prototype, coordinating cross-functional teams for lab-scale production systems
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-chart-line"></i>
+                                Achieved 50% efficiency improvement by reverse-engineering freeze-drying systems and optimizing batch processes, reducing cycle times from 8+ hours to 4.5 hours
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-thermometer-half"></i>
+                                Engineered precision IoT monitoring system using NTC thermistors and Raspberry Pi for critical laboratory temperature control
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-calculator"></i>
+                                Developed specialized analytical tools for decarboxylation kinetics and gravimetric analysis, improving research workflow efficiency
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Summary Content -->
+                    <div class="tab-content" id="summary-2">
+                        <p style="color: var(--white-87); font-size: clamp(14px, 2.2vw, 16px); line-height: 1.6;">
+                            I’ve always had an innate passion for chemistry. In first grade, while other kids wanted to be firefighters or police officers, I wanted to be a pyrotechnician. Fireworks were magic to me, and I longed to know how to replicate their beauty. My favorite subject was always "Science!" because I loved the idea of mixing concoctions that would glow, a phenomenon I now know as chemiluminescence. This childhood drive eventually led me to a unique opportunity as a Lead Process Engineering Consultant at a private R&D facility.<br><br>
+                            While a designer and a process engineer might seem worlds apart, my journey into this role was a natural evolution of my multidisciplinary skills. This wasn't a sudden leap; it was the convergence of parallel passions. Throughout high school and alongside my design work, I was always tinkering, using Raspberry Pis to learn low-voltage control systems and explore systmes engineering on breadboards. It began with a commission through TheDabCorner to design an IoT dashboard for a new piece of lab equipment. During a project meeting, however, the conversation shifted from the user interface to the device’s internal logic. Drawing on my self-taught background in computer science and electronics, I offered recommendations on their control theory and system architecture, identifying process bottlenecks that went far beyond the screen. That conversation changed everything; my initial design contract quickly evolved into a lead engineering position where I was tasked with solving their most complex process challenges.<br><br>
+                            My proudest achievement there was tackling a critical inefficiency in the lab's lyophilization systems. The standard freeze-drying cycles took over 8 hours, a major bottleneck. I led an initiative to reverse-engineer the commercial systems, designing a new control architecture around a Raspberry Pi. Applying core principles of thermodynamics, enthalpies of phase change, and mass-transfer dynamics, I developed a custom lyophilization algorithm that optimized the process far beyond the capabilities of a standard PID control-loop.<br><br>
+                            <span style="font-style: italic; color: var(--white-60);">[REDACTED: Specific details of the algorithm and system modifications have been withheld due to NDA restrictions.]</span><br><br>
+                            This new process resulted in a nearly 50% efficiency improvement, slashing cycle times to just 4.5 hours. The overhaul also included a custom IoT dashboard I engineered for real-time monitoring and stagewise recipe development, a feature the original machine completely lacked.<br><br>
+                            Beyond that flagship project, my responsibilities spanned the full R&D lifecycle. For example, when the lab needed a quite literal 'cold-room' on a tight budget, I engineered a solution by modifying an 18,000 BTU mini-split. By "tricking" the OEM mainboard with polyamide heaters and my own digital temperature sensors, I pushed the unit to operate between 35-45°F, well below its 65°F factory limit. I implemented custom runtime limits to prevent coil freeze-up and preserve the compressor's lifespan, creating a rudimentary but effective system that saved numerous research endeavors. I also led the development of an IoT crystallization incubator from concept to prototype and engineered a novel crystallization procedure for a patented organic compound. To support this work, I built precision IoT monitoring systems with NTC thermistors and developed specialized analytical tools for gravimetric analysis and measuring decarboxylation kinetics. Through this work, I built expertise in lab operations, data science, and process optimization.
+                            For me, the ultimate application of that childhood passion wasn't just in the final charts; it was in the process itself: the deep collaboration with fellow scientists, the challenge of designing experiments based on new research, and the shared thrill of watching our work lead to genuine breakthroughs.                        <br/><br/><span style="font-style: italic; opacity: 0.5">- This content was reviewed & modified by the Carboxyl&trade; Legal Team.</span>
+                        </p>
+                    </div>
 
                     <div class="skills-section">
                         <div class="skills-title">Technical Stack</div>
@@ -1712,8 +2000,8 @@
             <div class="experience-item">
                 <div class="experience-header">
                     <div class="time-period">Jan 2025 – Present</div>
-                    <h3 class="role-title">Community Moderator & Mentor</h3>
-                    <p class="company-info">Engineering Minds Study Group</p>
+                    <h3 class="role-title">Technical Mentor & Community Moderator</h3>
+                    <p class="company-info">Engineering Minds by Dr. Andrew Sanchez&mdash;Ph.D.</p>
                     <div class="experience-badges">
                         <span class="badge">STEM Education</span>
                         <span class="badge">Remote</span>
@@ -1721,20 +2009,38 @@
                 </div>
 
                 <div class="experience-content">
-                    <ul class="achievements-list">
-                        <li class="achievement">
-                            <i class="fas fa-share-alt"></i>
-                            Curated comprehensive learning resources and real-world engineering case studies, directly improving member academic performance and industry readiness
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-users-cog"></i>
-                            Built and managed thriving 200+ member STEM community focused on collaborative learning and academic excellence
-                        </li>
-                        <li class="achievement">
-                            <i class="fas fa-chalkboard-teacher"></i>
-                            Mentored emerging engineers in translating theoretical coursework into practical applications, bridging academic-industry knowledge gaps
-                        </li>
-                    </ul>
+                    <!-- Tab Switcher -->
+                    <div class="tab-switcher">
+                        <button class="tab-button active" data-tab="achievements-3">Achievements</button>
+                        <button class="tab-button" data-tab="summary-3">Summary</button>
+                    </div>
+
+                    <!-- Achievements Content -->
+                    <div class="tab-content active" id="achievements-3">
+                        <ul class="achievements-list">
+                            <li class="achievement">
+                                <i class="fas fa-share-alt"></i>
+                                Curated comprehensive learning resources and real-world engineering case studies, directly improving member academic performance and industry readiness
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-users-cog"></i>
+                                Building and managing a thriving 200+ member STEM community focused on collaborative learning and academic excellence
+                            </li>
+                            <li class="achievement">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Mentored emerging engineers in translating theoretical coursework into practical applications, bridging academic-industry knowledge gaps
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Summary Content -->
+                    <div class="tab-content" id="summary-3">
+                        <p style="color: var(--white-87); font-size: clamp(14px, 2.2vw, 16px); line-height: 1.6;">
+                            My involvement with Engineering Minds began quite organically, born from my own research into freeze-drying during my time serving as a Process Engineering Lead. A query to the group's founder, Dr. Andrew Sanchez&mdash;Ph.D., introduced me not just to a different approach to my research, but to a thriving community of over 200 passionate engineers dedicated to collaborative growth. Inspired by their drive and reflecting on my own non-traditional path into engineering, I felt compelled to contribute.
+                            <br/><br/>
+                            As a mentor, I focus on bridging the critical gap between academic theory and real-world industry application. I actively guide emerging engineers through complex problems in math, physics, and chemical engineering, translating textbook concepts into practical, actionable knowledge. This involves developing and curating comprehensive learning resources; from passing along real-world case studies to detailed problem-solving guides & contributing in live sessions to foster a dynamic, supportive learning environment. My goal is not just to help students find the right answer, but to cultivate the critical thinking and confidence they need to solve the next problem.
+                        </p>
+                    </div>
 
                     <div class="skills-section">
                         <div class="skills-title">Leadership Skills</div>
@@ -1763,5 +2069,126 @@
         </div>
     </div>
 </section>
+
+<style>
+    .tab-switcher {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 22px;
+        background: rgba(139,92,246,0.10);
+        border-radius: 10px 10px 0 0;
+        padding: 2px 6px 0 6px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 2px 12px rgba(139,92,246,0.08);
+        position: relative;
+    }
+
+    .tab-button {
+        background: rgba(255,255,255,0.10);
+        color: var(--white-60);
+        border: none;
+        border-radius: 8px 8px 0 0;
+        font-weight: 600;
+        padding: 10px 28px 10px 28px;
+        margin-bottom: 0;
+        cursor: pointer;
+        position: relative;
+        z-index: 1;
+        transition:
+                background 0.25s,
+                color 0.2s,
+                box-shadow 0.2s,
+                transform 0.18s;
+        box-shadow: 0 1.5px 6px rgba(139,92,246,0.07);
+        backdrop-filter: blur(6px);
+        outline: none;
+    }
+
+    .tab-button:not(.active):hover,
+    .tab-button:not(.active):focus {
+        background: rgba(139,92,246,0.13);
+        color: var(--purple-primary);
+        box-shadow: 0 2px 10px rgba(139,92,246,0.10);
+        transform: translateY(-2px) scale(1.03);
+    }
+
+    .tab-button.active {
+        background: linear-gradient(90deg, var(--purple-primary) 70%, var(--purple-light) 100%);
+        color: #fff;
+        box-shadow: 0 6px 24px 0 rgba(139,92,246,0.18), 0 2px 0 var(--purple-light) inset;
+        transform: scale(1.08) translateY(-2px);
+        z-index: 2;
+    }
+    .tab-button.active::after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 18%;
+        right: 18%;
+        bottom: -4px;
+        height: 4px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, var(--purple-light), var(--purple-primary));
+        box-shadow: 0 2px 8px 0 rgba(139,92,246,0.18);
+        opacity: 0.95;
+    }
+
+    .tab-content {
+        display: none;
+        animation: tabFadeIn 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes tabFadeIn {
+        from { opacity: 0; transform: translateY(16px);}
+        to { opacity: 1; transform: translateY(0);}
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.tab-switcher').forEach(function(switcher) {
+            const buttons = switcher.querySelectorAll('.tab-button');
+            buttons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    // Remove active from all buttons in this switcher
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    // Hide all tab-contents in the same .experience-content
+                    const content = switcher.closest('.experience-content');
+                    content.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+                    // Show the selected tab
+                    const tabId = btn.getAttribute('data-tab');
+                    const tab = content.querySelector('#' + tabId);
+                    if (tab) tab.classList.add('active');
+                });
+            });
+        });
+        // Initial state: show only .tab-content.active
+        document.querySelectorAll('.tab-content').forEach(tc => {
+            if (!tc.classList.contains('active')) tc.style.display = 'none';
+        });
+        document.querySelectorAll('.tab-content.active').forEach(tc => {
+            tc.style.display = 'block';
+        });
+        // Ensure switching works with display property
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const content = btn.closest('.experience-content');
+                content.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+                const tabId = btn.getAttribute('data-tab');
+                const tab = content.querySelector('#' + tabId);
+                if (tab) tab.style.display = 'block';
+            });
+        });
+    });
+</script>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
 </body>
 </html>

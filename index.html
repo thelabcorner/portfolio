@@ -9,12 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
-    <!-- CodeMirror language modes -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <style>
@@ -139,9 +139,48 @@
         }
 
 
+        /* Custom Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 22px;
+            height: 22px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 2, 23, 0.8);
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg,
+                rgba(139, 92, 246, 0.8) 0%,
+                rgba(124, 58, 237, 0.9) 100%);
+            border-radius: 6px;
+            border: 2px solid rgba(10, 2, 23, 0.8);
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg,
+                rgba(167, 139, 250, 0.9) 0%,
+                rgba(139, 92, 246, 1) 100%);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: rgba(10, 2, 23, 0.8);
+        }
+
+        /* Firefox scrollbar styling */
+        * {
+            scrollbar-color: rgba(139, 92, 246, 0.8) rgba(10, 2, 23, 0.8);
+        }
 
 
     </style>
+
+
+
+
 
 </head>
 
@@ -164,7 +203,7 @@
                     <a class="nav-link" href="#experience">Experience</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact</a>
+                    <a class="nav-link" href="#contact" data-bs-toggle="modal" data-bs-target="#contactModal">Contact</a>
                 </li>
             </ul>
         </div>
@@ -178,11 +217,18 @@
 
     .hero-container {
         position: relative;
-        width: 100vw;
+        width: 99.15vw;
         height: 100vh;
         background: #000;
         perspective: 1000px;
         overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .hero-container {
+            height: 100vh;
+            width: 100vw;
+        }
     }
 
     /* Deep space gradient */
@@ -622,69 +668,6 @@
         }
 
 
-        function addOrbitingParticles(scene) {
-            const group1 = new THREE.Group();
-            const group2 = new THREE.Group();
-
-            const createParticles = (group, count, baseRadius, radiusVariance, speedRange, reverse = false) => {
-                for (let i = 0; i < count; i++) {
-                    const radius = baseRadius + Math.random() * radiusVariance;
-                    const angle = Math.random() * Math.PI * 2;
-                    const speed = (speedRange[0] + Math.random() * (speedRange[1] - speedRange[0])) * (reverse ? -1 : 1);
-
-                    // Create a particle with random geometry
-                    const size = Math.random() * 3 + 1;
-                    const particleGeo = Math.random() > 0.5
-                        ? new THREE.IcosahedronGeometry(size, 0)
-                        : new THREE.BoxGeometry(size, size, size);
-                    const particleMat = new THREE.MeshStandardMaterial({
-                        color: new THREE.Color('hsl(270, 70%, 80%)'), // Purple color
-                        emissive: new THREE.Color('hsl(270, 70%, 50%)'), // Purple emissive
-                        emissiveIntensity: 0.5,
-                        metalness: 0.3,
-                        roughness: 0.7,
-                    });
-                    const particle = new THREE.Mesh(particleGeo, particleMat);
-
-                    // Set initial position
-                    particle.userData = { radius, angle, speed };
-                    particle.position.set(
-                        radius * Math.cos(angle),
-                        Math.random() * 50 - 25,
-                        radius * Math.sin(angle)
-                    );
-
-                    // Add rotation
-                    particle.rotationSpeed = Math.random() * 0.02;
-                    group.add(particle);
-                }
-            };
-
-            createParticles(group1, 40, 200, 60, [0.01, 0.03]);
-            createParticles(group2, 30, 300, 70, [0.005, 0.02], true);
-
-            scene.add(group1);
-            scene.add(group2);
-
-            function animateParticles() {
-                [group1, group2].forEach((group) => {
-                    group.children.forEach((particle) => {
-                        const { radius, speed } = particle.userData;
-                        particle.userData.angle += speed * 0.6;
-                        particle.position.x = radius * Math.cos(particle.userData.angle);
-                        particle.position.z = radius * Math.sin(particle.userData.angle);
-
-                        // Rotate particles
-                        particle.rotation.x += particle.rotationSpeed;
-                        particle.rotation.y += particle.rotationSpeed;
-                    });
-                });
-
-                requestAnimationFrame(animateParticles);
-            }
-
-            animateParticles();
-        }
 
         function initThreeJS() {
             const container = document.querySelector('.scene');
@@ -706,8 +689,6 @@
             // Create and add rings
             const rings = createRings();
             scene.add(rings);
-
-            // {#if (!isMobile) addOrbitingParticles(scene);#}
 
             scene.add(new THREE.AmbientLight(0x404040));
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -1030,24 +1011,24 @@
         </div>
         <p class="hero-description">
             <i class="fas fa-magic me-2"></i> Let me turn your complex ideas into <span style="color:#8B5CF6;font-weight:600;">elegant solutions</span> you can rely on.<br>
-            <i class="fas fa-brain me-2"></i> Autodidactic engineering—driven by curiosity, I master new technologies and craft inventive solutions from concept to the production-line.
+            <i class="fas fa-brain me-2"></i> Autodidactic engineering; driven by curiosity, I master new technologies and craft inventive solutions from concept to the production-line.
         </p>
         <div class="hero-buttons">
-            <a href="#contact" class="btn btn-glow">
+            <a href="#" class="btn btn-glow" data-bs-toggle="modal" data-bs-target="#contactModal">
                 <span class="btn-text"><i class="fas fa-envelope me-1"></i> Get in Touch <i class="fas fa-arrow-right ms-2"></i></span>
             </a>
-            <a href="#projects" class="btn btn-outline-glow">
+            <a href="#experience" class="btn btn-outline-glow">
                 <span class="btn-text"><i class="fas fa-eye me-1"></i> See My Work <i class="fas fa-arrow-right ms-2"></i></span>
             </a>
         </div>
         <div class="hero-stats">
             <div class="stat-item">
-                <span class="stat-number"><i class="fas fa-calendar-check"></i> >5</span>
+                <span class="stat-number stat-count"><i class="fas fa-calendar-check"></i> &gt;5</span>
                 <span class="stat-label"><i class="fas fa-user-graduate me-1"></i> Years Experience</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-                <span class="stat-number"><i class="fas fa-project-diagram"></i> 112+</span>
+                <span class="stat-number stat-count"><i class="fas fa-project-diagram"></i> 112+</span>
                 <span class="stat-label"><i class="fas fa-check-circle me-1"></i> Projects Completed</span>
             </div>
             <div class="stat-divider"></div>
@@ -1056,17 +1037,458 @@
                 <span class="remote-badge"><i class="fas fa-wifi text-white me-2"></i> Remote Ready</span>
             </div>
         </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          function animateValue(el, start, end, duration, prefix = '', suffix = '') {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+              if (!startTimestamp) startTimestamp = timestamp;
+              const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+              const value = Math.floor(progress * (end - start) + start);
+              el.innerHTML = el.dataset.icon + ' ' + prefix + value + suffix;
+              if (progress < 1) {
+                window.requestAnimationFrame(step);
+              } else {
+                el.innerHTML = el.dataset.icon + ' ' + prefix + end + suffix;
+              }
+            };
+            window.requestAnimationFrame(step);
+          }
+
+          document.querySelectorAll('.stat-count').forEach(el => {
+            const html = el.innerHTML.trim();
+            const iconMatch = html.match(/^(<i[^>]+><\/i>)/);
+            const icon = iconMatch ? iconMatch[1] : '';
+            let numText = html.replace(icon, '').trim();
+
+            let prefix = '';
+            let suffix = '';
+            if (numText.startsWith('&gt;') || numText.startsWith('>')) {
+              prefix = '>';
+              numText = numText.replace(/^(&gt;|>)/, '').trim();
+            }
+            if (numText.endsWith('+')) {
+              suffix = '+';
+              numText = numText.replace(/\+$/, '').trim();
+            }
+
+            el.dataset.icon = icon;
+            const end = parseInt(numText, 10) || 0;
+
+            // Duration formula: small numbers get more time per increment
+            // e.g., 5 -> 1200ms, 100 -> ~1800ms, 1000 -> ~3800ms
+            const duration = 800 + Math.sqrt(end) * 100;
+
+            animateValue(el, 0, end, duration, prefix, suffix);
+          });
+        });
+        </script>
     </div>
 
 </div>
 
+<!-- Bootstrap Contact Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content cosmic-modal">
+      <div class="modal-body p-0">
+        <div class="cosmic-header">
+          <div class="cosmic-bg"></div>
+          <div class="stars-container"></div>
+          <div class="planet-rings"></div>
+          <h2 class="cosmic-title">Contact Me</h2>
+          <p class="cosmic-subtitle">Let's turn ideas into reality</p>
+          <button type="button" class="btn-close cosmic-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="contact-grid">
+            <a href="mailto:admin@thedabcorner.site" class="contact-tile">
+              <div class="contact-icon email">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-label">Email</div>
+            </a>
+
+            <a href="https://t.me/thedabcorner" target="_blank" class="contact-tile">
+              <div class="contact-icon telegram">
+                <i class="fab fa-telegram-plane"></i>
+              </div>
+              <div class="contact-label">Telegram</div>
+            </a>
+
+            <a href="https://wa.me/3143052041" target="_blank" class="contact-tile">
+              <div class="contact-icon whatsapp">
+                <i class="fab fa-whatsapp"></i>
+              </div>
+              <div class="contact-label">WhatsApp</div>
+            </a>
+
+            <a href="tel:+13143052041" class="contact-tile">
+              <div class="contact-icon phone">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <div class="contact-label">Call</div>
+            </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
-    .star, .space-particle, .planet-sphere-ring {
-        will-change: transform, opacity;
-    }
+/* Cosmic Modal Styles */
+.cosmic-modal {
+  background: rgba(16, 9, 33, 0.85);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(139, 92, 246, 0.2),
+    0 0 30px 5px rgba(139, 92, 246, 0.15);
+}
 
+.cosmic-header {
+  position: relative;
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+  overflow: hidden;
+  height: 180px;
+}
+
+.cosmic-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 2, 23, 0.8) 0%, rgba(16, 9, 33, 0.95) 100%),
+    radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+  z-index: -2;
+}
+
+.stars-container {
+  opacity: 0.4;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.planet-rings {
+    position: absolute;
+    width: 200px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid rgba(139, 92, 246, 0.3);
+    top: 70px;
+    right: 30px;
+    transform: rotate(-30deg);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.planet-rings::before,
+.planet-rings::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.planet-rings::before {
+  width: 180px;
+  height: 20px;
+  top: 5px;
+  left: 10px;
+  border: 1.5px solid rgba(167, 139, 250, 0.25);
+}
+
+.planet-rings::after {
+  width: 160px;
+  height: 10px;
+  top: 10px;
+  left: 20px;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+.cosmic-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+}
+
+.cosmic-subtitle {
+  color: var(--primary-purple);
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.cosmic-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cosmic-close:hover {
+  background: var(--primary-purple);
+  transform: rotate(90deg);
+}
+
+/* Contact Grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+}
+
+.contact-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 0.6rem;
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.contact-label {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.contact-tile:hover .contact-icon {
+  background: var(--primary-purple);
+  transform: translateY(-5px);
+}
+
+.contact-tile:hover .contact-label {
+  color: var(--primary-purple);
+}
+
+.email {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.7), rgba(124, 58, 237, 0.7));
+}
+
+.github {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.7), rgba(167, 139, 250, 0.7));
+}
+
+.linkedin {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.7), rgba(139, 92, 246, 0.7));
+}
+
+.phone {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.7), rgba(139, 92, 246, 0.7));
+}
+
+/* Contact Form */
+.contact-direct {
+  background: rgba(10, 2, 23, 0.5);
+  padding: 2rem;
+  border-top: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.contact-direct h3 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.cosmic-input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.cosmic-input-group input,
+.cosmic-input-group textarea {
+  width: 100%;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  color: #fff;
+  padding: 12px 16px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.cosmic-input-group input:focus,
+.cosmic-input-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-purple);
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.input-focus-effect {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-purple);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.cosmic-input-group input:focus ~ .input-focus-effect,
+.cosmic-input-group textarea:focus ~ .input-focus-effect {
+  width: 100%;
+}
+
+.input-focus-effect.textarea {
+  bottom: 4px;
+}
+
+.cosmic-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.cosmic-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
+}
+
+.cosmic-button i {
+  margin-left: 10px;
+  transition: all 0.3s ease;
+}
+
+.cosmic-button:hover i {
+  transform: translateX(5px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .cosmic-title {
+    font-size: 2rem;
+  }
+
+  .cosmic-header {
+    height: 160px;
+  }
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize modal trigger
+  const openBtn = document.querySelector('.btn.btn-glow');
+  openBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const contactModal = new bootstrap.Modal(document.getElementById('contactModal'));
+    contactModal.show();
+  });
+
+    // Fix for modal backdrop not being removed
+    const contactModalEl = document.getElementById('contactModal');
+    contactModalEl.addEventListener('hidden.bs.modal', function() {
+        // Remove any leftover backdrop elements
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => {
+            backdrop.remove();
+        });
+        // Ensure body doesn't retain modal-open class
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('padding-right');
+    });
+
+  // Create stars in the background
+  const starsContainer = document.querySelector('.stars-container');
+  for (let i = 0; i < 50; i++) {
+    const star = document.createElement('div');
+    star.style.position = 'absolute';
+    star.style.width = `${Math.random() * 2 + 1}px`;
+    star.style.height = star.style.width;
+    star.style.backgroundColor = '#fff';
+    star.style.borderRadius = '50%';
+    star.style.top = `${Math.random() * 100}%`;
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.opacity = Math.random() * 0.7 + 0.3;
+
+    // Add twinkling animation
+    star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite ease-in-out`;
+    star.style.animationDelay = `${Math.random() * 5}s`;
+
+    starsContainer.appendChild(star);
+  }
+
+  // Add animation keyframe for twinkling stars
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Simple form handling
+  const form = document.getElementById('contactForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Here you would normally handle form submission with AJAX
+      // For now, just show a confirmation
+      alert('Thanks! Your message has been sent.');
+      form.reset();
+    });
+  }
+});
+</script>
 
 
 
@@ -1208,982 +1630,1284 @@
 
 </script>
 
-<!-- Enhanced Material Design Work Experience Section -->
+<section id="experience">
+
+    <div class="bg-grid"></div>
+    <div class="bg-dots"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+
+    <div class="experience-container">
+
+        <h2 class="section-title">Professional Experience</h2>
+
+        <!-- Experience Carousel -->
+        <div class="splide" id="experience-carousel">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <!-- Experience 1 -->
+                    <li class="splide__slide">
+                        <div class="experience-card">
+                            <div class="experience-header">
+                                <div class="role-company">
+                                    <h3><i class="fas fa-laptop-code me-2"></i>Design & Development Specialist</h3>
+                                    <p><i class="fas fa-building me-2"></i>TheDabCorner™ LLC</p>
+                                </div>
+                                <div class="period-location">
+                                    <span class="period"><i class="far fa-calendar-alt me-2"></i>Sep 2021 – Present</span>
+                                    <span class="location"><i class="fas fa-map-marker-alt me-2"></i>St. Louis, MO</span>
+                                </div>
+                                <div class="badges">
+                                    <span><i class="fas fa-home me-1"></i> Remote</span>
+                                    <span><i class="fas fa-sync-alt me-1"></i> Hybrid</span>
+                                    <span><i class="fas fa-code me-1"></i> Full-Stack</span>
+                                </div>
+                            </div>
+
+                            <div class="experience-content">
+                                <div class="content-tabs">
+                                    <button class="tab-btn active" data-target="highlights-1"><i class="fas fa-star me-1"></i> Highlights</button>
+                                    <button class="tab-btn" data-target="skills-1"><i class="fas fa-tools me-1"></i> Skills</button>
+                                    <button class="tab-btn" data-target="details-1"><i class="fas fa-info-circle me-1"></i> Details</button>
+                                </div>
+
+                                <div class="tab-content active" id="highlights-1">
+                                    <ul class="highlights-list">
+                                        <li><i class="fas fa-rocket me-2"></i> Founded profitable freelance business after high school</li>
+                                        <li><i class="fas fa-check-circle me-2"></i> Executed <span class="highlight-number" data-value="112">112</span>+ successful projects across branding, packaging &amp; web</li>
+                                        <li><i class="fas fa-print me-2"></i> Managed print production operations (2022-2023)</li>
+                                        <li><i class="fas fa-graduation-cap me-2"></i> Mastered <span class="highlight-number" data-value="25">25</span>+ professional design &amp; development tools</li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-content" id="skills-1">
+                                    <div class="skills-grid">
+                                        <span><i class="fab fa-adobe me-1"></i> Adobe Suite</span>
+                                        <span><i class="fas fa-paint-brush me-1"></i> UI/UX Design</span>
+                                        <span><i class="fas fa-code me-1"></i> Web Development</span>
+                                        <span><i class="fas fa-trademark me-1"></i> Brand Design</span>
+                                        <span><i class="fas fa-print me-1"></i> Print Production</span>
+                                        <span><i class="fas fa-chart-line me-1"></i> Business Management</span>
+                                    </div>
+                                </div>
+
+                                <div class="tab-content" id="details-1">
+                                    <p><i class="fas fa-quote-left me-2"></i>
+                                        Built TheDabCorner™ from the ground up, turning a passion for design into a thriving business.
+                                        Specialized in branding, packaging, and increasingly in web development, creating digital experiences that positively impact users.
+                                        The multidisciplinary approach combines design mastery with technical expertise.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Experience 2 -->
+                    <li class="splide__slide">
+                        <div class="experience-card">
+                            <div class="experience-header">
+                                <div class="role-company">
+                                    <h3><i class="fas fa-cogs me-2"></i>Process Engineering Lead</h3>
+                                    <p><i class="fas fa-flask me-2"></i>Carboxyl R&D Group</p>
+                                </div>
+                                <div class="period-location">
+                                    <span class="period"><i class="far fa-calendar-alt me-2"></i>May 2022 – 2024</span>
+                                    <span class="location"><i class="fas fa-user-secret me-2"></i>Confidential (NDA)</span>
+                                </div>
+                                <div class="badges">
+                                    <span><i class="fas fa-microchip me-1"></i> IoT Systems</span>
+                                    <span><i class="fas fa-sync-alt me-1"></i> Hybrid</span>
+                                    <span><i class="fas fa-flask me-1"></i> R&D</span>
+                                </div>
+                            </div>
+
+                            <div class="experience-content">
+                                <div class="content-tabs">
+                                    <button class="tab-btn active" data-target="highlights-2"><i class="fas fa-star me-1"></i> Highlights</button>
+                                    <button class="tab-btn" data-target="skills-2"><i class="fas fa-tools me-1"></i> Skills</button>
+                                    <button class="tab-btn" data-target="details-2"><i class="fas fa-info-circle me-1"></i> Details</button>
+                                </div>
+
+                                <div class="tab-content active" id="highlights-2">
+                                    <ul class="highlights-list">
+                                        <li><i class="fas fa-project-diagram me-2"></i> Led IoT crystallization incubator development</li>
+                                        <li><i class="fas fa-bolt me-2"></i> Improved freeze-drying efficiency by <span class="highlight-number" data-value="44">44</span>%</li>
+                                        <li><i class="fas fa-thermometer-half me-2"></i> Engineered precision temperature monitoring systems</li>
+                                        <li><i class="fas fa-microscope me-2"></i> Developed specialized analytical research tools</li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-content" id="skills-2">
+                                    <div class="skills-grid">
+                                        <span><i class="fab fa-raspberry-pi me-1"></i> Raspberry Pi</span>
+                                        <span><i class="fas fa-network-wired me-1"></i> IoT Development</span>
+                                        <span><i class="fab fa-python me-1"></i> Python</span>
+                                        <span><i class="fas fa-vial me-1"></i> R&D Engineering</span>
+                                        <span><i class="fas fa-chart-pie me-1"></i> Process Optimization</span>
+                                        <span><i class="fas fa-sitemap me-1"></i> Systems Integration</span>
+                                    </div>
+                                </div>
+
+                                <div class="tab-content" id="details-2">
+                                    <p><i class="fas fa-quote-left me-2"></i>
+                                        Evolved from UI design consultant to lead engineer, tackling complex process challenges.
+                                        Reduced freeze-drying cycle times from 8+ to ~4.5 hours by reverse-engineering systems and applying thermodynamic principles.
+                                        Created custom IoT monitoring dashboards and engineered specialized laboratory equipment.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Experience 3 -->
+                    <li class="splide__slide">
+                        <div class="experience-card">
+                            <div class="experience-header">
+                                <div class="role-company">
+                                    <h3><i class="fas fa-chalkboard-teacher me-2"></i>Technical Mentor & Moderator</h3>
+                                    <p><i class="fas fa-users me-2"></i>Engineering Minds</p>
+                                </div>
+                                <div class="period-location">
+                                    <span class="period"><i class="far fa-calendar-alt me-2"></i>Jan 2025 – Present</span>
+                                    <span class="location"><i class="fas fa-globe me-2"></i>Remote</span>
+                                </div>
+                                <div class="badges">
+                                    <span><i class="fas fa-atom me-1"></i> STEM Education</span>
+                                    <span><i class="fas fa-users me-1"></i> Community</span>
+                                </div>
+                            </div>
+
+                            <div class="experience-content">
+                                <div class="content-tabs">
+                                    <button class="tab-btn active" data-target="highlights-3"><i class="fas fa-star me-1"></i> Highlights</button>
+                                    <button class="tab-btn" data-target="skills-3"><i class="fas fa-tools me-1"></i> Skills</button>
+                                    <button class="tab-btn" data-target="details-3"><i class="fas fa-info-circle me-1"></i> Details</button>
+                                </div>
+
+                                <div class="tab-content active" id="highlights-3">
+                                    <ul class="highlights-list">
+                                        <li><i class="fas fa-book me-2"></i> Curated learning resources & engineering case studies</li>
+                                        <li><i class="fas fa-users-cog me-2"></i> Managed <span class="highlight-number" data-value="200">200</span>+ member STEM learning community</li>
+                                        <li><i class="fas fa-user-graduate me-2"></i> Mentored students in practical application of theory</li>
+                                        <li><i class="fas fa-bridge me-2"></i> Bridged academic-industry knowledge gaps</li>
+                                    </ul>
+                                </div>
+
+                                <div class="tab-content" id="skills-3">
+                                    <div class="skills-grid">
+                                        <span><i class="fas fa-users me-1"></i> Community Leadership</span>
+                                        <span><i class="fas fa-atom me-1"></i> STEM Expertise</span>
+                                        <span><i class="fas fa-hands-helping me-1"></i> Mentoring</span>
+                                        <span><i class="fas fa-comments me-1"></i> Communication</span>
+                                    </div>
+                                </div>
+
+                                <div class="tab-content" id="details-3">
+                                    <p><i class="fas fa-quote-left me-2"></i>
+                                        Joined Engineering Minds through research inquiries and became a key mentor.
+                                        Focus on translating academic theory into practical industry knowledge.
+                                        Guide emerging engineers through complex problems in math, physics, and engineering, developing resources that foster critical thinking and confidence.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Custom Navigation -->
+            <div class="splide-nav">
+                <button class="nav-btn prev" aria-label="Previous slide">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="pagination-wrapper">
+                    <div class="splide__pagination"></div>
+                </div>
+                <button class="nav-btn next" aria-label="Next slide">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <style>
+    /* Base Variables */
     :root {
-        --bg-primary: #2D1B4E;
-        --bg-secondary: #3D2B5E;
+        --bg-primary: #1A0B2E;
+        --bg-secondary: #2D1B4E;
         --purple-primary: #8B5CF6;
         --purple-light: #A78BFA;
+        --purple-dark: #6D28D9;
+        --purple-glow: rgba(139, 92, 246, 0.4);
         --white: #FFFFFF;
         --white-87: rgba(255, 255, 255, 0.87);
         --white-60: rgba(255, 255, 255, 0.6);
         --white-38: rgba(255, 255, 255, 0.38);
+        --card-bg: rgba(30, 15, 50, 0.7);
+        --card-border: rgba(139, 92, 246, 0.3);
+        --glass-effect: blur(12px);
     }
 
+
+    .highlight-number {
+      color: #A78BFA;
+      font-weight: 900;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+/* Section Styling with Advanced Effects */
     #experience {
-        background: var(--bg-primary);
-        padding: 120px 0;
+        background: linear-gradient(135deg, #000 0%, var(--bg-secondary) 100%);
+        padding: 120px 0 100px;
         position: relative;
-        overflow-x: hidden;
+        overflow: hidden;
+        z-index: 1;
     }
 
-    /* Decorative background elements */
+    /* Decorative Elements */
     #experience::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 6px;
-        background: linear-gradient(90deg, var(--purple-primary), var(--purple-light), var(--purple-primary));
-        animation: pulseGlow 3s ease-in-out infinite alternate;
+        height: 1px;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            var(--purple-light) 20%,
+            var(--purple-primary) 50%,
+            var(--purple-light) 80%,
+            transparent 100%);
+        box-shadow: 0 0 25px 3px var(--purple-glow);
+        z-index: 3;
     }
 
     #experience::after {
         content: '';
         position: absolute;
-        top: 60px;
-        right: -100px;
-        width: 300px;
-        height: 300px;
-        background: var(--purple-primary);
-        opacity: 0.03;
-        transform: rotate(45deg);
-        border-radius: 8px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background:
+            radial-gradient(circle at 20% 30%, var(--purple-glow) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(109, 40, 217, 0.2) 0%, transparent 40%);
+        opacity: 0.4;
+        z-index: -1;
     }
 
-    /* Floating decorative elements */
-    .bg-decoration {
+    /* Additional background elements */
+    #experience .bg-grid {
         position: absolute;
-        background: var(--purple-light);
-        opacity: 0.05;
-        pointer-events: none;
-        border-radius: 6px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+            linear-gradient(to right, rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+        background-size: 30px 30px;
+        z-index: -2;
     }
 
-    .bg-decoration:nth-child(1) {
-        top: 20%;
-        left: -50px;
+    #experience .bg-dots {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(rgba(139, 92, 246, 0.15) 2px, transparent 2px);
+        background-size: 50px 50px;
+        z-index: -3;
+        opacity: 0.5;
+    }
+
+    #experience .bg-glow {
+        position: absolute;
         width: 150px;
         height: 150px;
-        transform: rotate(30deg);
-        animation: float 8s ease-in-out infinite;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.15;
+        background: var(--purple-primary);
+        animation: float 20s infinite alternate ease-in-out;
     }
 
-    .bg-decoration:nth-child(2) {
-        bottom: 30%;
-        right: -80px;
+    #experience .bg-glow:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    #experience .bg-glow:nth-child(2) {
+        top: 60%;
+        right: 15%;
         width: 200px;
-        height: 100px;
-        transform: rotate(-20deg);
-        animation: float 6s ease-in-out infinite reverse;
+        height: 200px;
+        animation-delay: -5s;
     }
 
-    .container {
+    #experience .bg-glow:nth-child(3) {
+        bottom: 10%;
+        left: 30%;
+        width: 120px;
+        height: 120px;
+        animation-delay: -10s;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        33% { transform: translateY(-30px) translateX(20px); }
+        66% { transform: translateY(20px) translateX(-20px); }
+        100% { transform: translateY(-10px) translateX(10px); }
+    }
+
+    /* Animated shooting stars */
+    #experience .shooting-star {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(139, 92, 246, 0), rgba(139, 92, 246, 0.8) 50%, rgba(255, 255, 255, 0.8));
+        animation: shoot 6s infinite linear;
+        opacity: 0;
+        transform: rotate(-45deg);
+    }
+
+    #experience .shooting-star:nth-child(1) {
+        width: 150px;
+        top: 20%;
+        left: -10%;
+        animation-delay: 0s;
+    }
+
+    #experience .shooting-star:nth-child(2) {
+        width: 120px;
+        top: 35%;
+        left: -5%;
+        animation-delay: 4s;
+    }
+
+    #experience .shooting-star:nth-child(3) {
+        width: 180px;
+        top: 60%;
+        left: -15%;
+        animation-delay: 8s;
+    }
+
+    @keyframes shoot {
+        0% {
+            opacity: 0;
+            transform: translateX(0) translateY(0) rotate(-45deg);
+        }
+        10% {
+            opacity: 1;
+        }
+        20% {
+            transform: translateX(calc(100vw + 200px)) translateY(-200px) rotate(-45deg);
+            opacity: 0;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(calc(100vw + 200px)) translateY(-200px) rotate(-45deg);
+        }
+    }
+
+    /* Grid Pattern Background */
+    .experience-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 24px;
-        position: relative;
-        z-index: 2;
-    }
-
-    #experience h2 {
-        font-size: clamp(36px, 5vw, 48px);
-        font-weight: 300;
-        color: var(--white);
-        text-align: center;
-        margin: 0 0 96px 0;
-        letter-spacing: -0.5px;
+        padding: 0 20px;
         position: relative;
     }
 
-    #experience h2::before {
-        content: '\f1b2';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        position: absolute;
-        top: -60px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 32px;
-        color: var(--purple-primary);
-        animation: bounce 2s ease-in-out infinite;
-    }
-
-    #experience h2::after {
+    .experience-container::before {
         content: '';
         position: absolute;
-        bottom: -20px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            linear-gradient(var(--white-38) 1px, transparent 1px),
+            linear-gradient(90deg, var(--white-38) 1px, transparent 1px);
+        background-size: 40px 40px;
+        background-position: -1px -1px;
+        opacity: 0.03;
+        z-index: -1;
+    }
+
+    /* Modern Section Title */
+    .section-title {
+        font-size: 3rem;
+        color: var(--white);
+        text-align: center;
+        margin-bottom: 3.5rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+        position: relative;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transform: perspective(500px);
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -16px;
         left: 50%;
         transform: translateX(-50%);
         width: 120px;
-        height: 3px;
-        background: linear-gradient(90deg, transparent, var(--purple-primary), transparent);
+        height: 4px;
+        border-radius: 2px;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            var(--purple-dark) 20%,
+            transparent 100%);
     }
 
-    .experience-timeline {
-        position: relative;
-        padding-left: clamp(60px, 8vw, 80px);
-    }
-
-    .experience-timeline::before {
-        content: '';
+    .section-title::before {
+        content: attr(data-text);
         position: absolute;
-        left: 19px;
         top: 0;
-        bottom: 0;
-        width: 3px;
-        background: linear-gradient(180deg, var(--purple-primary), var(--purple-light), var(--purple-primary));
-        box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 7rem;
+        font-weight: 800;
+        color: rgba(139, 92, 246, 0.03);
+        z-index: -1;
+        width: 100%;
+        text-align: center;
+        letter-spacing: -4px;
     }
 
-    /* Timeline decorative dots */
-    .timeline-dot {
-        position: absolute;
-        left: 12px;
-        width: 16px;
-        height: 16px;
-        background: var(--purple-primary);
-        border: 3px solid var(--bg-primary);
-        transform: rotate(45deg);
-        box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
-        animation: pulse 2s ease-in-out infinite;
+    /* Enhanced Splide Carousel */
+    .splide {
+        margin: 0 auto;
+        padding: 0 0 3.5rem;
     }
 
-    .timeline-dot:nth-child(1) { top: 80px; animation-delay: 0s; }
-    .timeline-dot:nth-child(2) { top: 600px; animation-delay: 0.5s; }
-    .timeline-dot:nth-child(3) { top: 1200px; animation-delay: 1s; }
+    .splide__track {
+        overflow: visible;
+        padding: 20px 0;
+    }
 
-    .experience-item {
-        position: relative;
-        margin-bottom: clamp(60px, 8vw, 96px);
-        background: var(--bg-secondary);
-        box-shadow:
-                0 12px 24px rgba(0, 0, 0, 0.25),
-                0 4px 8px rgba(0, 0, 0, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
-        border-left: 4px solid var(--purple-primary);
-        border-radius: 8px;
+    .splide__slide {
+        padding: 20px;
+        opacity: 0.5;
+        transform: scale(0.9);
+        transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+        filter: saturate(0.7) brightness(0.8);
+    }
+
+    .splide__slide.is-active {
+        opacity: 1;
+        z-index: 2;
+        filter: saturate(1) brightness(1);
+        transform: perspective(1000px) rotateX(-0.0deg) rotateY(3.39deg) scale(1);
+    }
+
+    /* Experience Card - Glass Morphism Design */
+    .experience-card {
+        background: linear-gradient(145deg,
+            rgba(40, 20, 70, 0.8) 0%,
+            rgba(25, 10, 50, 0.95) 100%);
+        border-radius: 16px;
+        border: 1px solid var(--card-border);
         overflow: hidden;
-    }
-
-    .experience-item:hover {
         box-shadow:
-                0 20px 40px rgba(0, 0, 0, 0.35),
-                0 8px 16px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        transform: translateY(-6px);
-        border-left-width: 6px;
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(139, 92, 246, 0.1),
+            inset 0 0 20px rgba(139, 92, 246, 0.05);
+        backdrop-filter: var(--glass-effect);
+        -webkit-backdrop-filter: var(--glass-effect);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transform: translateZ(0);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
     }
 
-
-
-    /* Decorative corner elements */
-    .experience-item::after {
+    /* Holo Effect on Hover */
+    .experience-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        right: 0;
-        width: 60px;
-        height: 60px;
-        background: var(--purple-primary);
-        opacity: 0.1;
-        clip-path: polygon(100% 0, 0 0, 100% 100%);
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(125deg,
+            transparent,
+            transparent,
+            rgba(167, 139, 250, 0.1),
+            transparent,
+            transparent);
+        opacity: 0;
+        transition: opacity 0.6s;
     }
 
+    .experience-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow:
+            0 20px 40px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(139, 92, 246, 0.2),
+            0 0 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .experience-card:hover::before {
+        opacity: 1;
+        animation: holoGradient 2s ease infinite;
+    }
+
+    @keyframes holoGradient {
+        0% { background-position: 0% 0%; }
+        50% { background-position: 100% 100%; }
+        100% { background-position: 0% 0%; }
+    }
+
+/* Enhanced Card Header - Redesigned */
+.experience-header {
+    background: transparent;
+    padding: 28px 25px 45px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+/* Gradient Background Effect */
+.experience-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,
+        rgba(139, 92, 246, 0.9) 0%,
+        rgba(109, 40, 217, 0.85) 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%);
+    z-index: -1;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Floating Particles Effect */
+.experience-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 8px),
+        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 6px),
+        radial-gradient(circle at 70% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 10px),
+        radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.1) 0%, transparent 7px);
+    z-index: -1;
+}
+
+/* Improved Role & Company */
+.role-company {
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.role-company h3 {
+    color: var(--white);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.role-company p {
+    color: var(--white);
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+/* Redesigned Period Location */
+.period-location {
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    margin: 18px 0 14px;
+    flex-wrap: wrap;
+}
+
+.period, .location {
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.period:hover, .location:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+    background: rgba(139, 92, 246, 0.4);
+}
+
+/* Modernized Badges */
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.badges span {
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--white);
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.badges span i {
+    font-size: 0.9rem;
+}
+
+.badges span:hover {
+    background: rgb(0 0 0 / 90%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.badges span:hover::after {
+    opacity: 1;
+}
+
+/* Additional Decorative Element */
+.experience-header .decorative-icon {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.05);
+    transform: rotate(10deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
     .experience-header {
-        background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-        padding: clamp(24px, 4vw, 32px);
+        padding: 22px 20px 68px;
+    }
+
+    .role-company h3 {
+        font-size: 1.4rem;
+    }
+
+    .period-location {
+        gap: 10px;
+        margin: 14px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .experience-header::before {
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+    }
+
+    .role-company h3 {
+        font-size: 1.25rem;
+    }
+
+    .role-company p {
+        font-size: 1rem;
+    }
+
+    .period, .location {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+    @keyframes patternShift {
+        0% { transform: translateX(0) translateY(0) rotate(30deg); }
+        100% { transform: translateX(-50px) translateY(-50px) rotate(30deg); }
+    }
+
+    .experience-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            ellipse at top right,
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 60%
+        );
+    }
+
+    .role-company h3 {
+        color: var(--white);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    .role-company p {
+        color: var(--white-87);
+        font-size: 1.05rem;
+        margin: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Elegant Period Location */
+    .period-location {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .period, .location {
+        color: var(--white-87);
+        font-size: 0.85rem;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 6px 12px;
+        border-radius: 6px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Animated Badges */
+    .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .badges span {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--white);
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-radius: 6px;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
     }
 
-    .experience-header::before {
+    .badges span::before {
         content: '';
         position: absolute;
         top: -50%;
-        right: -50%;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-        transform: rotate(45deg);
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(30deg);
+        animation: shimmer 4s infinite;
+        opacity: 0;
+        transition: opacity 0.3s;
     }
 
-
-
-
-    .role-title {
-        font-size: clamp(24px, 4vw, 32px);
-        font-weight: 400;
-        color: var(--white);
-        margin: 0 0 8px 0;
-        letter-spacing: -0.25px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .role-title::before {
-        content: '\f0b1';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        margin-right: 12px;
-        color: rgba(255, 255, 255, 0.9);
-    }
-
-    .company-info {
-        font-size: clamp(16px, 2.5vw, 18px);
-        color: var(--white-87);
-        margin: 0 0 24px 0;
-        font-weight: 300;
-        position: relative;
-        z-index: 2;
-    }
-
-    .company-info::before {
-        content: '\f1ad';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        margin-right: 8px;
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .time-period {
-        position: absolute;
-        top: clamp(24px, 4vw, 32px);
-        right: clamp(24px, 4vw, 32px);
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        padding: 10px 16px;
-        font-size: clamp(12px, 2vw, 14px);
-        color: var(--white);
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        border-radius: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        z-index: 2;
-    }
-
-    .time-period::before {
-        content: '\f017';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        margin-right: 8px;
-    }
-
-    .experience-badges {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        position: relative;
-        z-index: 2;
-    }
-
-    .badge {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(5px);
-        color: var(--white);
-        padding: 8px 14px;
-        font-size: clamp(10px, 1.5vw, 12px);
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 4px;
-        transition: all 0.2s ease;
-    }
-
-    .badge:hover {
-        background: rgba(255, 255, 255, 0.3);
+    .badges span:hover {
+        background: rgba(139, 92, 246, 0.3);
         transform: translateY(-2px);
     }
 
-    .badge:nth-child(1)::before { content: '\f3ed'; font-family: 'Font Awesome 5 Free'; font-weight: 900; margin-right: 6px; }
-    .badge:nth-child(2)::before { content: '\f0c0'; font-family: 'Font Awesome 5 Free'; font-weight: 900; margin-right: 6px; }
-    .badge:nth-child(3)::before { content: '\f121'; font-family: 'Font Awesome 5 Free'; font-weight: 900; margin-right: 6px; }
+    .badges span:hover::before {
+        opacity: 1;
+    }
 
+    @keyframes shimmer {
+        0% { transform: translateX(-150%) rotate(30deg); }
+        100% { transform: translateX(150%) rotate(30deg); }
+    }
+
+    /* Enhanced Card Content */
     .experience-content {
-        padding: clamp(32px, 5vw, 48px) clamp(16px, 4vw, 32px) clamp(24px, 4vw, 32px);
+        padding: 25px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
         position: relative;
+        z-index: 1;
     }
 
-
-    .experience-content::before {
-        content: '';
-        position: absolute;
-        height: 20px;
-        clip-path: polygon(0 0, 100% 0, 96% 100%, 4% 100%);
+    /* Modern Tab Design */
+    .content-tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 20px;
+        padding: 3px;
+        background: rgba(20, 10, 40, 0.4);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.15),
+            inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
 
-    .experience-content::before {
+    .tab-btn {
+        flex: 1;
+        padding: 10px 0;
+        background: transparent;
+        border: none;
+        color: var(--white-60);
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .tab-btn::before {
         content: '';
         position: absolute;
         top: 0;
-        left: 15px;
-        right: 15px;
-        background: linear-gradient(90deg, var(--purple-primary), transparent, var(--purple-primary));
-        opacity: 0.8;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.05),
+            transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: -1;
     }
 
+    .tab-btn:hover {
+        color: var(--white-87);
+    }
 
+    .tab-btn:hover::before {
+        opacity: 1;
+    }
 
+    .tab-btn.active {
+        background: var(--purple-primary);
+        color: var(--white);
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
 
-    .achievements-list {
+    .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40%;
+        height: 3px;
+        background: var(--white);
+        border-radius: 3px;
+        opacity: 0.7;
+    }
+
+    /* Enhanced Tab Content Animation */
+    .tab-content {
+        display: none;
+        animation: fadeInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        flex-grow: 1;
+        position: relative;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Redesigned Highlights List */
+    .highlights-list {
         list-style: none;
         padding: 0;
         margin: 0;
     }
 
-    .achievement {
+    .highlights-list li {
         position: relative;
-        padding: clamp(16px, 3vw, 20px) 0 clamp(16px, 3vw, 20px) clamp(48px, 8vw, 64px);
+        padding: 12px 0 12px 35px;
         color: var(--white-87);
-        font-size: clamp(14px, 2.2vw, 16px);
-        line-height: 1.6;
+        line-height: 1.5;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.3s ease;
+        transition: all 0.3s;
     }
 
-    .achievement:last-child {
+    .highlights-list li:last-child {
         border-bottom: none;
     }
 
-    .achievement::before {
+    .highlights-list li::before {
         content: '';
         position: absolute;
         left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: clamp(28px, 4vw, 32px);
-        height: clamp(28px, 4vw, 32px);
+        top: 20px;
+        width: 8px;
+        height: 8px;
         background: var(--purple-primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-        border: 2px solid var(--bg-secondary);
+        border-radius: 2px;
+        box-shadow: 0 0 10px var(--purple-glow);
+        transform: rotate(45deg);
+        transition: all 0.3s ease;
     }
 
-    .achievement i {
-        position: absolute;
-        left: clamp(6px, 1vw, 8px);
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--white);
-        font-size: clamp(12px, 2vw, 16px);
-        z-index: 1;
+    .highlights-list li:hover {
+        padding-left: 40px;
+        background: rgba(139, 92, 246, 0.05);
     }
 
-    .achievement:hover {
-        color: var(--white);
-        transform: translateX(8px);
-        padding-left: clamp(56px, 10vw, 72px);
+    .highlights-list li:hover::before {
+        transform: rotate(135deg) scale(1.4);
+        left: 10px;
     }
 
-    .achievement:hover::before {
-        background: var(--purple-light);
-        box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
-        transform: translateY(-50%) scale(1.1);
-    }
-
-    .skills-section {
-        margin-top: clamp(24px, 4vw, 32px);
-        padding-top: clamp(24px, 4vw, 32px);
-        border-top: 2px solid rgba(255, 255, 255, 0.08);
-        position: relative;
-    }
-
-    .skills-section::before {
-        content: '';
-        position: absolute;
-        top: -1px;
-        left: 0;
-        width: 80px;
-        height: 2px;
-        background: var(--purple-primary);
-    }
-
-    .skills-title {
-        font-size: clamp(12px, 2vw, 14px);
-        color: var(--white-60);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 16px;
-        font-weight: 500;
-        position: relative;
-        padding-left: 24px;
-    }
-
-    .skills-title::before {
-        content: '\f013';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        position: absolute;
-        left: 0;
-        color: var(--purple-primary);
-    }
-
+    /* Creative Skills Grid */
     .skills-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(clamp(100px, 20vw, 120px), 1fr));
-        gap: clamp(12px, 2vw, 16px);
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 12px;
     }
 
-    .skill-chip {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: clamp(10px, 2vw, 12px) clamp(12px, 2.5vw, 16px);
-        text-align: center;
+    .skills-grid span {
+        background: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.02) 100%
+        );
         color: var(--white-87);
-        font-size: clamp(12px, 1.8vw, 14px);
-        font-weight: 400;
-        transition: all 0.3s ease;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        text-align: center;
+        border-radius: 8px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
-        border-radius: 6px;
-        backdrop-filter: blur(5px);
     }
 
-    .skill-chip::before {
+    .skills-grid span::before {
         content: '';
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-        transition: all 0.4s ease;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent
+        );
+        transition: left 0.7s;
+    }
+
+    .skills-grid span:hover {
+        background: var(--purple-primary);
+        color: var(--white);
+        transform: translateY(-5px);
+        box-shadow:
+            0 10px 20px rgba(0, 0, 0, 0.2),
+            0 0 15px var(--purple-glow);
+    }
+
+    .skills-grid span:hover::before {
+        left: 100%;
+    }
+
+    /* Elegant Details Text */
+    #details-1, #details-2, #details-3 {
+        color: var(--white-87);
+        line-height: 1.7;
+        padding: 5px;
+        font-size: 1.02rem;
+        position: relative;
+        border-left: 2px solid rgba(139, 92, 246, 0.3);
+        padding-left: 15px;
+        margin-left: 5px;
+    }
+
+    /* Enhanced Splide Navigation */
+    .splide-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+    }
+
+    .nav-btn {
+        background: rgba(139, 92, 246, 0.15);
+        color: var(--white);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .nav-btn::before {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        border-radius: 50%;
+        background: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(0, 0, 0, 0.1) 100%
+        );
         z-index: -1;
     }
 
-    .skill-chip:hover {
-        color: var(--white);
-        border-color: var(--purple-primary);
+    .nav-btn:hover {
+        background: var(--purple-primary);
         transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+        box-shadow:
+            0 8px 15px rgba(0, 0, 0, 0.3),
+            0 0 15px var(--purple-glow);
     }
 
-    .skill-chip:hover::before {
-        left: 0;
+    .nav-btn i {
+        font-size: 1.2rem;
+        transition: transform 0.3s;
     }
 
-    .icon-wrapper {
-        display: inline-block;
-        margin-right: 8px;
-        font-size: clamp(14px, 2vw, 16px);
+    .nav-btn:hover i {
+        transform: scale(1.2);
     }
 
-    /* Enhanced mobile responsiveness */
-    @media (max-width: 978px) {
-        #experience {
-            padding: 80px 0;
+    .pagination-wrapper {
+        margin: 0 25px;
+    }
+
+    .splide__pagination__page {
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 0 6px;
+        border-radius: 5px;
+        transition: all 0.4s;
+    }
+
+    .splide__pagination__page.is-active {
+        width: 25px;
+        background: linear-gradient(90deg, var(--purple-dark), var(--purple-primary));
+        transform: scale(1);
+    }
+
+    /* Responsive Enhancements */
+    @media (max-width: 768px) {
+        .experience-card {
+            max-width: 100%;
         }
 
-        .container {
-            padding: 0 16px;
+        .skills-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        .experience-timeline {
-            padding-left: 50px;
-        }
-
-        .experience-timeline::before {
-            left: 16px;
-            width: 2px;
-        }
-
-        .experience-item::before {
-            left: 8px;
-            width: 16px;
-            height: 16px;
-        }
-
-        .time-period {
-            position: static;
-            margin-bottom: 15px;
-            display: inline-block;
-            right: auto;
-            top: auto;
-        }
-
-        .achievement {
-            padding-left: 40px;
-        }
-
-        .achievement::before {
-            width: 24px;
-            height: 24px;
-        }
-
-        .achievement:hover {
-            padding-left: 48px;
-        }
-
-        .timeline-dot {
-            left: 9px;
-            width: 12px;
-            height: 12px;
-        }
-
-        .bg-decoration {
-            display: none;
+        .splide__slide {
+            padding: 10px;
         }
     }
 
     @media (max-width: 480px) {
-        .experience-timeline {
-            padding-left: 40px;
+        #experience {
+            padding: 70px 0 50px;
         }
 
-        .experience-timeline::before {
-            left: 12px;
+        .section-title {
+            font-size: 2.2rem;
         }
 
-        .experience-item::before {
-            left: 4px;
-            width: 14px;
-            height: 14px;
+        .section-title::before {
+            font-size: 4rem;
         }
 
-        .timeline-dot {
-            left: 6px;
-            width: 10px;
-            height: 10px;
+        .role-company h3 {
+            font-size: 1.3rem;
         }
 
-        .experience-badges {
-            gap: 8px;
-        }
-
-        .achievement {
-            padding-left: 36px;
-        }
-
-        .achievement::before {
-            width: 20px;
-            height: 20px;
-        }
-
-        .skills-grid {
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        .period-location {
+            flex-direction: column;
             gap: 10px;
         }
-    }
 
-    /* Animations */
-    @keyframes pulseGlow {
-        0% { opacity: 0.8; }
-        100% { opacity: 1; }
-    }
+        .content-tabs {
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(30deg); }
-        50% { transform: translateY(-20px) rotate(30deg); }
-    }
-
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-        40% { transform: translateX(-50%) translateY(-10px); }
-        60% { transform: translateX(-50%) translateY(-5px); }
-    }
-
-    @keyframes pulse {
-        0% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
-        50% { box-shadow: 0 0 25px rgba(139, 92, 246, 0.8); }
-        100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
-    }
-
-    .experience-item {
-        opacity: 0;
-        transform: translateY(40px);
-        animation: slideInUp 0.8s ease forwards;
-    }
-
-    .experience-item:nth-child(1) { animation-delay: 0.2s; }
-    .experience-item:nth-child(2) { animation-delay: 0.4s; }
-    .experience-item:nth-child(3) { animation-delay: 0.6s; }
-
-    @keyframes slideInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
+            overflow-x: auto;
+            padding-bottom: 5px;
+            justify-content: flex-start;
         }
-    }
-</style>
 
-<!-- Enhanced Material Design Work Experience Section -->
-<section id="experience">
-    <div class="bg-decoration"></div>
-    <div class="bg-decoration"></div>
+        .tab-btn {
+            font-size: 0.75rem;
+            white-space: nowrap;
+            padding: 8px 18px;
+            flex: 0 0 auto;
+        }
 
-    <div class="container">
-        <h2>Professional Experience</h2>
-
-        <div class="experience-timeline">
-            <div class="timeline-dot"></div>
-            <div class="timeline-dot"></div>
-            <div class="timeline-dot"></div>
-
-            <div class="experience-item">
-                <div class="experience-header">
-                    <div class="time-period">Sep 2021 – Present</div>
-                    <h3 class="role-title">Design & Development Specialist</h3>
-                    <p class="company-info">TheDabCorner™ LLC, St. Louis, MO</p>
-                    <div class="experience-badges">
-                        <span class="badge">Remote</span>
-                        <span class="badge">Hybrid</span>
-                        <span class="badge">Full-Stack</span>
-                    </div>
-                </div>
-
-                <div class="experience-content">
-                    <!-- Tab Switcher -->
-                    <div class="tab-switcher">
-                        <button class="tab-button active" data-tab="achievements-1">Achievements</button>
-                        <button class="tab-button" data-tab="summary-1">Summary</button>
-                    </div>
-
-                    <!-- Achievements Content -->
-                    <div class="tab-content active" id="achievements-1">
-                        <ul class="achievements-list">
-                            <li class="achievement">
-                                <i class="fas fa-rocket"></i>
-                                Founded and scaled profitable freelance business immediately after high school, establishing consistent revenue streams through strategic client acquisition and exceptional service delivery
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-trophy"></i>
-                                Executed 112+ successful projects across brand identity, product packaging, digital marketing, and full-stack web applications for diverse client portfolio
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-industry"></i>
-                                Managed hybrid printing operations (Feb 2022 – Mar 2023), coordinating production workflows, quality assurance, and vendor relationships
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-tools"></i>
-                                Developed expertise across 25+ professional tools including Adobe Creative Suite, development frameworks, and embedded systems
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Summary Content -->
-                    <div class="tab-content" id="summary-1">
-                        <p style="color: var(--white-87); font-size: clamp(14px, 2.2vw, 16px); line-height: 1.6;">
-                            Fresh out of high school, I channeled a lifelong passion for design into TheDabCorner™ LLC, a business I built from the ground up with my own hands and heart. It began as a spark in my school’s graphic design program, but it’s a journey I’ve never taken alone. Every project is a close collaboration, a partnership where I join forces with my clients to bring their vision to life.<br><br>
-                            Growing up, I was the kid obsessed with crafting YouTube graphics and custom desktop backgrounds in Photoshop and Illustrator. That early fascination led me to spend hours in the school computer lab, learning side-by-side with the Art Teachers & Systems Advisors, absorbing the nuances of networks and IT that still inform my problem-solving today.<br><br>
-                            I began my career immersed in branding and packaging, creating designs that told a story you could hold. While I still have a deep love for that tangible work, my passion has increasingly guided me toward web design and engineering. There’s an incredible energy in building digital experiences that have a larger, more direct impact on people. Call me crazy, but my goal is to build things that genuinely change a user's world for the better.<br><br>
-                            TheDabCorner is me in a nutshell: a dab of this and a dab of that. This multidisciplinary approach is my greatest strength. I bring mastery of Adobe Illustrator and UI/UX to every project, but my skills run much deeper. I am fluent in the language of computer science, a passion that has led me from building custom gaming computers for friends to engineering my entire digital ecosystem. From the ground up, I architected and built my own home network, complete with security systems and a powerful homelab server. This server isn't a hobby; it’s the backbone of my operation, hosting my portfolio, client sites, and acting as my personal NAS. My innate ability to master new software allows me to adapt to any challenge, and I even develop my own tools to keep our workflow perfectly efficient.<br><br>
-                            As a solo operator, I’m your direct line: the designer, the developer, and the strategist, all in one. This structure removes the friction of big agencies and allows us to work together seamlessly. My whole business is built around one core mission: **to turn your complex ideas into elegant, reliable solutions.** This isn’t just my job; it’s my craft, and I pour my heart into every partnership.
-                        </p>
-                    </div>
-
-                    <div class="skills-section">
-                        <div class="skills-title">Core Technologies</div>
-                        <div class="skills-grid">
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fab fa-adobe"></i></span>
-                                Adobe Suite
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fab fa-figma"></i></span>
-                                UI/UX Design
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fab fa-html5"></i></span>
-                                Web Development
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-palette"></i></span>
-                                Brand Design
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-print"></i></span>
-                                Print Production
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-business-time"></i></span>
-                                Business Management
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="experience-item">
-                <div class="experience-header">
-                    <div class="time-period">May 2022 – 2024</div>
-                    <h3 class="role-title">Process Engineering Lead</h3>
-                    <p class="company-info">Carboxyl R&D Group</p>
-                    <div class="experience-badges">
-                        <span class="badge">IoT Systems</span>
-                        <span class="badge">Hybrid</span>
-                        <span class="badge">Confidential &mdash; N.D.A</span>
-                    </div>
-                </div>
-
-                <div class="experience-content">
-                    <!-- Tab Switcher -->
-                    <div class="tab-switcher">
-                        <button class="tab-button active" data-tab="achievements-2">Achievements</button>
-                        <button class="tab-button" data-tab="summary-2">Summary</button>
-                    </div>
-
-                    <!-- Achievements Content -->
-                    <div class="tab-content active" id="achievements-2">
-                        <ul class="achievements-list">
-                            <li class="achievement">
-                                <i class="fas fa-project-diagram"></i>
-                                Led development of IoT crystallization incubator from concept to prototype, coordinating cross-functional teams for lab-scale production systems
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-chart-line"></i>
-                                Achieved 50% efficiency improvement by reverse-engineering freeze-drying systems and optimizing batch processes, reducing cycle times from 8+ hours to 4.5 hours
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-thermometer-half"></i>
-                                Engineered precision IoT monitoring system using NTC thermistors and Raspberry Pi for critical laboratory temperature control
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-calculator"></i>
-                                Developed specialized analytical tools for decarboxylation kinetics and gravimetric analysis, improving research workflow efficiency
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Summary Content -->
-                    <div class="tab-content" id="summary-2">
-                        <p style="color: var(--white-87); font-size: clamp(14px, 2.2vw, 16px); line-height: 1.6;">
-                            I’ve always had an innate passion for chemistry. In first grade, while other kids wanted to be firefighters or police officers, I wanted to be a pyrotechnician. Fireworks were magic to me, and I longed to know how to replicate their beauty. My favorite subject was always "Science!" because I loved the idea of mixing concoctions that would glow, a phenomenon I now know as chemiluminescence. This childhood drive eventually led me to a unique opportunity as a Lead Process Engineering Consultant at a private R&D facility.<br><br>
-                            While a designer and a process engineer might seem worlds apart, my journey into this role was a natural evolution of my multidisciplinary skills. This wasn't a sudden leap; it was the convergence of parallel passions. Throughout high school and alongside my design work, I was always tinkering, using Raspberry Pis to learn low-voltage control systems and explore systmes engineering on breadboards. It began with a commission through TheDabCorner to design an IoT dashboard for a new piece of lab equipment. During a project meeting, however, the conversation shifted from the user interface to the device’s internal logic. Drawing on my self-taught background in computer science and electronics, I offered recommendations on their control theory and system architecture, identifying process bottlenecks that went far beyond the screen. That conversation changed everything; my initial design contract quickly evolved into a lead engineering position where I was tasked with solving their most complex process challenges.<br><br>
-                            My proudest achievement there was tackling a critical inefficiency in the lab's lyophilization systems. The standard freeze-drying cycles took over 8 hours, a major bottleneck. I led an initiative to reverse-engineer the commercial systems, designing a new control architecture around a Raspberry Pi. Applying core principles of thermodynamics, enthalpies of phase change, and mass-transfer dynamics, I developed a custom lyophilization algorithm that optimized the process far beyond the capabilities of a standard PID control-loop.<br><br>
-                            <span style="font-style: italic; color: var(--white-60);">[REDACTED: Specific details of the algorithm and system modifications have been withheld due to NDA restrictions.]</span><br><br>
-                            This new process resulted in a nearly 50% efficiency improvement, slashing cycle times to just 4.5 hours. The overhaul also included a custom IoT dashboard I engineered for real-time monitoring and stagewise recipe development, a feature the original machine completely lacked.<br><br>
-                            Beyond that flagship project, my responsibilities spanned the full R&D lifecycle. For example, when the lab needed a quite literal 'cold-room' on a tight budget, I engineered a solution by modifying an 18,000 BTU mini-split. By "tricking" the OEM mainboard with polyamide heaters and my own digital temperature sensors, I pushed the unit to operate between 35-45°F, well below its 65°F factory limit. I implemented custom runtime limits to prevent coil freeze-up and preserve the compressor's lifespan, creating a rudimentary but effective system that saved numerous research endeavors. I also led the development of an IoT crystallization incubator from concept to prototype and engineered a novel crystallization procedure for a patented organic compound. To support this work, I built precision IoT monitoring systems with NTC thermistors and developed specialized analytical tools for gravimetric analysis and measuring decarboxylation kinetics. Through this work, I built expertise in lab operations, data science, and process optimization.
-                            For me, the ultimate application of that childhood passion wasn't just in the final charts; it was in the process itself: the deep collaboration with fellow scientists, the challenge of designing experiments based on new research, and the shared thrill of watching our work lead to genuine breakthroughs.                        <br/><br/><span style="font-style: italic; opacity: 0.5">- This content was reviewed & modified by the Carboxyl&trade; Legal Team.</span>
-                        </p>
-                    </div>
-
-                    <div class="skills-section">
-                        <div class="skills-title">Technical Stack</div>
-                        <div class="skills-grid">
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fab fa-raspberry-pi"></i></span>
-                                Raspberry Pi
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-microchip"></i></span>
-                                IoT Development
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fab fa-python"></i></span>
-                                Python
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-vial"></i></span>
-                                R&D Engineering
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-cogs"></i></span>
-                                Process Optimization
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-project-diagram"></i></span>
-                                Systems Integration
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="experience-item">
-                <div class="experience-header">
-                    <div class="time-period">Jan 2025 – Present</div>
-                    <h3 class="role-title">Technical Mentor & Community Moderator</h3>
-                    <p class="company-info">Engineering Minds by Dr. Andrew Sanchez&mdash;Ph.D.</p>
-                    <div class="experience-badges">
-                        <span class="badge">STEM Education</span>
-                        <span class="badge">Remote</span>
-                    </div>
-                </div>
-
-                <div class="experience-content">
-                    <!-- Tab Switcher -->
-                    <div class="tab-switcher">
-                        <button class="tab-button active" data-tab="achievements-3">Achievements</button>
-                        <button class="tab-button" data-tab="summary-3">Summary</button>
-                    </div>
-
-                    <!-- Achievements Content -->
-                    <div class="tab-content active" id="achievements-3">
-                        <ul class="achievements-list">
-                            <li class="achievement">
-                                <i class="fas fa-share-alt"></i>
-                                Curated comprehensive learning resources and real-world engineering case studies, directly improving member academic performance and industry readiness
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-users-cog"></i>
-                                Building and managing a thriving 200+ member STEM community focused on collaborative learning and academic excellence
-                            </li>
-                            <li class="achievement">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                                Mentored emerging engineers in translating theoretical coursework into practical applications, bridging academic-industry knowledge gaps
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Summary Content -->
-                    <div class="tab-content" id="summary-3">
-                        <p style="color: var(--white-87); font-size: clamp(14px, 2.2vw, 16px); line-height: 1.6;">
-                            My involvement with Engineering Minds began quite organically, born from my own research into freeze-drying during my time serving as a Process Engineering Lead. A query to the group's founder, Dr. Andrew Sanchez&mdash;Ph.D., introduced me not just to a different approach to my research, but to a thriving community of over 200 passionate engineers dedicated to collaborative growth. Inspired by their drive and reflecting on my own non-traditional path into engineering, I felt compelled to contribute.
-                            <br/><br/>
-                            As a mentor, I focus on bridging the critical gap between academic theory and real-world industry application. I actively guide emerging engineers through complex problems in math, physics, and chemical engineering, translating textbook concepts into practical, actionable knowledge. This involves developing and curating comprehensive learning resources; from passing along real-world case studies to detailed problem-solving guides & contributing in live sessions to foster a dynamic, supportive learning environment. My goal is not just to help students find the right answer, but to cultivate the critical thinking and confidence they need to solve the next problem.
-                        </p>
-                    </div>
-
-                    <div class="skills-section">
-                        <div class="skills-title">Leadership Skills</div>
-                        <div class="skills-grid">
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-users"></i></span>
-                                Community Leadership
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-atom"></i></span>
-                                STEM Expertise
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-lightbulb"></i></span>
-                                Mentoring
-                            </div>
-                            <div class="skill-chip">
-                                <span class="icon-wrapper"><i class="fas fa-comments"></i></span>
-                                Communication
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<style>
-    .tab-switcher {
-        display: flex;
-        gap: 4px;
-        margin-bottom: 22px;
-        background: rgba(139,92,246,0.10);
-        border-radius: 10px 10px 0 0;
-        padding: 2px 6px 0 6px;
-        backdrop-filter: blur(8px);
-        box-shadow: 0 2px 12px rgba(139,92,246,0.08);
-        position: relative;
-    }
-
-    .tab-button {
-        background: rgba(255,255,255,0.10);
-        color: var(--white-60);
-        border: none;
-        border-radius: 8px 8px 0 0;
-        font-weight: 600;
-        padding: 10px 28px 10px 28px;
-        margin-bottom: 0;
-        cursor: pointer;
-        position: relative;
-        z-index: 1;
-        transition:
-                background 0.25s,
-                color 0.2s,
-                box-shadow 0.2s,
-                transform 0.18s;
-        box-shadow: 0 1.5px 6px rgba(139,92,246,0.07);
-        backdrop-filter: blur(6px);
-        outline: none;
-    }
-
-    .tab-button:not(.active):hover,
-    .tab-button:not(.active):focus {
-        background: rgba(139,92,246,0.13);
-        color: var(--purple-primary);
-        box-shadow: 0 2px 10px rgba(139,92,246,0.10);
-        transform: translateY(-2px) scale(1.03);
-    }
-
-    .tab-button.active {
-        background: linear-gradient(90deg, var(--purple-primary) 70%, var(--purple-light) 100%);
-        color: #fff;
-        box-shadow: 0 6px 24px 0 rgba(139,92,246,0.18), 0 2px 0 var(--purple-light) inset;
-        transform: scale(1.08) translateY(-2px);
-        z-index: 2;
-    }
-    .tab-button.active::after {
-        content: "";
-        display: block;
-        position: absolute;
-        left: 18%;
-        right: 18%;
-        bottom: -4px;
-        height: 4px;
-        border-radius: 2px;
-        background: linear-gradient(90deg, var(--purple-light), var(--purple-primary));
-        box-shadow: 0 2px 8px 0 rgba(139,92,246,0.18);
-        opacity: 0.95;
-    }
-
-    .tab-content {
-        display: none;
-        animation: tabFadeIn 0.4s cubic-bezier(.4,0,.2,1);
-    }
-    .tab-content.active {
-        display: block;
-    }
-
-    @keyframes tabFadeIn {
-        from { opacity: 0; transform: translateY(16px);}
-        to { opacity: 1; transform: translateY(0);}
+        .nav-btn {
+            width: 45px;
+            height: 45px;
+        }
     }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.tab-switcher').forEach(function(switcher) {
-            const buttons = switcher.querySelectorAll('.tab-button');
-            buttons.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    // Remove active from all buttons in this switcher
-                    buttons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    // Hide all tab-contents in the same .experience-content
-                    const content = switcher.closest('.experience-content');
-                    content.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-                    // Show the selected tab
-                    const tabId = btn.getAttribute('data-tab');
-                    const tab = content.querySelector('#' + tabId);
-                    if (tab) tab.classList.add('active');
-                });
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the Splide slider
+    const splide = new Splide('#experience-carousel', {
+        type: 'slide',
+        perPage: 1,
+        perMove: 1,
+        gap: '2rem',
+        padding: { left: '5%', right: '5%' },
+        arrows: false,
+        pagination: true,
+        focus: 'center',
+        updateOnMove: true,
+        speed: 800,
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        breakpoints: {
+            768: {
+                perPage: 1,
+                padding: { left: '0', right: '0' }
+            }
+        }
+    }).mount();
+
+    // Add event listeners for custom navigation
+    document.querySelector('.splide-nav .prev').addEventListener('click', () => {
+        splide.go('<');
+    });
+
+    document.querySelector('.splide-nav .next').addEventListener('click', () => {
+        splide.go('>');
+    });
+
+    // Handle tab switching
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the parent experience card
+            const card = this.closest('.experience-card');
+
+            // Remove active class from all tabs in this card
+            card.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
             });
-        });
-        // Initial state: show only .tab-content.active
-        document.querySelectorAll('.tab-content').forEach(tc => {
-            if (!tc.classList.contains('active')) tc.style.display = 'none';
-        });
-        document.querySelectorAll('.tab-content.active').forEach(tc => {
-            tc.style.display = 'block';
-        });
-        // Ensure switching works with display property
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const content = btn.closest('.experience-content');
-                content.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
-                const tabId = btn.getAttribute('data-tab');
-                const tab = content.querySelector('#' + tabId);
-                if (tab) tab.style.display = 'block';
+
+            // Add active class to clicked tab
+            this.classList.add('active');
+
+            // Hide all tab content in this card
+            card.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
             });
+
+            // Show the selected tab content
+            const targetId = this.getAttribute('data-target');
+            card.querySelector(`#${targetId}`).classList.add('active');
         });
     });
+
+
+
+    // Set the data-text attribute for the section title
+    const sectionTitle = document.querySelector('.section-title');
+    if (sectionTitle) {
+        sectionTitle.setAttribute('data-text', 'EXPERIENCE');
+    }
+
+    // Animate numbers when card becomes active// Animate numbers when card becomes active
+    splide.on('active', function(slide) {
+        const numbers = slide.slide.querySelectorAll('.highlight-number');
+        numbers.forEach(num => {
+            const value = parseInt(num.getAttribute('data-value'));
+            animateValue(num, 0, value, 1500);
+        });
+    });
+
+    function animateValue(obj, start, end, duration) {
+        obj.textContent = '0';
+        if (start === end) return;
+        const range = end - start;
+        const minTimer = 50;
+        let stepTime = Math.abs(Math.floor(duration / range));
+        stepTime = Math.max(stepTime, minTimer);
+
+        let current = start;
+        const timer = setInterval(function() {
+            current += 1;
+            obj.textContent = current;
+            if (current == end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
+    }
+});
 </script>
 
 <!-- Font Awesome CDN -->

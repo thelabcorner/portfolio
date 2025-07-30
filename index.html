@@ -2109,7 +2109,6 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 1;
         z-index: 2;
         filter: saturate(1) brightness(1);
-        transform: perspective(1000px) rotateX(-0.0deg) rotateY(3.39deg) scale(1);
     }
 
     /* Experience Card - Glass Morphism Design */
@@ -2769,7 +2768,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         .splide__slide {
-            padding: 10px;
+            padding: 0px;
         }
     }
 
@@ -2818,26 +2817,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the Splide slider
-    const splide = new Splide('#experience-carousel', {
-        type: 'slide',
-        perPage: 1,
-        perMove: 1,
-        gap: '2rem',
-        padding: { left: '5%', right: '5%' },
-        arrows: false,
-        pagination: true,
-        focus: 'center',
-        updateOnMove: true,
-        speed: 800,
-        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        breakpoints: {
-            768: {
-                perPage: 1,
-                padding: { left: '0', right: '0' }
-            }
+// Initialize the Splide slider and center the active slide
+const splide = new Splide('#experience-carousel', {
+    type: 'slide',
+    perPage: 1,
+    perMove: 1,
+    gap: '2rem',
+    padding: { left: '5%', right: '5%' },
+    focus: 'center', // Ensures centering
+    arrows: false,
+    pagination: true,
+    updateOnMove: true,
+    speed: 800,
+    easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+    breakpoints: {
+        768: {
+            perPage: 1,
+            focus: 'center'
         }
-    }).mount();
+    }
+}).mount();
 
     // Add event listeners for custom navigation
     document.querySelector('.splide-nav .prev').addEventListener('click', () => {

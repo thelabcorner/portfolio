@@ -1,0 +1,1058 @@
+--- START OF FILE thelabcorner2_improved.html ---
+<!DOCTYPE html>
+<html lang="en" data-bs-spy="scroll" data-bs-target="#navbar">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XZKWEQ44R9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XZKWEQ44R9');
+    </script>
+
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="-Ktlgi2T4GbkhI00fV7M59N1hChvHOKM_LI_G_cqSVA" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+
+    <!--    <script disable-devtool-auto src='./javascript/disable-devtool.js'></script>-->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+    <!-- Title: add your Portfolio websites's title here -->
+    <title>TheLabCorner™ | Cannabis Research & Development Portfolio</title>
+
+    <!-- Add your primary-theme color for the value of content -->
+    <meta name="theme-color" content="#ffa600" />
+
+    <!-- Highest priority: SVG for browsers that support it -->
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon/TLC-favico.svg">
+
+    <!-- Fallback for extremely high-resolution displays: 8000px PNG -->
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-8000.png" sizes="8000x8000">
+
+    <!-- Recommended icon sizes -->
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-48.png" sizes="48x48">
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-144.png" sizes="144x144">
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-256.png" sizes="256x256">
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-384.png" sizes="384x384">
+    <link rel="icon" type="image/png" href="./assets/favicon/TLC-favico-512.png" sizes="512x512">
+
+
+    <!-- css stylesheet here -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #ffa600; /* Updated to orange */
+            --dark-color: #0f0f0f;
+            --light-color: #f8f9fa;
+            --scientific-bg: #1a1a1a; /* Darker background for scientific feel */
+            --card-bg: rgba(255, 255, 255, 0.04); /* Slightly lighter card background */
+            --card-border: rgba(255, 255, 255, 0.15); /* Slightly thicker card border */
+            --modal-bg: rgba(0,0,0,0.9); /* Darker modal background */
+            --modal-content-bg: rgba(255, 255, 255, 0.08); /* Lighter modal content background */
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--scientific-bg); /* Use scientific background */
+            color: var(--light-color);
+            line-height: 1.6; /* Improved readability */
+        }
+
+        .accent-text {
+            color: var(--accent-color);
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--card-border); /* Add subtle border */
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1.5px; /* Reduced letter spacing slightly */
+        }
+
+        .nav-link {
+            margin: 0 12px; /* Adjusted nav link margin */
+            position: relative;
+            font-weight: 500;
+            font-size: 1.05rem; /* Slightly larger nav link font */
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-section {
+            min-height: 75vh; /* Slightly increased hero height */
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 70px; /* Adjusted for navbar */
+            padding-bottom: 50px; /* Added padding bottom */
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./assets/hero-bg-lab-2.jpg'); /* Updated hero background image - more scientific */
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.4); /* Slightly brighter background */
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center; /* Center align hero content */
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem; /* Adjusted font size */
+            font-weight: 800;
+            margin-bottom: 1rem; /* Reduced margin */
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px; /* Slightly wider paragraph */
+            margin: 0 auto 1.5rem auto; /* Center paragraph and adjust margin */
+            color: rgba(255, 255, 255, 0.8); /* Slightly lighter paragraph text */
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            letter-spacing: 0.8px; /* Reduced letter spacing slightly */
+            transition: all 0.3s;
+        }
+
+        .btn-accent:hover {
+            background-color: #e09000; /* Darker orange on hover */
+            transform: translateY(-2px); /* Reduced transform */
+            box-shadow: 0 8px 16px rgba(224, 144, 0, 0.6); /* Adjusted shadow */
+        }
+
+        .btn-outline {
+            border: 2px solid var(--light-color);
+            color: var(--light-color);
+            padding: 12px 30px;
+            font-weight: 600;
+            letter-spacing: 0.8px; /* Reduced letter spacing slightly */
+            transition: all 0.3s;
+            margin-left: 10px; /* Reduced left margin */
+        }
+
+        .btn-outline:hover {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+
+        .section-title {
+            font-size: 2.2rem; /* Reduced section title size */
+            font-weight: 700;
+            margin-bottom: 3rem; /* Reduced margin */
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase; /* Uppercase section titles */
+            letter-spacing: 1px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 40%; /* Reduced underline width */
+            height: 3px; /* Reduced underline height */
+            background: var(--accent-color);
+            left: 0;
+            bottom: -8px; /* Adjusted bottom position */
+        }
+
+        .filters {
+            margin-bottom: 2.5rem; /* Adjusted margin */
+        }
+        .filters ul {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0;
+            list-style-type: none;
+        }
+        .filters ul li {
+            background: transparent;
+            border: 1px solid var(--card-border); /* Use card border for filter buttons */
+            color: var(--light-color);
+            font-weight: 500;
+            padding: 8px 20px; /* Adjusted padding */
+            margin: 5px 7px; /* Adjusted margin */
+            position: relative;
+            transition: all 0.3s;
+            font-size: 1.1rem; /* Reduced font size */
+            border-radius: 7px; /* Adjusted border radius */
+            cursor: pointer;
+        }
+        .filters ul li.active, .filters ul li:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            background-color: rgba(255, 166, 0, 0.1); /* Subtle background on hover/active */
+        }
+
+        .filters ul li::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            transition: width 0.3s;
+        }
+
+        .filters ul li.active::after, .filters ul li:hover::after {
+            width: 70%; /* Adjusted underline width */
+        }
+
+
+        .project-card {
+            background-color: var(--card-bg); /* Use card background */
+            border: 1px solid var(--card-border); /* Use card border */
+            border-radius: 12px; /* Adjusted border radius */
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            height: 100%; /* Ensure consistent height for project cards */
+            display: flex;
+            flex-direction: column; /* Arrange project info below image */
+        }
+
+        .project-card:hover {
+            box-shadow: 0 15px 30px rgba(255, 166, 0, 0.25); /* Adjusted shadow */
+            transform: translateY(-3px); /* Reduced transform */
+            border-color: var(--accent-color);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 180px; /* Reduced image height */
+            object-fit: cover;
+            display: block; /* Fix image spacing issue */
+        }
+
+        .project-info {
+            padding: 18px; /* Adjusted padding */
+            flex-grow: 1; /* Project info takes remaining space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space out content vertically */
+        }
+
+        .project-info h3 {
+            font-size: 1.3rem; /* Adjusted title size */
+            margin-bottom: 8px; /* Reduced margin */
+            font-weight: 600;
+        }
+
+        .project-info p {
+            font-size: 1rem; /* Adjusted paragraph size */
+            color: rgba(255, 255, 255, 0.7); /* Slightly lighter paragraph text */
+            margin-bottom: 12px; /* Reduced margin */
+        }
+
+        .project-link {
+            display: inline-block;
+            margin-top: 8px; /* Reduced margin */
+            padding: 8px 20px; /* Adjusted padding */
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600; /* Added font weight */
+            letter-spacing: 0.5px; /* Added letter spacing */
+            transition: background-color 0.3s ease; /* Smooth background transition */
+            font-size: 0.95rem; /* Slightly smaller link font */
+        }
+
+        .project-link:hover {
+            background-color: #e09000; /* Darker orange on hover */
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1050; /* Increased z-index for modals */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: var(--modal-bg); /* Darker modal backdrop */
+            backdrop-filter: blur(7px); /* Add blur to backdrop */
+        }
+
+        .modal-content {
+            background-color: var(--modal-content-bg); /* Dark modal content background */
+            margin: 5% auto; /* Adjusted margin */
+            padding: 35px; /* Increased padding */
+            border: 1px solid var(--card-border); /* Use card border */
+            width: 85%; /* Slightly wider modal */
+            max-width: 800px; /* Slightly wider modal */
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6); /* Stronger shadow */
+            color: var(--light-color); /* Light text color in modal */
+        }
+
+        .modal-title {
+            color: var(--light-color);
+            font-size: 2.3rem; /* Larger modal title */
+            margin-bottom: 15px; /* Reduced margin */
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .modal-subtitle {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .modal-preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid var(--card-border); /* Add border to modal preview */
+        }
+
+        .modal-btn {
+            display: inline-block;
+            padding: 12px 30px; /* Adjusted button padding */
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px; /* Reduced margin */
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s ease;
+            font-size: 1rem; /* Adjusted button font size */
+        }
+
+        .modal-btn:hover {
+            background-color: #e09000; /* Darker orange on hover */
+        }
+
+
+        .close {
+            color: var(--light-color);
+            float: right;
+            font-size: 30px; /* Slightly smaller close button */
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--light-color);
+            text-decoration: none;
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        .read-me-content {
+            max-width: 900px; /* Wider read-me content */
+            margin: 4% auto; /* Adjusted margin */
+            padding: 40px; /* Increased padding */
+            background-color: var(--modal-content-bg); /* Dark read-me background */
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4); /* Adjusted shadow */
+            color: var(--light-color);
+        }
+
+        .read-me-content h2.modal-title {
+            color: var(--accent-color); /* Accent color for read-me title */
+            margin-bottom: 15px; /* Reduced margin */
+        }
+
+        .read-me-content .modal-body {
+            color: var(--light-color);
+            line-height: 1.7; /* Improved line height for readability */
+            font-size: 1.05rem; /* Slightly larger body font */
+        }
+
+        .read-me-content .section-title {
+            color: var(--accent-color);
+            font-size: 1.3rem; /* Adjusted section title size */
+            margin-top: 20px; /* Reduced margin */
+            margin-bottom: 12px; /* Reduced margin */
+            text-transform: uppercase; /* Uppercase section titles in read-me */
+            letter-spacing: 0.8px;
+        }
+
+        .read-me-content .intro, .read-me-content .conclusion {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7); /* Lighter text for intro/conclusion */
+            margin-bottom: 18px; /* Reduced margin */
+        }
+
+        .read-me-content .expertise-grid, .read-me-content .content-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px; /* Reduced gap */
+        }
+
+        .read-me-content .expertise-item, .read-me-content .content-item {
+            flex: 1 1 calc(33% - 8px); /* Adjusted flex basis and gap */
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly lighter item background */
+            border-radius: 8px; /* Adjusted border radius */
+            padding: 12px; /* Increased padding for items */
+            text-align: center;
+            font-size: 15px;
+            margin: 3px 0; /* Reduced margin */
+            transition: background-color 0.3s ease;
+        }
+
+        .read-me-content .expertise-item:hover, .read-me-content .content-item:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Lighter on hover */
+        }
+
+
+        .read-me-content .expertise-item {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Reduced gap */
+            text-align: left; /* Align text to left in expertise items */
+            justify-content: flex-start; /* Align items to start */
+        }
+
+        .read-me-content .expertise-item i {
+            color: var(--accent-color);
+            font-size: 18px; /* Reduced icon size */
+            margin-right: 8px; /* Add space after icon */
+        }
+
+        .read-me-content .content-item i {
+            margin-right: 8px; /* Reduced margin */
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            .read-me-content {
+                padding: 25px; /* Adjusted padding */
+                margin: 8% auto; /* Adjusted margin */
+            }
+
+            .modal-title {
+                font-size: 26px;
+            }
+
+            .section-title {
+                font-size: 21px;
+            }
+
+            .modal-body {
+                font-size: 15px;
+            }
+
+            .read-me-content .expertise-item, .read-me-content .content-item {
+                flex: 1 1 100%;
+            }
+
+            .hero-section {
+                min-height: auto; /* Adjust hero height on smaller screens */
+                padding-top: 50px;
+                padding-bottom: 40px;
+            }
+
+            .filters ul li {
+                padding: 8px 15px; /* Adjust filter button padding on smaller screens */
+                font-size: 1rem; /* Adjust filter button font size */
+            }
+
+            .project-card {
+                border-radius: 10px; /* Adjust card border radius on smaller screens */
+            }
+
+            .project-image {
+                height: 160px; /* Adjust project image height on smaller screens */
+            }
+
+            .modal-content {
+                width: 98%; /* Wider modal on smaller screens */
+                margin: 2% auto; /* Adjust modal margin on smaller screens */
+                padding: 25px; /* Adjust modal padding on smaller screens */
+            }
+
+            .modal-title {
+                font-size: 2rem; /* Adjust modal title font size on smaller screens */
+            }
+        }
+
+        /* Footer Section */
+        .footer {
+            background-color: rgba(0, 0, 0, 0.6); /* Slightly darker footer */
+            padding: 2.5rem 0; /* Reduced footer padding */
+            border-top: 1px solid var(--card-border); /* Use card border */
+            text-align: center; /* Center align footer content */
+        }
+
+        .footer a {
+            color: var(--light-color);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            text-decoration: none; /* Remove underlines from links */
+        }
+
+        .footer a:hover {
+            opacity: 1;
+        }
+
+        .footer hr {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 18px auto; /* Reduced margin */
+            width: 70%; /* Reduced width of hr */
+        }
+
+        .footer__text {
+            font-size: 0.9rem;
+            color: var(--light-color);
+            opacity: 0.6;
+            margin-top: 12px; /* Reduced margin */
+        }
+
+        .back-to-top {
+            position: relative; /* Changed to relative for better alignment */
+            display: inline-block;
+            margin-bottom: 12px; /* Added margin for spacing */
+        }
+
+        .back-to-top i {
+            color: var(--accent-color);
+            font-size: 1.8rem; /* Reduced icon size */
+            transition: transform 0.3s ease;
+        }
+
+        .back-to-top:hover i {
+            transform: translateY(-4px); /* Reduced transform */
+        }
+
+
+        .social-links {
+            margin-bottom: 18px; /* Space between social links and hr */
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 36px; /* Reduced icon size */
+            height: 36px; /* Reduced icon size */
+            background-color: rgba(255, 255, 255, 0.06); /* Slightly lighter social icon background */
+            border-radius: 50%;
+            margin: 0 8px; /* Adjusted margin for social icons */
+            text-align: center;
+            line-height: 36px; /* Adjusted line height */
+            color: var(--light-color);
+            transition: all 0.3s;
+            font-size: 1rem; /* Slightly smaller social icons */
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            transform: translateY(-2px); /* Subtle lift on hover */
+        }
+
+        .container {
+            padding: 25px; /* Adjusted container padding */
+            max-width: 1250px; /* Slightly wider container */
+            margin: 0 auto;
+        }
+        .row.grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .single-portfolio {
+            width: 100%;
+            max-width: 360px; /* Slightly wider portfolio item */
+            margin-bottom: 25px; /* Adjusted margin */
+        }
+
+
+        @media (max-width: 768px) {
+            .single-portfolio {
+                width: 100%;
+            }
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Scientific Styling Cues */
+        .hero-logo {
+            max-width: 80px; /* Adjust logo size */
+            height: auto;
+            display: inline-block;
+            vertical-align: middle; /* Align logo with text */
+            margin-right: 15px; /* Add spacing */
+        }
+
+        .hero-title {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center content horizontally */
+            flex-direction: column; /* Stack elements vertically */
+        }
+
+        #animated-word {
+            font-style: italic;
+            color: var(--accent-color);
+        }
+
+        #gd_label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+        }
+
+        .tos-last-update {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 8px;
+        }
+
+        .update-date {
+            font-weight: bold;
+        }
+
+    </style>
+
+
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar">
+
+<!-- Navigation -->
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><span class="accent-text">TheLabCorner</span>™</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#hero">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#portfolio-section">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#read-me-modal-section">About Research</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact-footer">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero" class="hero-section">
+    <div class="hero-bg"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1"> <!-- Centered content -->
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <br />
+                        <span id="animated-word">Research & Development</span> <span id="gd_label">Portfolio</span>
+                        <br />
+                        <span class="tos-last-update">Last Updated: </span><span class="tos-last-update update-date"> 6/25/2024</span>
+                    </h1>
+                    <p class="hero-cta">
+                        Exploring innovative solutions for the medicinal cannabis industry through scientific research and development.
+                    </p>
+                    <p class="hero-cta">
+                        <a class="btn btn-accent cta-btn--hero" href="javascript:openModal('readMeModal')" id="readMeBtn">Learn About Our Research</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#portfolio-section" class="scroll-down-link" aria-label="scroll-down">
+        <div class="scroll-down"></div>
+    </a>
+</section>
+
+
+<section id="portfolio-section" class="py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="section-heading text-center col-md-12">
+                <br/>
+                <h2 class="section-title">Research & Development <strong>Portfolio</strong></h2>
+                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.7);">Explore our projects focused on advancing medicinal cannabis processing and data management.</p>
+            </div>
+        </div>
+        <div class="filters">
+            <ul>
+                <li class="active filter-btn" data-filter="*">All Projects</li>
+                <li class="filter-btn" data-filter=".process-optimization">Process Optimization</li>
+                <li class="filter-btn" data-filter=".equipment">Equipment Design</li>
+                <li class="filter-btn" data-filter=".data-management">Data Management Systems</li>
+                <li class="filter-btn" data-filter=".methodology">Extraction Methodologies</li>
+            </ul>
+            <br/>
+        </div>
+        <div class="filters-content">
+            <div class="row grid">
+                <!-- Decarboxylation Optimization Project -->
+                <div class="single-portfolio col-sm-4 all process-optimization methodology">
+                    <div class="project-card">
+                        <img src="assets/decarboxulator-logo.svg" alt="Decarboxylation Optimization" class="project-image">
+                        <div class="project-info">
+                            <h3>DECARBOXULATOR™</h3>
+                            <p>Calculator for precise cannabinoid decarboxylation, optimizing potency and efficiency.</p>
+                            <a href="#" class="project-link" onclick="openModal('decarboxulatorModal')">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crystallization Suite Project -->
+                <div class="single-portfolio col-sm-4 all equipment process-optimization">
+                    <div class="project-card">
+                        <img src="assets/carboxyl.png" alt="Crystallization Suite" class="project-image">
+                        <div class="project-info">
+                            <h3>CARBOXYL™ Crystal Suite</h3>
+                            <p>Advanced reactor for optimizing cannabinoid crystallization processes.</p>
+                            <a href="#" class="project-link" onclick="openModal('carboxylModal')">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- #TERPTEK Crystallization Method -->
+                <div class="single-portfolio col-sm-4 all methodology process-optimization">
+                    <div class="project-card">
+                        <img src="assets/terptek.png" alt="TERPTEK Crystallization Method" class="project-image">
+                        <div class="project-info">
+                            <h3>TERPTEK™ Method</h3>
+                            <p>Novel solventless THCa crystallization technique using cannabis-derived terpenes.</p>
+                            <a href="#" class="project-link" onclick="openModal('terptekModal')">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extraction Database Project -->
+                <div class="single-portfolio col-sm-4 all data-management">
+                    <div class="project-card">
+                        <img src="assets/pressblack.svg" alt="Extraction Database" class="project-image">
+                        <div class="project-info">
+                            <h3>HASHAPP™ Database</h3>
+                            <p>Data management platform for solventless extraction facilities, enhancing efficiency.</p>
+                            <a href="#" class="project-link" onclick="openModal('hashAppModal')">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modals -->
+<div id="decarboxulatorModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('decarboxulatorModal')">×</span>
+        <h2 class="modal-title">DECARBOXULATOR™</h2>
+        <h3 class="modal-subtitle">Decarboxylation Calculator</h3>
+        <img src="assets/decarboxulator-logo.svg" alt="Decarboxulator Preview" class="modal-preview">
+        <p>The DECARBOXULATOR™ is an advanced online tool designed for precise cannabinoid decarboxylation calculations. It utilizes sophisticated algorithms to determine optimal time and temperature settings, ensuring maximum cannabinoid activation and efficiency in cannabis processing.</p>
+        <h4 class="section-title">Research Focus</h4>
+        <p>This project focuses on optimizing decarboxylation, a critical step in cannabis processing that converts non-psychoactive cannabinoids into active forms. Accurate decarboxylation is essential for producing potent and consistent medicinal cannabis products.</p>
+        <h4 class="section-title">Key Features</h4>
+        <ul>
+            <li>Algorithm-driven time and temperature calculations.</li>
+            <li>User-friendly interface for easy input and output.</li>
+            <li>Enhances potency and consistency of cannabis extracts.</li>
+        </ul>
+        <a href="http://dcxr.thedabcorner.site" class="modal-btn">Visit Project</a>
+    </div>
+</div>
+
+<!-- Terptek Modal -->
+<div id="terptekModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('terptekModal')">×</span>
+        <h2 class="modal-title">TERPTEK™</h2>
+        <h3 class="modal-subtitle">Solventless Crystallization Method</h3>
+        <img src="assets/terptek.png" alt="TERPTEK Preview" class="modal-preview">
+        <p>TERPTEK™ is a groundbreaking solventless crystallization method for THCa, utilizing cannabis-derived terpenes as crystallization catalysts. This multi-phased technique redefines industry standards by avoiding alkane solvents and focusing on the natural chemistry of cannabis compounds.</p>
+        <h4 class="section-title">Research Focus</h4>
+        <p>This research explores sustainable and efficient solventless extraction and crystallization techniques. TERPTEK™ aims to harness the natural solvent properties of terpenes, minimizing the environmental impact and maximizing the purity of cannabinoid crystals.</p>
+        <h4 class="section-title">Methodology Highlights</h4>
+        <ul>
+            <li>Terpene-based solvent system derived from cannabis biomass.</li>
+            <li>Subatmospheric vapor-phase separation for terpenoid fraction refinement.</li>
+            <li>Ultrasonic and thermal modulation for enhanced crystal formation.</li>
+            <li>Focus on quantum chemistry of crystallization for molecular precision.</li>
+        </ul>
+        <p>Collaboration is welcomed for empirical validation through x-ray diffraction. If you have expertise in X-ray diffractometry, please reach out!</p>
+        <a href="#" class="modal-btn">Learn More - Contact Us</a>
+    </div>
+</div>
+
+
+<div id="carboxylModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('carboxylModal')">×</span>
+        <h2 class="modal-title">CARBOXYL™ Crystal Suite</h2>
+        <h3 class="modal-subtitle">Crystallization Reactor</h3>
+        <img src="assets/carboxyl.png" alt="Carboxyl Preview" class="modal-preview">
+        <p>The CARBOXYL™ Crystal Suite is an innovative crystallization reactor designed to optimize cannabinoid crystallization processes. It employs advanced algorithms and controlled environmental profiles to achieve high purity, optimal crystal size, and maximum yield in cannabinoid isolation.</p>
+        <h4 class="section-title">Research Focus</h4>
+        <p>This project aims to develop advanced equipment for cannabinoid purification, focusing on crystallization as a key separation technique. CARBOXYL™ is designed to improve the efficiency and scalability of producing high-quality cannabinoid isolates for medicinal applications.</p>
+        <h4 class="section-title">Reactor Features</h4>
+        <ul>
+            <li>Precise temperature and environmental controls.</li>
+            <li>Algorithm-driven process optimization profiles.</li>
+            <li>Scalable design for various production volumes.</li>
+            <li>Enhances crystal purity, size, and yield.</li>
+        </ul>
+        <a href="#" class="modal-btn">Learn More - Contact Us</a>
+    </div>
+</div>
+
+<div id="hashAppModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('hashAppModal')">×</span>
+        <h2 class="modal-title">HASHAPP™</h2>
+        <h3 class="modal-subtitle">Solventless Extraction Database</h3>
+        <img src="assets/pressblack.svg" alt="HashAPP Preview" class="modal-preview">
+        <p>HASHAPP™ is a comprehensive data management platform tailored for solventless resin cultivation and extraction facilities. It provides tools to organize, analyze, and visualize critical data, enabling users to optimize processes for enhanced efficiency, profitability, and product quality.</p>
+        <h4 class="section-title">Research Focus</h4>
+        <p>This project addresses the need for robust data management in cannabis extraction. HASHAPP™ aims to empower facilities with the data insights necessary to improve consistency, optimize yields, and ensure regulatory compliance in the rapidly evolving cannabis industry.</p>
+        <h4 class="section-title">Platform Capabilities</h4>
+        <ul>
+            <li>Centralized database for cultivation and extraction data.</li>
+            <li>Advanced analytics and visualization tools.</li>
+            <li>Customizable dashboards and reporting features.</li>
+            <li>Supports data-driven decision-making for process optimization.</li>
+        </ul>
+        <a href="#" class="modal-btn">Learn More - Contact Us</a>
+    </div>
+</div>
+
+<!-- Read Me Modal -->
+<section id="read-me-modal-section">
+    <div id="readMeModal" class="modal">
+        <div class="modal-content read-me-content">
+            <span class="close" onclick="closeModal('readMeModal')">×</span>
+            <h2 class="modal-title">About TheLabCorner™ Research</h2>
+            <div class="modal-body">
+                <p class="intro">Welcome to TheLabCorner™, a research blog and portfolio dedicated to advancing the science and technology within the medicinal cannabis industry. As an independent researcher and designer, I am committed to exploring and innovating through rigorous scientific inquiry and practical applications.</p>
+
+                <h3 class="section-title">Areas of Expertise</h3>
+                <p>My research and development efforts are grounded in:</p>
+                <div class="expertise-grid">
+                    <div class="expertise-item">
+                        <i class="fas fa-flask"></i>
+                        Solvation Chemistry & Thermodynamics
+                    </div>
+                    <div class="expertise-item">
+                        <i class="fas fa-atom"></i>
+                        Reaction Kinetics & Process Optimization
+                    </div>
+                    <div class="expertise-item">
+                        <i class="fas fa-cogs"></i>
+                        Thermal & Electrical Systems Design
+                    </div>
+                    <div class="expertise-item">
+                        <i class="fas fa-paint-brush"></i>
+                        Scientific Visualization & Graphic Design
+                    </div>
+                    <div class="expertise-item">
+                        <i class="fas fa-code"></i>
+                        Software & Algorithm Development
+                    </div>
+                </div>
+                <br/>
+                <p>These multidisciplinary skills are applied to develop innovative tools, equipment, and methodologies aimed at enhancing the efficiency, safety, and quality of medicinal cannabis extraction and processing. My work is driven by a passion for scientific rigor and a commitment to contributing to a responsible and evidence-based cannabis industry.</p>
+
+                <h3 class="section-title">Explore Our Research</h3>
+                <p>Within this portfolio, you will find:</p>
+                <div class="content-list">
+                    <div class="content-item">
+                        <i class="fas fa-flask"></i>
+                        <span>Independent Research Projects & Findings</span>
+                    </div>
+                    <div class="content-item">
+                        <i class="fas fa-vial"></i>
+                        <span>Novel Extraction & Crystallization Techniques</span>
+                    </div>
+                    <div class="content-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Innovative Software & Equipment Designs</span>
+                    </div>
+                </div>
+                <p>This platform serves as a resource for sharing insights, advancements, and tools that can benefit researchers, professionals, and enthusiasts within the medicinal cannabis sector. All projects are developed with a focus on scientific accuracy and adherence to legal and ethical standards.</p>
+                <br/>
+                <p class="conclusion">Dive into the projects, explore the research, and join us at the forefront of cannabis science and technology.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer Section -->
+<footer id="contact-footer" class="footer">
+    <div class="container">
+        <a href="#hero" class="back-to-top" aria-label="go back to top">
+            <i class="fa fa-angle-up fa-2x arrowup" aria-hidden="true"></i>
+        </a>
+        <div class="social-links">
+            <a
+                    href="mailto:thedabcorner@outlook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="email"
+            >
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a
+                    href="https://instagram.com/huealchemy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="instagram"
+            >
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a
+                    href="https://www.linkedin.com/in/thelabcorner/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="linkedin"
+            >
+                <i class="fa-brands fa-linkedin"></i>
+            </a>
+            <a
+                    href="https://github.com/thelabcorner/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="github"
+            >
+                <i class="fa-brands fa-github"></i>
+            </a>
+        </div>
+        <hr />
+        <p class="footer__text">
+            <a href="https://thedabcorner.site/tos" target="_blank" rel="noopener noreferrer"> ©<span id="year"></span></a>
+            -
+            <a href="https://thedabcorner.site/tos" target="_blank" rel="noopener noreferrer">TheLabCorner™</a> <br />
+            <a href="https://thedabcorner.site/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> | <a href="https://thedabcorner.site/tos" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+        </p>
+    </div>
+</footer>
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear()
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    window.onclick = function(event) {
+        if (event.target.className === "modal") {
+            event.target.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var filters = document.querySelectorAll('.filters ul li');
+        var items = document.querySelectorAll('.single-portfolio');
+
+        filters.forEach(filter => {
+            filter.addEventListener('click', function() {
+                filters.forEach(f => f.classList.remove('active'));
+                this.classList.add('active');
+
+                var filterValue = this.getAttribute('data-filter');
+
+                items.forEach(item => {
+                    if (item.classList.contains(filterValue.substring(1)) || filterValue === '*') {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+
+
+
+</html>

@@ -477,8 +477,8 @@
 
         function createWireframeSphere() {
             const radius = isMobile ? 120 : 140;
-            const widthSeg = 32;
-            const heightSeg = 30;
+            const widthSeg = 24;
+            const heightSeg = 20;
             const geo = new THREE.SphereGeometry(radius, widthSeg, heightSeg);
             const wfGeo = new THREE.WireframeGeometry(geo);
             const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4, linewidth: 1, side: THREE.FRONT });
@@ -603,7 +603,7 @@
         }
 
         function addStars(scene) {
-            const count = isMobile ? 500 : 2000;
+            const count = isMobile ? 200 : 1000;
             const geo = new THREE.BufferGeometry();
             const pos = [];
             const uniforms = {
@@ -674,7 +674,7 @@
             container.innerHTML = '';
 
             const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
-            renderer.setPixelRatio(isMobile ? Math.min(window.devicePixelRatio, 3.6) : window.devicePixelRatio);
+            renderer.setPixelRatio(1.0);
             renderer.setSize(window.innerWidth, window.innerHeight);
             container.appendChild(renderer.domElement);
 
@@ -701,15 +701,20 @@
             let parallaxX = 0, parallaxY = 0;
             let targetParallaxX = 0, targetParallaxY = 0;
 
-            // Update onPointerMove to set parallax targets
+            // Update onPointerMove to set parallax targets only when hovering over hero-container
+            const heroContainer = document.querySelector('.hero-container');
+
             function onPointerMove(e) {
-                const x = e.clientX ?? (e.touches?.[0]?.clientX) ?? window.innerWidth/2;
-                const y = e.clientY ?? (e.touches?.[0]?.clientY) ?? window.innerHeight/2;
-                targetRotY = ((x - window.innerWidth/2) / window.innerWidth) * Math.PI * 0.2;
-                targetRotX = ((y - window.innerHeight/2) / window.innerHeight) * Math.PI * 0.2;
-                targetParallaxX = (x - window.innerWidth/2) / window.innerWidth * 40;
-                targetParallaxY = (y - window.innerHeight/2) / window.innerHeight * 40;
+                if (!heroContainer.matches(':hover')) return;
+
+                const x = e.clientX ?? (e.touches?.[0]?.clientX) ?? window.innerWidth / 2;
+                const y = e.clientY ?? (e.touches?.[0]?.clientY) ?? window.innerHeight / 2;
+                targetRotY = ((x - window.innerWidth / 2) / window.innerWidth) * Math.PI * 0.2;
+                targetRotX = ((y - window.innerHeight / 2) / window.innerHeight) * Math.PI * 0.2;
+                targetParallaxX = (x - window.innerWidth / 2) / window.innerWidth * 40;
+                targetParallaxY = (y - window.innerHeight / 2) / window.innerHeight * 40;
             }
+
             window.addEventListener(isMobile ? 'touchmove' : 'mousemove', onPointerMove);
 
             window.addEventListener('resize', () => {
@@ -742,9 +747,6 @@
                 rings.rotation.x = -Math.min(baseTilt, currRotX * 0.02 + Math.sin(t * 0.8) * 0.04);
                 rings.rotation.y = earthSpin * 0.7 + Math.cos(t * 0.6) * 0.03;
                 rings.rotation.z = Math.min(0, Math.sin(t * 0.5) * 0.02);
-
-                // {#console.log(`Sphere Rotation: X=${sphere.rotation.x.toFixed(4)}, Y=${sphere.rotation.y.toFixed(4)}, Z=${sphere.rotation.z.toFixed(4)}`);#}
-                // {#        console.log(`Rings Rotation: X=${rings.rotation.x.toFixed(4)}, Y=${rings.rotation.y.toFixed(4)}, Z=${rings.rotation.z.toFixed(4)}`);#}
 
                 renderer.render(scene, camera);
             }
@@ -2772,7 +2774,7 @@ const splide = new Splide('#experience-carousel', {
     perPage: 1,
     perMove: 1,
     gap: '2rem',
-    padding: { left: '5%', right: '5%' },
+    padding: { left: '0.5%', right: '0.5%' },
     focus: 'center', // Ensures centering
     arrows: false,
     pagination: true,
@@ -2862,433 +2864,1010 @@ const splide = new Splide('#experience-carousel', {
 
 <!--Portfolio Section-->
 <section id="portfolio">
-  <div class="container portfolio-container">
-    <h2 class="section-title" data-text="PORTFOLIO">Portfolio</h2>
-    <div class="portfolio-filters" id="portfolioFilters">
-      <!-- Filter buttons will be injected here -->
-    </div>
-    <div class="portfolio-grid" id="portfolioGrid">
-      <!-- Cards will be injected here -->
-    </div>
-  </div>
-  <!-- Modal stays the same -->
-  <div class="modal fade" id="portfolioModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content glass-modal">
-        <div class="modal-header border-0">
-          <h4 class="modal-title" id="portfolioModalTitle"></h4>
-          <button type="button" class="btn-close cosmic-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="container portfolio-container">
+        <h2 class="section-title" data-text="PORTFOLIO">Portfolio</h2>
+        <div class="portfolio-filters" id="portfolioFilters">
+            <!-- Filter buttons will be injected here -->
         </div>
-        <div class="modal-body">
-          <img id="portfolioModalImage" class="img-fluid rounded mb-3" alt="Project image">
-          <p id="portfolioModalDescription"></p>
+        <div class="portfolio-grid" id="portfolioGrid">
+            <!-- Cards will be injected here -->
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
+<!-- Enhanced Portfolio Modal -->
+<div class="modal fade" id="portfolioModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content glass-modal">
+            <div class="modal-header">
+                <h4 class="modal-title" id="portfolioModalTitle"></h4>
+                <button type="button" class="portfolio-modal-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="portfolio-modal-container">
+                    <!-- Left Side: Gallery -->
+                    <div class="portfolio-modal-gallery">
+                        <div class="portfolio-main-image">
+                            <img id="portfolioModalMainImage" class="img-fluid" alt="Project image">
+                            <div class="image-nav">
+                                <button class="image-nav-btn prev" id="prevImageBtn">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="image-nav-btn next" id="nextImageBtn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-thumbnails" id="portfolioThumbnails">
+                            <!-- Thumbnails will be injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Project Details -->
+                    <div class="portfolio-modal-details">
+                        <div class="details-section">
+                            <h5><i class="fas fa-info-circle"></i> Project Overview</h5>
+                            <div id="portfolioModalDescription" class="project-description"></div>
+                        </div>
+
+                        <div class="details-section">
+                            <h5><i class="fas fa-tools"></i> Technologies Used</h5>
+                            <div class="tech-tags" id="portfolioModalTech"></div>
+                        </div>
+
+                        <div class="details-section">
+                            <h5><i class="fas fa-tasks"></i> Project Scope</h5>
+                            <div id="portfolioModalScope"></div>
+                        </div>
+
+                        <div class="details-section">
+                            <h5><i class="fas fa-calendar-alt"></i> Timeline</h5>
+                            <div id="portfolioModalTimeline"></div>
+                        </div>
+
+                        <div class="details-section project-links">
+                            <a href="#" id="portfolioModalLiveLink" class="btn btn-purple" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Visit Project
+                            </a>
+                            <a href="#" id="portfolioModalCodeLink" class="btn btn-outline-purple" target="_blank">
+                                <i class="fab fa-github"></i> View Code
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-// 1. Project data array
-const projects = [
-    // HashAPP Site [Cannabis Extraction L.I.M.S]
-    {
-        title: "HashAPP L.I.M.S",
-        category: "web",
-        image: "assets/projects/HASHAPP/HASHAPP_TM.png",
-        description: "A Laboratory Information Management System for cannabis extraction labs."
-    },
+    // 1. Project data array - Enhanced with more details
+    const projects = [
+        // HashAPP Site [Cannabis Extraction L.I.M.S]
+        {
+            title: "HashAPP L.I.M.S",
+            category: "web",
+            images: [
+                "assets/projects/HASHAPP/HASHAPP_TM.png",
+                "assets/projects/HASHAPP/hashapp-dashboard.png",
+                "assets/projects/HASHAPP/hashapp-mobile.png"
+            ],
+            description: "A Laboratory Information Management System for cannabis extraction labs. This comprehensive web application helps track samples, manage workflows, and generate regulatory compliance reports.",
+            technologies: ["React", "Node.js", "MongoDB", "Express", "Figma"],
+            scope: "Full-stack development, UI/UX design, database architecture, and deployment",
+            timeline: "3 months (June - August 2022)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Engineering Minds Tutoring Site
-    {
-        title: "Engineering Minds Tutoring",
-        category: "web",
-        image: "assets/projects/ENGINEERINGMINDS/ENGINEERINGMINDS.png",
-        description: "A modern tutoring platform for engineering students, featuring scheduling and resource management."
-    },
+        // Engineering Minds Tutoring Site
+        {
+            title: "Engineering Minds Tutoring",
+            category: "web",
+            images: [
+                "assets/projects/ENGINEERINGMINDS/ENGINEERINGMINDS.png",
+                "assets/projects/ENGINEERINGMINDS/em-resources.png",
+                "assets/projects/ENGINEERINGMINDS/em-mobile.png"
+            ],
+            description: "A modern tutoring platform for engineering students, featuring scheduling and resource management. The platform includes interactive learning modules, video conferencing integration, and a comprehensive library of STEM resources.",
+            technologies: ["Vue.js", "Firebase", "Tailwind CSS", "WebRTC"],
+            scope: "Frontend development, authentication system, real-time chat functionality",
+            timeline: "2 months (March - April 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // M&J Contracting Site + Logo
-    {
-        title: "M&J Contracting",
-        category: "web",
-        image: "assets/projects/M&J/mj_oct.png",
-        description: "Website and logo design for a local contracting business."
-    },
+        // M&J Contracting Site + Logo
+        {
+            title: "M&J Contracting",
+            category: "web",
+            images: [
+                "assets/projects/M&J/mj_oct.png",
+                "assets/projects/M&J/website.png",
+                "assets/projects/M&J/MJDoorHanger.png"
+            ],
+            description: "Website and logo design for a local contracting business. The site features a project gallery, service descriptions, and a contact form.",
+            technologies: ["HTML", "CSS", "JavaScript", "WordPress"],
+            scope: "Web design, development, and logo creation",
+            timeline: "1.5 months (July - August 2021)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Zeya Capital Logo
-    {
-        title: "Zeya Capital Logo",
-        category: "branding",
-        image: "assets/projects/ZEYA/zeya.png",
-        description: "Minimalist logo for a financial services startup."
-    },
-
-
-    // Carboxyl Logo
-    {
-        title: "Carboxyl Logo",
-        category: "branding",
-        image: "assets/projects/carboxyl_logo.png",
-        description: "Brand identity and logo for a chemical solutions company."
-    },
-
-    // Void Star Lab Logo
-    {
-        title: "Void Star Lab Logo",
-        category: "branding",
-        image: "assets/projects/VOIDSTAR/voidstar.png",
-        description: "Futuristic logo for a technology and research lab."
-    },
-
-    // Midwest Outlaw Clothing + Extraction
-    {
-        title: "Midwest Outlaw Clothing + Extraction",
-        category: "branding",
-        image: "assets/projects/MWOUTLAW/MWOUTLAW.png",
-        description: "Branding for a dual clothing and cannabis extraction business."
-    },
-
-    // Fear of God Fashion Branding
-    {
-        title: "Fear of God Fashion Branding",
-        category: "branding",
-        image: "assets/projects/fearofgod.png",
-        description: "Branding and visual identity for a fashion label."
-    },
-
-    // Motion Clothing Co Branding
-    {
-        title: "Motion Clothing Co Branding",
-        category: "branding",
-        image: "assets/projects/MOTION/motion_branding.png",
-        description: "Branding and logo for an activewear company."
-    },
-
-    // iFight - MMA Branding
-    {
-        title: "iFight MMA Branding",
-        category: "branding",
-        image: "assets/projects/IFIGHT/IFIGHT_LOGOF.png",
-        description: "Logo and branding for a mixed martial arts promotion."
-    },
-
-    // Peak Heating and Cooling
-    {
-        title: "Peak Heating and Cooling",
-        category: "branding",
-        image: "assets/projects/PEAKH&C/peak_hvac.png",
-        description: "Website and branding for an HVAC company."
-    },
-
-    // Villaneda Landscapes Logo
-    {
-        title: "Villaneda Landscapes Logo",
-        category: "branding",
-        image: "assets/projects/VILLALANDSCAPE/villa_landscapes.png",
-        description: "Branding and logo for a landscaping business."
-    },
+        // Zeya Capital Logo
+        {
+            title: "Zeya Capital Branding",
+            category: "branding",
+            images: [
+                "assets/projects/ZEYA/zeya.png",
+                "assets/projects/ZEYA/zeya_business_card.png"
+            ],
+            description: "Minimalist logo for a financial services startup. The branding includes a logo, business card, and letterhead design.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Logo design and brand identity development",
+            timeline: "2 weeks (May 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
 
-    // Livestock Hash Co Logo
-    {
-        title: "Livestock Hash Co Logo",
-        category: "branding",
-        image: "assets/projects/LIVESTOCK/livestock.png",
-        description: "Logo design for a livestock and agricultural brand."
-    },
+        // Carboxyl Logo
+        {
+            title: "Carboxyl Branding",
+            category: "branding",
+            images: [
+                "assets/projects/CARBOXYL/carboxyl_logo.png",
+                "assets/projects/carboxyl/incubator.png",
+            ],
+            description: "Brand identity and logo for a chemical solutions company. The project included logo design, business cards, and letterhead.",
+            technologies: ["Adobe Illustrator", "InDesign"],
+            scope: "Complete brand identity package",
+            timeline: "3 weeks (April 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Comet Freebuild Minecraft Server Branding
-    {
-        title: "Comet Freebuild Minecraft Server",
-        category: "branding",
-        image: "assets/projects/COMETFREEBUILD/comet_freebuild.png",
-        description: "Logo and web assets for a Minecraft gaming community."
-    },
+        // Void Star Lab Logo
+        {
+            title: "Void Star Lab Branding",
+            category: "branding",
+            images: [
+                "assets/projects/VOIDSTAR/voidstar.png",
+                "assets/projects/VOIDSTAR/voidstar_stationery.png"
+            ],
+            description: "Futuristic logo for a technology and research lab. The branding includes a logo and stationery design.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Logo and stationery design",
+            timeline: "2 weeks (March 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // High Rise Extracts Packaging
-    {
-        title: "High Rise Extracts Packaging",
-        category: "packaging",
-        image: "assets/projects/HIGHRISE/maple_bacon_burger.png",
-        description: "Custom packaging design for a cannabis extracts company."
-    },
+        // Midwest Outlaw Clothing + Extraction
+        {
+            title: "Midwest Outlaw Clothing + Extraction",
+            category: "branding",
+            images: [
+                "assets/projects/MWOUTLAW/MWOUTLAW.png",
+                "assets/projects/MWOUTLAW/mwoutlaw_clothing.png",
+                "assets/projects/MWOUTLAW/mwoutlaw_extraction.png"
+            ],
+            description: "Branding for a dual clothing and cannabis extraction business. The project includes logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator", "Figma"],
+            scope: "Branding and product packaging design",
+            timeline: "4 weeks (Jan - Feb 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Dairy Freeze Logo
-    {
-        title: "Dairy Freeze Logo",
-        category: "branding",
-        image: "assets/projects/DAIRYFREEZE/dairy_freeze.png",
-        description: "Retro-inspired logo for an ice cream shop."
-    },
+        // Fear of God Fashion Branding
+        {
+            title: "Fear of God Fashion Branding",
+            category: "branding",
+            images: [
+                "assets/projects/fearofgod.png",
+                "assets/projects/fearofgod/lookbook.pdf"
+            ],
+            description: "Branding and visual identity for a fashion label. The project includes logo design, lookbook, and social media graphics.",
+            technologies: ["Adobe Illustrator", "InDesign"],
+            scope: "Complete branding and lookbook design",
+            timeline: "3 weeks (Dec 2022 - Jan 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Single Source Sticker Company Logo
-    {
-        title: "Single Source Sticker Co Logo",
-        category: "branding",
-        image: "assets/projects/singlesourcestickerco.png",
-        description: "Logo and brand assets for a sticker printing company."
-    },
+        // Motion Clothing Co Branding
+        {
+            title: "Motion Clothing Co Branding",
+            category: "branding",
+            images: [
+                "assets/projects/MOTION/motion_branding.png",
+                "assets/projects/MOTION/motion_tags.png"
+            ],
+            description: "Branding and logo for an activewear company. The project includes logo design, clothing tags, and promotional materials.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Branding and promotional material design",
+            timeline: "2 weeks (Feb 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // iFight - MMA Branding
+        {
+            title: "iFight MMA Branding",
+            category: "branding",
+            images: [
+                "assets/projects/IFIGHT/IFIGHT_LOGOG.png",
+                "assets/projects/IFIGHT/ifight_merch.png"
+            ],
+            description: "Logo and branding for a mixed martial arts promotion. The project includes logo design and merchandise graphics.",
+            technologies: ["Adobe Illustrator", "CorelDRAW"],
+            scope: "Logo and merchandise design",
+            timeline: "2 weeks (Jan 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Peak Heating and Cooling
+        {
+            title: "Peak Heating and Cooling",
+            category: "branding",
+            images: [
+                "assets/projects/PEAKH&C/peak_hvac.png",
+                "assets/projects/PEAKH&C/peak_business_card.png"
+            ],
+            description: "Website and branding for an HVAC company. The project includes logo design, business cards, and a responsive website.",
+            technologies: ["HTML", "CSS", "JavaScript", "WordPress"],
+            scope: "Web design and development, logo and business card design",
+            timeline: "1.5 months (Aug - Sep 2022)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Villaneda Landscapes Logo
+        {
+            title: "Villaneda Landscapes Branding",
+            category: "branding",
+            images: [
+                "assets/projects/VILLALANDSCAPE/villa_landscapes.png",
+                "assets/projects/VILLALANDSCAPE/villa_business_card.png"
+            ],
+            description: "Branding and logo for a landscaping business. The project includes logo design, business cards, and vehicle wraps.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Complete branding package",
+            timeline: "3 weeks (Feb - Mar 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
 
-    // Little Hash Stars
-    {
-        title: "Little Hash Stars",
-        category: "packaging",
-        image: "assets/projects/LITTLEHASH/little_hash_stars.png",
-        description: "Playful branding for a children's cannabis education initiative."
-    },
+        // Livestock Hash Co Logo
+        {
+            title: "Livestock Hash Co Branding",
+            category: "branding",
+            images: [
+                "assets/projects/LIVESTOCK/livestock.png",
+                "assets/projects/LIVESTOCK/livestock_labels.png"
+            ],
+            description: "Logo design for a livestock and agricultural brand. The project includes logo design and product label graphics.",
+            technologies: ["Adobe Illustrator", "InDesign"],
+            scope: "Logo and label design",
+            timeline: "2 weeks (Mar 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Anonymous Clothing Brand
-    {
-        title: "ANONYMOUS Clothing Brand",
-        category: "branding",
-        image: "assets/projects/ANONYMOUS/coat_drive.png",
-        description: "Various branding assets for the clothing brand 'ANONYMOUS'."
-    },
+        // Comet Freebuild Minecraft Server Branding
+        {
+            title: "Comet Freebuild Minecraft Server",
+            category: "branding",
+            images: [
+                "assets/projects/COMETFREEBUILD/comet_freebuild.png",
+                "assets/projects/COMETFREEBUILD/comet_merch.png"
+            ],
+            description: "Logo and web assets for a Minecraft gaming community. The project includes logo design and merchandise graphics.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Logo and merchandise design",
+            timeline: "1 week (Apr 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Anonymous Clothing Brand
-    {
-        title: "Kijan Boone Event Branding",
-        category: "branding",
-        image: "assets/projects/ANONYMOUS/kijan_boone.png",
-        description: "Event branding for Kijan Boone, a christian hip-hop artist."
-    },
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/maple_bacon_burger.png",
+                "assets/projects/HIGHRISE/highrise_extracts.png"
+            ],
+            description: "Custom packaging design for a cannabis extracts company. The project includes label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "InDesign"],
+            scope: "Packaging design and mockups",
+            timeline: "2 weeks (Jan 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
 
-    // Red Maverick Youtube Branding
-    {
-        title: "Red Maverick Youtube Branding",
-        category: "branding",
-        image: "assets/projects/REDMAVERICK/RED_MAVERICK.png",
-        description: "YouTube channel branding and logo for a gaming content creator."
+        // Dairy Freeze Logo
+        {
+            title: "Dairy Freeze Branding",
+            category: "branding",
+            images: [
+                "assets/projects/DAIRYFREEZE/dairy_freeze.png",
+                "assets/projects/DAIRYFREEZE/dairy_freeze_packaging.png"
+            ],
+            description: "Retro-inspired logo for an ice cream shop. The branding includes a logo, packaging design, and promotional materials.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Logo and packaging design",
+            timeline: "3 weeks (Feb - Mar 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Single Source Sticker Company Logo
+        {
+            title: "Single Source Sticker Co Branding",
+            category: "branding",
+            images: [
+                "assets/projects/singlesourcestickerco.png",
+                "assets/projects/singlesourcestickerco/sticker_sheet.png"
+            ],
+            description: "Logo and brand assets for a sticker printing company. The project includes logo design and a sheet of custom stickers.",
+            technologies: ["Adobe Illustrator", "CorelDRAW"],
+            scope: "Logo and sticker design",
+            timeline: "2 weeks (Mar 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+
+        // Little Hash Stars
+        {
+            title: "Little Hash Stars",
+            category: "packaging",
+            images: [
+                "assets/projects/LITTLEHASH/little_hash_stars.png",
+                "assets/projects/LITTLEHASH/little_hash_stars_box.png"
+            ],
+            description: "Playful branding for a children's cannabis education initiative. The project includes a logo, packaging design, and educational materials.",
+            technologies: ["Adobe Illustrator", "InDesign"],
+            scope: "Branding and educational material design",
+            timeline: "3 weeks (Apr 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Anonymous Clothing Brand
+        {
+            title: "ANONYMOUS Clothing Brand",
+            category: "branding",
+            images: [
+                "assets/projects/ANONYMOUS/coat_drive.png",
+                "assets/projects/ANONYMOUS/anony_clothing_tags.png"
+            ],
+            description: "Various branding assets for the clothing brand 'ANONYMOUS'. The project includes logo design, clothing tags, and promotional graphics.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Branding and promotional material design",
+            timeline: "4 weeks (Jan - Feb 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Anonymous Clothing Brand
+        {
+            title: "Kijan Boone Event Branding",
+            category: "branding",
+            images: [
+                "assets/projects/ANONYMOUS/kijan_boone.png",
+                "assets/projects/ANONYMOUS/kijan_boone_poster.png"
+            ],
+            description: "Event branding for Kijan Boone, a christian hip-hop artist. The project includes logo design, event poster, and social media graphics.",
+            technologies: ["Adobe Illustrator", "InDesign"],
+            scope: "Event branding and promotional material design",
+            timeline: "2 weeks (Mar 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Red Maverick Youtube Branding
+        {
+            title: "Red Maverick Youtube Branding",
+            category: "branding",
+            images: [
+                "assets/projects/REDMAVERICK/RED_MAVERICK.png",
+                "assets/projects/REDMAVERICK/red_maverick_thumbnails.png"
+            ],
+            description: "YouTube channel branding and logo for a gaming content creator. The project includes logo design and video thumbnail templates.",
+            technologies: ["Adobe Illustrator", "Photoshop"],
+            scope: "Logo and YouTube thumbnail design",
+            timeline: "1 week (Apr 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        }
+    ];
+
+    // 2. Render filter buttons dynamically (no "All" button)
+    function renderFilterButtons() {
+        const filtersContainer = document.getElementById('portfolioFilters');
+        const categories = Array.from(new Set(projects.map(p => p.category)));
+        filtersContainer.innerHTML = '';
+
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.setAttribute('data-filter', cat);
+            btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+            filtersContainer.appendChild(btn);
+        });
     }
-];
 
-// 2. Render filter buttons dynamically (no "All" button)
-function renderFilterButtons() {
-  const filtersContainer = document.getElementById('portfolioFilters');
-  const categories = Array.from(new Set(projects.map(p => p.category)));
-  filtersContainer.innerHTML = '';
+    function renderPortfolioCards(filter) {
+        const grid = document.getElementById("portfolioGrid");
+        grid.innerHTML = "";
 
-  categories.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.setAttribute('data-filter', cat);
-    btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-    filtersContainer.appendChild(btn);
-  });
-}
+        let filtered = projects;
+        if (filter) filtered = projects.filter(p => p.category === filter);
 
-function renderPortfolioCards(filter) {
-  const grid = document.getElementById("portfolioGrid");
-  grid.innerHTML = "";
+        if (filter === "packaging") {
+            grid.classList.add('single-card');
+        } else {
+            grid.classList.remove('single-card');
+        }
 
-  let filtered = projects;
-  if (filter) filtered = projects.filter(p => p.category === filter);
+        filtered.forEach(p => {
+            const card = document.createElement("div");
+            card.className = "portfolio-card";
+            card.setAttribute("data-category", p.category);
+            card.innerHTML = `
+              <div class="portfolio-image" data-src="${p.images[0]}"></div>
+              <div class="portfolio-content">
+                <h3>${p.title}</h3>
+                <p>${p.description}</p>
+                <button class="portfolio-details-btn"
+                  data-title="${p.title}"
+                  data-description="${p.description}"
+                  data-image="${p.images[0]}"
+                  data-category="${p.category}">
+                  View Details
+                </button>
+              </div>
+            `;
+            grid.appendChild(card);
+        });
 
-  if (filter === "packaging") {
-    grid.classList.add('single-card');
-  } else {
-    grid.classList.remove('single-card');
-  }
-
-  filtered.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "portfolio-card";
-    card.setAttribute("data-category", p.category);
-    card.innerHTML = `
-      <div class="portfolio-image" style="background-image:url('${p.image}');"></div>
-      <div class="portfolio-content">
-        <h3>${p.title}</h3>
-        <p>${p.description}</p>
-        <button class="portfolio-details-btn"
-          data-title="${p.title}"
-          data-description="${p.description}"
-          data-image="${p.image}"
-          data-category="${p.category}">
-          View Details
-        </button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-  attachModalListeners();
-}
-
-// 4. Filtering logic (delegated event)
-function setupFilterEvents() {
-  const filtersContainer = document.getElementById('portfolioFilters');
-  filtersContainer.addEventListener('click', function(e) {
-    if (e.target.classList.contains('filter-btn')) {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      renderPortfolioCards(e.target.getAttribute('data-filter'));
+        lazyLoadImages();
+        attachModalListeners();
     }
-  });
-}
 
-// 6. Initial render
-document.addEventListener('DOMContentLoaded', () => {
-  renderFilterButtons();
-  setupFilterEvents();
-  renderPortfolioCards();
-});
+    function lazyLoadImages() {
+        const images = document.querySelectorAll('.portfolio-image[data-src], .portfolio-image[data-loaded]');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const img = entry.target;
+                if (entry.isIntersecting) {
+                    // Load the image when it enters the viewport
+                    if (img.hasAttribute('data-src')) {
+                        img.style.backgroundImage = `url('${img.getAttribute('data-src')}')`;
+                        img.setAttribute('data-loaded', img.getAttribute('data-src'));
+                        img.removeAttribute('data-src');
+                    }
+                } else {
+                    // Unload the image when it exits the viewport
+                    if (img.hasAttribute('data-loaded')) {
+                        img.style.backgroundImage = '';
+                        img.setAttribute('data-src', img.getAttribute('data-loaded'));
+                        img.removeAttribute('data-loaded');
+                    }
+                }
+            });
+        });
 
-// 4. Filtering logic (delegated event)
-function setupFilterEvents() {
-  const filtersContainer = document.getElementById('portfolioFilters');
-  filtersContainer.addEventListener('click', function(e) {
-    if (e.target.classList.contains('filter-btn')) {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      renderPortfolioCards(e.target.getAttribute('data-filter'));
+        images.forEach(img => observer.observe(img));
     }
-  });
-}
 
-// 5. Modal logic
-function attachModalListeners() {
-  const modal = new bootstrap.Modal(document.getElementById('portfolioModal'));
-  document.querySelectorAll('.portfolio-details-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.getElementById('portfolioModalTitle').textContent = this.dataset.title;
-      document.getElementById('portfolioModalDescription').textContent = this.dataset.description;
-      document.getElementById('portfolioModalImage').src = this.dataset.image;
-      modal.show();
+    // 4. Filtering logic (delegated event)
+    function setupFilterEvents() {
+        const filtersContainer = document.getElementById('portfolioFilters');
+        filtersContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('filter-btn')) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                renderPortfolioCards(e.target.getAttribute('data-filter'));
+            }
+        });
+    }
+
+    // 5. Enhanced Modal logic for multiple images
+    function attachModalListeners() {
+        const modal = new bootstrap.Modal(document.getElementById('portfolioModal'));
+        document.querySelectorAll('.portfolio-details-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const projectTitle = this.dataset.title;
+
+                // Find the project data
+                const project = projects.find(p => p.title === projectTitle);
+                if (!project) return;
+
+                // Populate modal with project data
+                document.getElementById('portfolioModalTitle').textContent = project.title;
+                document.getElementById('portfolioModalDescription').textContent = project.description || '';
+
+                // Set the main image to the first image
+                const mainImageEl = document.getElementById('portfolioModalMainImage');
+                mainImageEl.src = project.images?.[0] || this.dataset.image;
+                mainImageEl.dataset.index = '0';
+
+                // Generate thumbnails if multiple images exist
+                const thumbnailsContainer = document.getElementById('portfolioThumbnails');
+                thumbnailsContainer.innerHTML = '';
+
+                if (project.images && project.images.length > 1) {
+                    project.images.forEach((img, index) => {
+                        const thumb = document.createElement('div');
+                        thumb.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+                        thumb.innerHTML = `<img src="${img}" alt="Thumbnail ${index + 1}">`;
+
+                        thumb.addEventListener('click', () => {
+                            // Update main image
+                            mainImageEl.src = img;
+                            mainImageEl.dataset.index = index.toString();
+
+                            // Update active thumbnail
+                            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                            thumb.classList.add('active');
+                        });
+
+                        thumbnailsContainer.appendChild(thumb);
+                    });
+
+                    // Show navigation arrows if multiple images
+                    document.querySelector('.image-nav').style.display = 'block';
+
+                    // Set up navigation buttons
+                    document.getElementById('nextImageBtn').onclick = () => navigateImages(1);
+                    document.getElementById('prevImageBtn').onclick = () => navigateImages(-1);
+                } else {
+                    // Hide navigation if only one image
+                    document.querySelector('.image-nav').style.display = 'none';
+                }
+
+                // Populate technical details
+                const techContainer = document.getElementById('portfolioModalTech');
+                techContainer.innerHTML = '';
+
+                if (project.technologies && project.technologies.length) {
+                    project.technologies.forEach(tech => {
+                        const tag = document.createElement('span');
+                        tag.textContent = tech;
+                        techContainer.appendChild(tag);
+                    });
+                } else {
+                    techContainer.innerHTML = '<span>Not specified</span>';
+                }
+
+                // Populate scope and timeline
+                document.getElementById('portfolioModalScope').textContent = project.scope || 'Not specified';
+                document.getElementById('portfolioModalTimeline').textContent = project.timeline || 'Not specified';
+
+                // Set links
+                const liveLink = document.getElementById('portfolioModalLiveLink');
+                const codeLink = document.getElementById('portfolioModalCodeLink');
+
+                if (project.liveLink && project.liveLink !== '#') {
+                    liveLink.href = project.liveLink;
+                    liveLink.style.display = 'inline-flex';
+                } else {
+                    liveLink.style.display = 'none';
+                }
+
+                if (project.codeLink && project.codeLink !== '#') {
+                    codeLink.href = project.codeLink;
+                    codeLink.style.display = 'inline-flex';
+                } else {
+                    codeLink.style.display = 'none';
+                }
+
+                modal.show();
+            });
+        });
+
+        // Function to navigate through images
+        function navigateImages(direction) {
+            const mainImg = document.getElementById('portfolioModalMainImage');
+            const currentIndex = parseInt(mainImg.dataset.index || '0');
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const totalImages = thumbnails.length;
+
+            if (totalImages <= 1) return;
+
+            // Calculate new index with wrapping
+            let newIndex = (currentIndex + direction) % totalImages;
+            if (newIndex < 0) newIndex = totalImages - 1;
+
+            // Update main image
+            mainImg.src = thumbnails[newIndex].querySelector('img').src;
+            mainImg.dataset.index = newIndex.toString();
+
+            // Update active thumbnail
+            thumbnails.forEach(t => t.classList.remove('active'));
+            thumbnails[newIndex].classList.add('active');
+        }
+    }
+
+    // 6. Initial render
+    document.addEventListener('DOMContentLoaded', () => {
+        renderFilterButtons();
+        setupFilterEvents();
+        renderPortfolioCards();
     });
-  });
-}
-
-// 6. Initial render
-document.addEventListener('DOMContentLoaded', () => {
-  renderFilterButtons();
-  setupFilterEvents();
-  renderPortfolioCards();
-});
 </script>
 
 <style>
     #portfolio {
-      background: linear-gradient(135deg, #100921 0%, #0f0025 100%);
-      padding: 100px 0 80px;
-      position: relative;
-      z-index: 1;
+        background: linear-gradient(135deg, #100921 0%, #0f0025 100%);
+        padding: 100px 0 80px;
+        position: relative;
+        z-index: 1;
     }
     .portfolio-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
     }
     .portfolio-filters {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
     }
     .filter-btn {
-      background: rgba(139,92,246,0.12);
-      color: #fff;
-      border: none;
-      padding: 10px 28px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s;
+        background: rgba(139,92,246,0.12);
+        color: #fff;
+        border: none;
+        padding: 10px 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
     }
     .filter-btn.active,
     .filter-btn:hover {
-      background: var(--primary-purple);
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(139,92,246,0.15);
+        background: var(--primary-purple);
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(139,92,246,0.15);
     }
 
     .single-card {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 2rem;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2rem;
     }
 
     .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
     }
     .portfolio-card {
-      background: rgba(38, 30, 59, 0.7);
-      border-radius: 18px;
-      box-shadow: 0 8px 32px rgba(139,92,246,0.12), 0 1.5px 0 0 rgba(139,92,246,0.08);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 1.5px solid rgba(139,92,246,0.18);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      position: relative;
+        background: rgba(38, 30, 59, 0.7);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(139,92,246,0.12), 0 1.5px 0 0 rgba(139,92,246,0.08);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1.5px solid rgba(139,92,246,0.18);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        position: relative;
     }
     .portfolio-card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 16px 40px rgba(139,92,246,0.22);
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 16px 40px rgba(139,92,246,0.22);
     }
     .portfolio-image {
-      width: 100%;
-      height: 200px;
-      background-size: cover;
-      background-position: center;
-      border-bottom: 1.5px solid rgba(139,92,246,0.12);
+        width: 100%;
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        border-bottom: 1.5px solid rgba(139,92,246,0.12);
     }
     .portfolio-content {
-      padding: 1.5rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     .portfolio-content h3 {
-      color: #fff;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+        color: #fff;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
     }
     .portfolio-content p {
-      color: #cbd5e1;
-      font-size: 1rem;
-      margin-bottom: 1.2rem;
+        color: #cbd5e1;
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
     }
     .portfolio-details-btn {
-      background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 22px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      align-self: flex-start;
-      box-shadow: 0 2px 8px rgba(139,92,246,0.18);
+        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 22px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        align-self: flex-start;
+        box-shadow: 0 2px 8px rgba(139,92,246,0.18);
     }
     .portfolio-details-btn:hover {
-      background: var(--light-purple);
-      color: #fff;
-      transform: translateY(-2px);
+        background: var(--light-purple);
+        color: #fff;
+        transform: translateY(-2px);
     }
     .glass-modal {
-      background: rgba(30,41,59,0.85);
-      border-radius: 18px;
-      border: 1.5px solid rgba(139,92,246,0.18);
-      box-shadow: 0 8px 32px rgba(139,92,246,0.18);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+        background: rgba(30, 15, 50, 0.95);
+        border-radius: 18px;
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(139, 92, 246, 0.1),
+                0 0 30px rgba(139, 92, 246, 0.2);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        overflow: hidden;
     }
-    @media (max-width: 768px) {
-      .portfolio-grid {
-        grid-template-columns: 1fr;
+
+    .modal-header {
+        background: linear-gradient(90deg,
+        rgba(139, 92, 246, 0.2) 0%,
+        rgba(139, 92, 246, 0.1) 100%);
+        border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+        padding: 1.25rem 1.5rem;
+        position: relative;
+    }
+
+    .modal-title {
+        color: white;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0;
+        letter-spacing: -0.5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .portfolio-modal-close {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .portfolio-modal-close:hover {
+        background: var(--primary-purple);
+        transform: rotate(90deg);
+    }
+
+    .portfolio-modal-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    /* Gallery Styles */
+    .portfolio-modal-gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .portfolio-main-image {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.2);
+        aspect-ratio: 16/9;
+    }
+
+    .portfolio-main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .image-nav {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+        padding: 0 1rem;
+        pointer-events: none; /* Ensures the container doesn't block clicks */
+    }
+
+    .image-nav-btn {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        pointer-events: auto; /* Allows buttons to be clickable */
+    }
+
+    .image-nav-btn:first-child {
+        position: absolute;
+        left: 0; /* Aligns the "prev" button to the left */
+        transform: translate(30%, 250%);
+    }
+
+    .image-nav-btn:last-child {
+        position: absolute;
+        right: 0; /* Aligns the "next" button to the right */
+        transform: translate(-20%, 250%);
+    }
+
+    .image-nav-btn:hover {
+        background: var(--primary-purple);
+    }
+
+    .portfolio-thumbnails {
+        display: flex;
+        gap: 0.75rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-purple) rgba(0, 0, 0, 0.2);
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 60px;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: all 0.3s;
+        flex-shrink: 0;
+    }
+
+    .thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .thumbnail.active {
+        opacity: 1;
+        box-shadow: 0 0 0 2px var(--primary-purple);
+    }
+
+    .thumbnail:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    /* Details Styles */
+    .portfolio-modal-details {
+        display: flex;
+        flex-direction: column;
         gap: 1.5rem;
-      }
-      #portfolio {
-        padding: 60px 0 40px;
-      }
+    }
+
+    .details-section {
+        margin-bottom: 1rem;
+    }
+
+    .details-section h5 {
+        color: var(--primary-purple);
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .project-description {
+        color: var(--white-87);
+        line-height: 1.6;
+        font-size: 1rem;
+    }
+
+    .tech-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tech-tags span {
+        background: rgba(139, 92, 246, 0.15);
+        color: var(--white-87);
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .tech-tags span:hover {
+        background: var(--primary-purple);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .project-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: auto;
+    }
+
+    .project-links a {
+        flex: 1;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+        .portfolio-modal-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .modal-title {
+            font-size: 1.5rem;
+        }
+
+        .portfolio-main-image {
+            aspect-ratio: 4/3;
+        }
+
+        .thumbnail {
+            width: 70px;
+            height: 50px;
+        }
+
+        .image-nav-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 0.9rem;
+        }
+
+        .project-links {
+            flex-direction: column;
+        }
     }
 </style>
 

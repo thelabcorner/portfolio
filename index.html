@@ -1637,9 +1637,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="bg-glow"></div>
     <div class="bg-glow"></div>
     <div class="bg-glow"></div>
-    <div class="shooting-star"></div>
-    <div class="shooting-star"></div>
-    <div class="shooting-star"></div>
 
     <div class="experience-container">
 
@@ -1970,54 +1967,6 @@ document.addEventListener('DOMContentLoaded', function() {
         100% { transform: translateY(-10px) translateX(10px); }
     }
 
-    /* Animated shooting stars */
-    #experience .shooting-star {
-        position: absolute;
-        height: 2px;
-        background: linear-gradient(90deg, rgba(139, 92, 246, 0), rgba(139, 92, 246, 0.8) 50%, rgba(255, 255, 255, 0.8));
-        animation: shoot 6s infinite linear;
-        opacity: 0;
-        transform: rotate(-45deg);
-    }
-
-    #experience .shooting-star:nth-child(1) {
-        width: 150px;
-        top: 20%;
-        left: -10%;
-        animation-delay: 0s;
-    }
-
-    #experience .shooting-star:nth-child(2) {
-        width: 120px;
-        top: 35%;
-        left: -5%;
-        animation-delay: 4s;
-    }
-
-    #experience .shooting-star:nth-child(3) {
-        width: 180px;
-        top: 60%;
-        left: -15%;
-        animation-delay: 8s;
-    }
-
-    @keyframes shoot {
-        0% {
-            opacity: 0;
-            transform: translateX(0) translateY(0) rotate(-45deg);
-        }
-        10% {
-            opacity: 1;
-        }
-        20% {
-            transform: translateX(calc(100vw + 200px)) translateY(-200px) rotate(-45deg);
-            opacity: 0;
-        }
-        100% {
-            opacity: 0;
-            transform: translateX(calc(100vw + 200px)) translateY(-200px) rotate(-45deg);
-        }
-    }
 
     /* Grid Pattern Background */
     .experience-container {

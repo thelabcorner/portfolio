@@ -3120,7 +3120,7 @@ const splide = new Splide('#experience-carousel', {
             category: "web",
             images: [
                 "assets/projects/CARBOXYL/carboxyl_logo.png",
-                "assets/projects/carboxyl/incubator.png",
+                "assets/projects/CARBOXYL/incubator.png",
             ],
             description: "Brand identity and IoT dashboard for a chemical solutions company.",
             technologies: ["Adobe Illustrator", "Figma", "Python", "Flask", "SQLite", "Matplotlib", "Plot.ly", "Bootstrap"],
@@ -3204,7 +3204,6 @@ const splide = new Splide('#experience-carousel', {
             category: "branding",
             images: [
                 "assets/projects/IFIGHT/IFIGHT_LOGOG.png",
-                "assets/projects/IFIGHT/ifight_merch.png"
             ],
             description: "Logo and branding for a mixed martial arts promotion. This project included logo design and merchandise graphics.",
             technologies: ["Adobe Illustrator"],
@@ -3222,7 +3221,7 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/PEAKH&C/peak_hvac.png",
                 "assets/projects/PEAKH&C/peak_business_card.png"
             ],
-            description: "Branding for an HVAC company. This project included logo design, business cards, and a responsive website.",
+            description: "Branding for an HVAC company. This project included logo design + business cards.",
             technologies: ["Adobe Illustrator"],
             scope: "Logo and business card designs",
             timeline: "",
@@ -4287,13 +4286,11 @@ document.addEventListener('DOMContentLoaded', () => {
     .image-nav {
         position: absolute;
         top: 50%;
-        left: 0;
-        right: 0;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         transform: translateY(-50%);
-        padding: 0 1rem;
-        pointer-events: none;
+        pointer-events: none; /* Keeps the container non-interactive */
     }
 
     .image-nav-btn {
@@ -4310,8 +4307,17 @@ document.addEventListener('DOMContentLoaded', () => {
         transition: all 0.3s;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        pointer-events: auto;
+        pointer-events: auto; /* Makes the buttons interactive */
         font-size: 1.1rem;
+        position: absolute; /* Explicitly position the buttons */
+    }
+
+    .image-nav-btn:first-child {
+        left: 10px; /* Position the "prev" button on the left */
+    }
+
+    .image-nav-btn:last-child {
+        right: 10px; /* Position the "next" button on the right */
     }
 
     .image-nav-btn:hover {
@@ -4476,6 +4482,10 @@ document.addEventListener('DOMContentLoaded', () => {
     @media (max-width: 768px) {
         .modal-title {
             font-size: 1.5rem;
+        }
+
+        .portfolio-modal-gallery {
+            width: 99%;
         }
 
         .portfolio-main-image {

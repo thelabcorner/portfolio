@@ -11,10 +11,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 
 
+    <link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/assets/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Jackson" />
+    <link rel="manifest" href="/assets/favicon/site.webmanifest" />
+
     <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
 
 
     <style>
@@ -185,6 +195,50 @@
 </head>
 
 <body>
+
+<div id="preloader">
+    <img id="preloaderImage" src="/assets/projects/JACKSON/8000w/GLOBE.png" alt="Jackson Cummings Logo" style="width: 300px; height: auto; margin-top: 20px;">
+</div>
+
+<style>
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #100921;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    #preloader img {
+        transition: opacity 0.5s ease;
+    }
+</style>
+
+<script>
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        const preloaderImage = document.getElementById('preloaderImage');
+        preloader.style.transition = 'opacity 0.5s ease';
+
+        // Fade out the image first
+        setTimeout(() => {
+            preloaderImage.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500); // Matches the fade-out duration of the preloader
+            }, 350); // Matches the fade-out duration of the image
+        }, 5000); // Minimum visible duration (3 seconds)
+    });
+</script>
+
+
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
@@ -2865,6 +2919,44 @@ const splide = new Splide('#experience-carousel', {
 <!--Portfolio Section-->
 <section id="portfolio">
     <div class="container portfolio-container">
+        <!-- Add this loader element in the portfolio section -->
+<div id="portfolioLoader" class="loader"></div>
+
+<style>
+    /* Redesigned Loader Styles */
+    .loader {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        border: 6px solid rgba(255, 255, 255, 0.2);
+        border-top: 6px solid var(--primary-purple);
+        border-radius: 50%;
+        animation: spin 1s linear infinite, pulse 1.5s ease-in-out infinite;
+        z-index: 1000;
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+    }
+
+    @keyframes spin {
+        from {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+        50% {
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.8);
+        }
+    }
+</style>
         <h2 class="section-title" data-text="PORTFOLIO">Portfolio</h2>
         <div class="portfolio-filters" id="portfolioFilters">
             <!-- Filter buttons will be injected here -->
@@ -3579,21 +3671,146 @@ const splide = new Splide('#experience-carousel', {
 
     ];
 
-    // 2. Render filter buttons dynamically (no "All" button)
-    function renderFilterButtons() {
-        const filtersContainer = document.getElementById('portfolioFilters');
-        const categories = Array.from(new Set(projects.map(p => p.category)));
-        filtersContainer.innerHTML = '';
+    // Default thumbnail dimensions
+    let cacheScale = 5; // Scale factor for thumbnails
+    let cacheWidth = 300 *  cacheScale;
+    let cacheHeight = 200 * cacheScale;
 
-        categories.forEach(cat => {
-            const btn = document.createElement('button');
-            btn.className = 'filter-btn';
-            btn.setAttribute('data-filter', cat);
-            btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-            filtersContainer.appendChild(btn);
-        });
+    let thumbnailWidth = 768;
+    let thumbnailHeight = 512;
+
+    // Image cache and optimization utilities
+    class ImageCache {
+        constructor() {
+            this.cache = new Map();
+            this.thumbnailCache = new Map();
+            this.preloadQueue = [];
+            this.isProcessing = false;
+        }
+
+        // Create a thumbnail version of an image
+        async createThumbnail(src, width = cacheWidth, height = cacheHeight, quality = 0.9) {
+            const cacheKey = `thumb_${src}_${width}x${height}`;
+
+            if (this.thumbnailCache.has(cacheKey)) {
+                return this.thumbnailCache.get(cacheKey);
+            }
+
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+
+                    // Calculate aspect ratio
+                    const aspectRatio = img.width / img.height;
+                    let newWidth = width;
+                    let newHeight = height;
+
+                    if (aspectRatio > width / height) {
+                        newHeight = width / aspectRatio;
+                    } else {
+                        newWidth = height * aspectRatio;
+                    }
+
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+
+                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+                    try {
+                        const thumbnailDataUrl = canvas.toDataURL('image/jpeg', quality);
+                        this.thumbnailCache.set(cacheKey, thumbnailDataUrl);
+                        resolve(thumbnailDataUrl);
+                    } catch (error) {
+                        // Fallback to original if canvas fails (CORS issues, etc.)
+                        resolve(src);
+                    }
+                };
+
+                img.onerror = () => resolve(src); // Fallback to original
+                img.src = src;
+            });
+        }
+
+        // Preload and cache an image
+        async preloadImage(src, createThumb = true) {
+            if (this.cache.has(src)) {
+                return this.cache.get(src);
+            }
+
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = async () => {
+                    this.cache.set(src, img.src);
+
+                    if (createThumb) {
+                        // Create thumbnail in background
+                        this.createThumbnail(src).catch(() => {}); // Silent fail
+                    }
+
+                    resolve(img.src);
+                };
+                img.onerror = () => reject(new Error(`Failed to load ${src}`));
+                img.src = src;
+            });
+        }
+
+        // Get cached image or original
+        getCachedImage(src) {
+            return this.cache.get(src) || src;
+        }
+
+        // Get cached thumbnail or create one
+        async getCachedThumbnail(src, width = cacheWidth, height = cacheHeight) {
+            const cacheKey = `thumb_${src}_${width}x${height}`;
+
+            if (this.thumbnailCache.has(cacheKey)) {
+                return this.thumbnailCache.get(cacheKey);
+            }
+
+            return await this.createThumbnail(src, width, height);
+        }
+
+        // Batch preload images with priority queue
+        async batchPreload(imageList, priority = 'low') {
+            const batch = imageList.map(src => ({ src, priority }));
+            this.preloadQueue.push(...batch);
+
+            if (!this.isProcessing) {
+                this.processQueue();
+            }
+        }
+
+        async processQueue() {
+            this.isProcessing = true;
+
+            // Sort by priority (high first)
+            this.preloadQueue.sort((a, b) =>
+                a.priority === 'high' ? -1 : b.priority === 'high' ? 1 : 0
+            );
+
+            while (this.preloadQueue.length > 0) {
+                const batch = this.preloadQueue.splice(0, 3); // Process 3 at a time
+
+                await Promise.allSettled(
+                    batch.map(item => this.preloadImage(item.src))
+                );
+
+                // Small delay to prevent blocking
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+
+            this.isProcessing = false;
+        }
     }
 
+    // Initialize cache
+    const imageCache = new ImageCache();
+
+    // Enhanced portfolio functions with caching
     function renderPortfolioCards(filter) {
         const grid = document.getElementById("portfolioGrid");
         grid.innerHTML = "";
@@ -3607,24 +3824,32 @@ const splide = new Splide('#experience-carousel', {
             grid.classList.remove('single-card');
         }
 
-        filtered.forEach(p => {
+        // Preload visible images with high priority
+        const visibleImages = filtered.slice(0, 8).map(p => p.images[0]); // First 8 cards
+        imageCache.batchPreload(visibleImages, 'high');
+
+        // Preload remaining images with low priority
+        const remainingImages = filtered.slice(8).flatMap(p => p.images);
+        imageCache.batchPreload(remainingImages, 'low');
+
+        filtered.forEach((p, index) => {
             const card = document.createElement("div");
             card.className = "portfolio-card";
             card.setAttribute("data-category", p.category);
             card.innerHTML = `
-              <div class="portfolio-image" data-src="${p.images[0]}"></div>
-              <div class="portfolio-content">
-                <h3>${p.title}</h3>
-                <p>${p.description}</p>
-                <button class="portfolio-details-btn"
-                  data-title="${p.title}"
-                  data-description="${p.description}"
-                  data-image="${p.images[0]}"
-                  data-category="${p.category}">
-                  View Details
-                </button>
-              </div>
-            `;
+          <div class="portfolio-image" data-src="${p.images[0]}" data-index="${index}"></div>
+          <div class="portfolio-content">
+            <h3>${p.title}</h3>
+            <p>${p.description}</p>
+            <button class="portfolio-details-btn"
+              data-title="${p.title}"
+              data-description="${p.description}"
+              data-image="${p.images[0]}"
+              data-category="${p.category}">
+              View Details
+            </button>
+          </div>
+        `;
             grid.appendChild(card);
         });
 
@@ -3632,52 +3857,56 @@ const splide = new Splide('#experience-carousel', {
         attachModalListeners();
     }
 
+    // Optimized lazy loading with caching
     function lazyLoadImages() {
-        const images = document.querySelectorAll('.portfolio-image[data-src], .portfolio-image[data-loaded]');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+        const images = document.querySelectorAll('.portfolio-image[data-src]');
+
+        const observer = new IntersectionObserver(async (entries) => {
+            entries.forEach(async entry => {
                 const img = entry.target;
-                if (entry.isIntersecting) {
-                    // Load the image when it enters the viewport
-                    if (img.hasAttribute('data-src')) {
-                        img.style.backgroundImage = `url('${img.getAttribute('data-src')}')`;
-                        img.setAttribute('data-loaded', img.getAttribute('data-src'));
+                if (entry.isIntersecting && img.hasAttribute('data-src')) {
+                    const src = img.getAttribute('data-src');
+                    const index = parseInt(img.getAttribute('data-index') || '0');
+
+                    try {
+                        // Use thumbnail for grid view
+                        const thumbnailSrc = await imageCache.getCachedThumbnail(src, cacheWidth, cacheHeight);
+                        img.style.backgroundImage = `url('${thumbnailSrc}')`;
+                        img.style.opacity = '1';
+
+                        // Mark as loaded
                         img.removeAttribute('data-src');
-                    }
-                } else {
-                    // Unload the image when it exits the viewport
-                    if (img.hasAttribute('data-loaded')) {
-                        img.style.backgroundImage = '';
-                        img.setAttribute('data-src', img.getAttribute('data-loaded'));
-                        img.removeAttribute('data-loaded');
+                        img.setAttribute('data-loaded', 'true');
+
+                        // Preload full resolution in background for modal
+                        imageCache.preloadImage(src, false).catch(() => {});
+
+                    } catch (error) {
+                        console.warn('Failed to load thumbnail, using original:', error);
+                        img.style.backgroundImage = `url('${src}')`;
+                        img.style.opacity = '1';
                     }
                 }
             });
+        }, {
+            rootMargin: '50px', // Start loading slightly before entering viewport
+            threshold: 0.1
         });
 
-        images.forEach(img => observer.observe(img));
-    }
-
-    // 4. Filtering logic (delegated event)
-    function setupFilterEvents() {
-        const filtersContainer = document.getElementById('portfolioFilters');
-        filtersContainer.addEventListener('click', function(e) {
-            if (e.target.classList.contains('filter-btn')) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                renderPortfolioCards(e.target.getAttribute('data-filter'));
-            }
+        images.forEach(img => {
+            // Add loading state
+            img.style.opacity = '0.3';
+            img.style.transition = 'opacity 0.3s ease';
+            observer.observe(img);
         });
     }
 
-    // 5. Enhanced Modal logic for multiple images
+    // Enhanced modal with cached images
     function attachModalListeners() {
         const modal = new bootstrap.Modal(document.getElementById('portfolioModal'));
         document.querySelectorAll('.portfolio-details-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', async function() {
                 const projectTitle = this.dataset.title;
-
-                // Find This project data
                 const project = projects.find(p => p.title === projectTitle);
                 if (!project) return;
 
@@ -3685,24 +3914,38 @@ const splide = new Splide('#experience-carousel', {
                 document.getElementById('portfolioModalTitle').textContent = project.title;
                 document.getElementById('portfolioModalDescription').textContent = project.description || '';
 
-                // Set the main image to the first image
+                // Set the main image (use cached full-res if available)
                 const mainImageEl = document.getElementById('portfolioModalMainImage');
-                mainImageEl.src = project.images?.[0] || this.dataset.image;
+                const mainImageSrc = imageCache.getCachedImage(project.images[0]) || project.images[0];
+                mainImageEl.src = mainImageSrc;
                 mainImageEl.dataset.index = '0';
 
-                // Generate thumbnails if multiple images exist
+                // Preload all modal images with high priority
+                if (project.images && project.images.length > 1) {
+                    imageCache.batchPreload(project.images.slice(1), 'high');
+                }
+
+                // Generate thumbnails for modal
                 const thumbnailsContainer = document.getElementById('portfolioThumbnails');
                 thumbnailsContainer.innerHTML = '';
 
                 if (project.images && project.images.length > 1) {
-                    project.images.forEach((img, index) => {
+                    for (let index = 0; index < project.images.length; index++) {
+                        const img = project.images[index];
                         const thumb = document.createElement('div');
                         thumb.className = `thumbnail ${index === 0 ? 'active' : ''}`;
-                        thumb.innerHTML = `<img src="${img}" alt="Thumbnail ${index + 1}">`;
+
+                        // Use smaller thumbnails for modal navigation
+                        try {
+                            const thumbSrc = await imageCache.getCachedThumbnail(img, thumbnailWidth, thumbnailHeight);
+                            thumb.innerHTML = `<img src="${thumbSrc}" alt="Thumbnail ${index + 1}">`;
+                        } catch {
+                            thumb.innerHTML = `<img src="${img}" alt="Thumbnail ${index + 1}">`;
+                        }
 
                         thumb.addEventListener('click', () => {
-                            // Update main image
-                            mainImageEl.src = img;
+                            const fullResSrc = imageCache.getCachedImage(img) || img;
+                            mainImageEl.src = fullResSrc;
                             mainImageEl.dataset.index = index.toString();
 
                             // Update active thumbnail
@@ -3711,20 +3954,17 @@ const splide = new Splide('#experience-carousel', {
                         });
 
                         thumbnailsContainer.appendChild(thumb);
-                    });
+                    }
 
-                    // Show navigation arrows if multiple images
+                    // Show navigation arrows
                     document.querySelector('.image-nav').style.display = 'block';
-
-                    // Set up navigation buttons
                     document.getElementById('nextImageBtn').onclick = () => navigateImages(1);
                     document.getElementById('prevImageBtn').onclick = () => navigateImages(-1);
                 } else {
-                    // Hide navigation if only one image
                     document.querySelector('.image-nav').style.display = 'none';
                 }
 
-                // Populate technical details
+                // Rest of modal population code...
                 const techContainer = document.getElementById('portfolioModalTech');
                 techContainer.innerHTML = '';
 
@@ -3738,11 +3978,9 @@ const splide = new Splide('#experience-carousel', {
                     techContainer.innerHTML = '<span>Not specified</span>';
                 }
 
-                // Populate scope and timeline
                 document.getElementById('portfolioModalScope').textContent = project.scope || 'Not specified';
                 document.getElementById('portfolioModalTimeline').textContent = project.timeline || 'Not specified';
 
-                // Set links
                 const liveLink = document.getElementById('portfolioModalLiveLink');
                 const codeLink = document.getElementById('portfolioModalCodeLink');
 
@@ -3764,7 +4002,7 @@ const splide = new Splide('#experience-carousel', {
             });
         });
 
-        // Function to navigate through images
+        // Enhanced navigation with caching
         function navigateImages(direction) {
             const mainImg = document.getElementById('portfolioModalMainImage');
             const currentIndex = parseInt(mainImg.dataset.index || '0');
@@ -3773,26 +4011,78 @@ const splide = new Splide('#experience-carousel', {
 
             if (totalImages <= 1) return;
 
-            // Calculate new index with wrapping
             let newIndex = (currentIndex + direction) % totalImages;
             if (newIndex < 0) newIndex = totalImages - 1;
 
-            // Update main image
-            mainImg.src = thumbnails[newIndex].querySelector('img').src;
+            // Get the source from thumbnail and use cached version if available
+            const thumbImg = thumbnails[newIndex].querySelector('img');
+            const originalSrc = thumbImg.src;
+
+            // Try to get full resolution from cache
+            const projectTitle = document.getElementById('portfolioModalTitle').textContent;
+            const project = projects.find(p => p.title === projectTitle);
+            if (project && project.images[newIndex]) {
+                const fullResSrc = imageCache.getCachedImage(project.images[newIndex]) || project.images[newIndex];
+                mainImg.src = fullResSrc;
+            } else {
+                mainImg.src = originalSrc;
+            }
+
             mainImg.dataset.index = newIndex.toString();
 
-            // Update active thumbnail
             thumbnails.forEach(t => t.classList.remove('active'));
             thumbnails[newIndex].classList.add('active');
         }
     }
 
-    // 6. Initial render
-    document.addEventListener('DOMContentLoaded', () => {
-        renderFilterButtons();
-        setupFilterEvents();
-        renderPortfolioCards();
+    // Add these functions to your existing code structure
+    function renderFilterButtons() {
+        const filtersContainer = document.getElementById('portfolioFilters');
+        const categories = Array.from(new Set(projects.map(p => p.category)));
+        filtersContainer.innerHTML = '';
+
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.setAttribute('data-filter', cat);
+            btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+            filtersContainer.appendChild(btn);
+        });
+    }
+
+    function setupFilterEvents() {
+        const filtersContainer = document.getElementById('portfolioFilters');
+        filtersContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('filter-btn')) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                renderPortfolioCards(e.target.getAttribute('data-filter'));
+            }
+        });
+    }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loader = document.getElementById('portfolioLoader');
+    const portfolioGrid = document.getElementById('portfolioGrid');
+
+    window.addEventListener('load', () => {
+        loader.style.display = 'block'; // Show loader
+        setTimeout(() => {
+            requestIdleCallback(() => {
+                renderFilterButtons();
+                setupFilterEvents();
+                renderPortfolioCards();
+
+                // Preload critical images on page load
+                const criticalImages = projects.slice(0, 6).map(p => p.images[0]);
+                imageCache.batchPreload(criticalImages, 'high').then(() => {
+                    loader.style.display = 'none'; // Hide loader
+                    portfolioGrid.style.opacity = '1'; // Show portfolio content
+                });
+            });
+        }, 500);
     });
+});
 </script>
 
 <style>
@@ -4231,6 +4521,11 @@ const splide = new Splide('#experience-carousel', {
         --white-87: rgba(255, 255, 255, 0.87);
     }
 </style>
+
+
+
+
+
 
 
 

@@ -3052,7 +3052,7 @@ const splide = new Splide('#experience-carousel', {
 
 
             ],
-            description: "A Laboratory Information Management System for cannabis extraction labs. This comprehensive web application helps track samples, manage workflows, and generate regulatory compliance reports.",
+            description: "Prototype Laboratory Information Management System for cannabis extraction labs. This comprehensive web application helps track samples, manage workflows, and generate regulatory compliance reports.",
             technologies: ["Cloudflare", "Flask", "SQLite", "Bootstrap", "JavaScript/HTML5", "Python", "Tries"],
             scope: "Full-stack development, UI/UX design, database architecture, and deployment",
             timeline: "",
@@ -4068,7 +4068,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('load', () => {
         loader.style.display = 'block'; // Show loader
         setTimeout(() => {
-            requestIdleCallback(() => {
+            const executeCallback = (callback) => {
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(callback);
+                } else {
+                    setTimeout(callback, 0); // Fallback for unsupported browsers
+                }
+            };
+
+            executeCallback(() => {
                 renderFilterButtons();
                 setupFilterEvents();
                 renderPortfolioCards();

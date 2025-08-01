@@ -2876,6 +2876,7 @@ const splide = new Splide('#experience-carousel', {
 </section>
 
 <!-- Enhanced Portfolio Modal -->
+<!-- Enhanced Portfolio Modal -->
 <div class="modal fade" id="portfolioModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content glass-modal">
@@ -2887,7 +2888,7 @@ const splide = new Splide('#experience-carousel', {
             </div>
             <div class="modal-body">
                 <div class="portfolio-modal-container">
-                    <!-- Left Side: Gallery -->
+                    <!-- Image Gallery Section - Now Full Width and On Top -->
                     <div class="portfolio-modal-gallery">
                         <div class="portfolio-main-image">
                             <img id="portfolioModalMainImage" class="img-fluid" alt="Project image">
@@ -2905,26 +2906,28 @@ const splide = new Splide('#experience-carousel', {
                         </div>
                     </div>
 
-                    <!-- Right Side: Project Details -->
+                    <!-- Project Details Section - Now Below Gallery -->
                     <div class="portfolio-modal-details">
-                        <div class="details-section">
-                            <h5><i class="fas fa-info-circle"></i> Project Overview</h5>
-                            <div id="portfolioModalDescription" class="project-description"></div>
-                        </div>
+                        <div class="details-grid">
+                            <div class="details-section">
+                                <h5><i class="fas fa-info-circle"></i> Project Overview</h5>
+                                <div id="portfolioModalDescription" class="project-description"></div>
+                            </div>
 
-                        <div class="details-section">
-                            <h5><i class="fas fa-tools"></i> Technologies Used</h5>
-                            <div class="tech-tags" id="portfolioModalTech"></div>
-                        </div>
+                            <div class="details-section">
+                                <h5><i class="fas fa-tools"></i> Technologies Used</h5>
+                                <div class="tech-tags" id="portfolioModalTech"></div>
+                            </div>
 
-                        <div class="details-section">
-                            <h5><i class="fas fa-tasks"></i> Project Scope</h5>
-                            <div id="portfolioModalScope"></div>
-                        </div>
+                            <div class="details-section">
+                                <h5><i class="fas fa-tasks"></i> Project Scope</h5>
+                                <div id="portfolioModalScope"></div>
+                            </div>
 
-                        <div class="details-section">
-                            <h5><i class="fas fa-calendar-alt"></i> Timeline</h5>
-                            <div id="portfolioModalTimeline"></div>
+                            <div class="details-section">
+                                <h5><i class="fas fa-calendar-alt"></i> Timeline</h5>
+                                <div id="portfolioModalTimeline"></div>
+                            </div>
                         </div>
 
                         <div class="details-section project-links">
@@ -2951,13 +2954,16 @@ const splide = new Splide('#experience-carousel', {
             category: "web",
             images: [
                 "assets/projects/HASHAPP/HASHAPP_TM.png",
-                "assets/projects/HASHAPP/hashapp-dashboard.png",
-                "assets/projects/HASHAPP/hashapp-mobile.png"
+                "assets/projects/HASHAPP/washtrackerdemo.svg",
+                "assets/projects/HASHAPP/HASHAPP_WEB.png",
+                "assets/projects/HASHAPP/MEDIADEMO_2.png",
+
+
             ],
             description: "A Laboratory Information Management System for cannabis extraction labs. This comprehensive web application helps track samples, manage workflows, and generate regulatory compliance reports.",
-            technologies: ["React", "Node.js", "MongoDB", "Express", "Figma"],
+            technologies: ["Cloudflare", "Flask", "SQLite", "Bootstrap", "JavaScript/HTML5", "Python", "Tries"],
             scope: "Full-stack development, UI/UX design, database architecture, and deployment",
-            timeline: "3 months (June - August 2022)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -2968,13 +2974,13 @@ const splide = new Splide('#experience-carousel', {
             category: "web",
             images: [
                 "assets/projects/ENGINEERINGMINDS/ENGINEERINGMINDS.png",
-                "assets/projects/ENGINEERINGMINDS/em-resources.png",
-                "assets/projects/ENGINEERINGMINDS/em-mobile.png"
+                "assets/projects/ENGINEERINGMINDS/TUTOR_PROFILE.png",
+                "assets/projects/ENGINEERINGMINDS/OCHEM_BOOK.png"
             ],
-            description: "A modern tutoring platform for engineering students, featuring scheduling and resource management. The platform includes interactive learning modules, video conferencing integration, and a comprehensive library of STEM resources.",
-            technologies: ["Vue.js", "Firebase", "Tailwind CSS", "WebRTC"],
+            description: "A modern tutoring platform for engineering students, featuring scheduling and resource management. The platform included interactive learning modules, video conferencing integration, and a comprehensive library of STEM resources.",
+            technologies: ["Cloudflare", "Flask", "SQLite", "Bootstrap", "JavaScript/HTML5", "Python", "Google APIs"],
             scope: "Frontend development, authentication system, real-time chat functionality",
-            timeline: "2 months (March - April 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -2989,10 +2995,10 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/M&J/MJDoorHanger.png"
             ],
             description: "Website and logo design for a local contracting business. The site features a project gallery, service descriptions, and a contact form.",
-            technologies: ["HTML", "CSS", "JavaScript", "WordPress"],
+            technologies: ["HTML", "CSS", "JavaScript", "Cloudflare"],
             scope: "Web design, development, and logo creation",
             timeline: "1.5 months (July - August 2021)",
-            liveLink: "#",
+            liveLink: "https://mj-install-repair.pages.dev/",
             codeLink: "#"
         },
 
@@ -3002,12 +3008,13 @@ const splide = new Splide('#experience-carousel', {
             category: "branding",
             images: [
                 "assets/projects/ZEYA/zeya.png",
-                "assets/projects/ZEYA/zeya_business_card.png"
+                "assets/projects/ZEYA/zeya2.png",
+                "assets/projects/ZEYA/zeya3.png"
             ],
-            description: "Minimalist logo for a financial services startup. The branding includes a logo, business card, and letterhead design.",
-            technologies: ["Adobe Illustrator", "Photoshop"],
+            description: "Minimalist logo for a financial services startup. The branding included a logo, business card, and letterhead design.",
+            technologies: ["Adobe Illustrator"],
             scope: "Logo design and brand identity development",
-            timeline: "2 weeks (May 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3016,15 +3023,15 @@ const splide = new Splide('#experience-carousel', {
         // Carboxyl Logo
         {
             title: "Carboxyl Branding",
-            category: "branding",
+            category: "web",
             images: [
                 "assets/projects/CARBOXYL/carboxyl_logo.png",
                 "assets/projects/carboxyl/incubator.png",
             ],
-            description: "Brand identity and logo for a chemical solutions company. The project included logo design, business cards, and letterhead.",
-            technologies: ["Adobe Illustrator", "InDesign"],
+            description: "Brand identity and IoT dashboard for a chemical solutions company.",
+            technologies: ["Adobe Illustrator", "Figma", "Python", "Flask", "SQLite", "Matplotlib", "Plot.ly", "Bootstrap"],
             scope: "Complete brand identity package",
-            timeline: "3 weeks (April 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3035,12 +3042,12 @@ const splide = new Splide('#experience-carousel', {
             category: "branding",
             images: [
                 "assets/projects/VOIDSTAR/voidstar.png",
-                "assets/projects/VOIDSTAR/voidstar_stationery.png"
+                "assets/projects/VOIDSTAR/voidstar_box.png"
             ],
-            description: "Futuristic logo for a technology and research lab. The branding includes a logo and stationery design.",
-            technologies: ["Adobe Illustrator", "Photoshop"],
-            scope: "Logo and stationery design",
-            timeline: "2 weeks (March 2023)",
+            description: "Futuristic logo for a technology and research lab. The branding included a logo and stationery design.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Logo and stationary design",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3051,29 +3058,32 @@ const splide = new Splide('#experience-carousel', {
             category: "branding",
             images: [
                 "assets/projects/MWOUTLAW/MWOUTLAW.png",
-                "assets/projects/MWOUTLAW/mwoutlaw_clothing.png",
-                "assets/projects/MWOUTLAW/mwoutlaw_extraction.png"
             ],
-            description: "Branding for a dual clothing and cannabis extraction business. The project includes logo design, clothing tags, and packaging for extracts.",
-            technologies: ["Adobe Illustrator", "Figma"],
+            description: "Branding for a dual clothing and cannabis extraction business. This project included logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator"],
             scope: "Branding and product packaging design",
-            timeline: "4 weeks (Jan - Feb 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
+
+
+
+
 
         // Fear of God Fashion Branding
         {
             title: "Fear of God Fashion Branding",
             category: "branding",
             images: [
-                "assets/projects/fearofgod.png",
-                "assets/projects/fearofgod/lookbook.pdf"
+                "assets/projects/FEAROFGOD/FOG1.png",
+                "assets/projects/FEAROFGOD/fearofgod.png",
+
             ],
-            description: "Branding and visual identity for a fashion label. The project includes logo design, lookbook, and social media graphics.",
-            technologies: ["Adobe Illustrator", "InDesign"],
+            description: "Branding and visual identity for a fashion label. This project included logo design, lookbook, and social media graphics.",
+            technologies: ["Adobe Illustrator"],
             scope: "Complete branding and lookbook design",
-            timeline: "3 weeks (Dec 2022 - Jan 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3086,10 +3096,10 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/MOTION/motion_branding.png",
                 "assets/projects/MOTION/motion_tags.png"
             ],
-            description: "Branding and logo for an activewear company. The project includes logo design, clothing tags, and promotional materials.",
+            description: "Branding and logo for an activewear company. This project included logo design, clothing tags, and promotional materials.",
             technologies: ["Adobe Illustrator", "Photoshop"],
             scope: "Branding and promotional material design",
-            timeline: "2 weeks (Feb 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3102,10 +3112,10 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/IFIGHT/IFIGHT_LOGOG.png",
                 "assets/projects/IFIGHT/ifight_merch.png"
             ],
-            description: "Logo and branding for a mixed martial arts promotion. The project includes logo design and merchandise graphics.",
-            technologies: ["Adobe Illustrator", "CorelDRAW"],
+            description: "Logo and branding for a mixed martial arts promotion. This project included logo design and merchandise graphics.",
+            technologies: ["Adobe Illustrator"],
             scope: "Logo and merchandise design",
-            timeline: "2 weeks (Jan 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3118,10 +3128,10 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/PEAKH&C/peak_hvac.png",
                 "assets/projects/PEAKH&C/peak_business_card.png"
             ],
-            description: "Website and branding for an HVAC company. The project includes logo design, business cards, and a responsive website.",
-            technologies: ["HTML", "CSS", "JavaScript", "WordPress"],
-            scope: "Web design and development, logo and business card design",
-            timeline: "1.5 months (Aug - Sep 2022)",
+            description: "Branding for an HVAC company. This project included logo design, business cards, and a responsive website.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Logo and business card designs",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3134,10 +3144,10 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/VILLALANDSCAPE/villa_landscapes.png",
                 "assets/projects/VILLALANDSCAPE/villa_business_card.png"
             ],
-            description: "Branding and logo for a landscaping business. The project includes logo design, business cards, and vehicle wraps.",
-            technologies: ["Adobe Illustrator", "Photoshop"],
+            description: "Branding and logo for a landscaping business. This project included logo design, business cards, and vehicle wraps.",
+            technologies: ["Adobe Illustrator"],
             scope: "Complete branding package",
-            timeline: "3 weeks (Feb - Mar 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3149,12 +3159,14 @@ const splide = new Splide('#experience-carousel', {
             category: "branding",
             images: [
                 "assets/projects/LIVESTOCK/livestock.png",
-                "assets/projects/LIVESTOCK/livestock_labels.png"
+                "assets/projects/LIVESTOCK/livestockBBQ.png",
+                "assets/projects/LIVESTOCK/livestockBBQ2.png",
+                "assets/projects/LIVESTOCK/livestockOrange.png"
             ],
-            description: "Logo design for a livestock and agricultural brand. The project includes logo design and product label graphics.",
-            technologies: ["Adobe Illustrator", "InDesign"],
+            description: "Logo design for a livestock themed cannabis brand. This project included logo design and product label graphics.",
+            technologies: ["Adobe Illustrator"],
             scope: "Logo and label design",
-            timeline: "2 weeks (Mar 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3165,31 +3177,16 @@ const splide = new Splide('#experience-carousel', {
             category: "branding",
             images: [
                 "assets/projects/COMETFREEBUILD/comet_freebuild.png",
-                "assets/projects/COMETFREEBUILD/comet_merch.png"
             ],
-            description: "Logo and web assets for a Minecraft gaming community. The project includes logo design and merchandise graphics.",
-            technologies: ["Adobe Illustrator", "Photoshop"],
+            description: "Logo and web assets for a Minecraft gaming community. This project included logo design and merchandise graphics.",
+            technologies: ["Adobe Illustrator", "FontAwesome"],
             scope: "Logo and merchandise design",
-            timeline: "1 week (Apr 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
 
-        // High Rise Extracts Packaging
-        {
-            title: "High Rise Extracts Packaging",
-            category: "packaging",
-            images: [
-                "assets/projects/HIGHRISE/maple_bacon_burger.png",
-                "assets/projects/HIGHRISE/highrise_extracts.png"
-            ],
-            description: "Custom packaging design for a cannabis extracts company. The project includes label design and packaging mockups.",
-            technologies: ["Adobe Illustrator", "InDesign"],
-            scope: "Packaging design and mockups",
-            timeline: "2 weeks (Jan 2023)",
-            liveLink: "#",
-            codeLink: "#"
-        },
+
 
         // Dairy Freeze Logo
         {
@@ -3199,10 +3196,10 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/DAIRYFREEZE/dairy_freeze.png",
                 "assets/projects/DAIRYFREEZE/dairy_freeze_packaging.png"
             ],
-            description: "Retro-inspired logo for an ice cream shop. The branding includes a logo, packaging design, and promotional materials.",
+            description: "Retro-inspired logo for an ice cream shop. The branding included a logo, packaging design, and promotional materials.",
             technologies: ["Adobe Illustrator", "Photoshop"],
             scope: "Logo and packaging design",
-            timeline: "3 weeks (Feb - Mar 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3215,27 +3212,10 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/singlesourcestickerco.png",
                 "assets/projects/singlesourcestickerco/sticker_sheet.png"
             ],
-            description: "Logo and brand assets for a sticker printing company. The project includes logo design and a sheet of custom stickers.",
+            description: "Logo and brand assets for a sticker printing company. This project included logo design and a sheet of custom stickers.",
             technologies: ["Adobe Illustrator", "CorelDRAW"],
             scope: "Logo and sticker design",
-            timeline: "2 weeks (Mar 2023)",
-            liveLink: "#",
-            codeLink: "#"
-        },
-
-
-        // Little Hash Stars
-        {
-            title: "Little Hash Stars",
-            category: "packaging",
-            images: [
-                "assets/projects/LITTLEHASH/little_hash_stars.png",
-                "assets/projects/LITTLEHASH/little_hash_stars_box.png"
-            ],
-            description: "Playful branding for a children's cannabis education initiative. The project includes a logo, packaging design, and educational materials.",
-            technologies: ["Adobe Illustrator", "InDesign"],
-            scope: "Branding and educational material design",
-            timeline: "3 weeks (Apr 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3246,12 +3226,19 @@ const splide = new Splide('#experience-carousel', {
             category: "branding",
             images: [
                 "assets/projects/ANONYMOUS/coat_drive.png",
-                "assets/projects/ANONYMOUS/anony_clothing_tags.png"
+                "assets/projects/ANONYMOUS/tee_tag_back.png",
+                "assets/projects/ANONYMOUS/tee_tag_front.png",
+                "assets/projects/ANONYMOUS/sportsbra.png",
+                "assets/projects/ANONYMOUS/drip_tee.png",
+                "assets/projects/ANONYMOUS/shorts.png",
+                "assets/projects/ANONYMOUS/joggers.png",
+                "assets/projects/ANONYMOUS/duffle.png",
+
             ],
-            description: "Various branding assets for the clothing brand 'ANONYMOUS'. The project includes logo design, clothing tags, and promotional graphics.",
-            technologies: ["Adobe Illustrator", "Photoshop"],
+            description: "Various branding assets for the clothing brand 'ANONYMOUS'. This project included logo design, clothing tags, and promotional graphics.",
+            technologies: ["Adobe Illustrator", "Photoshop", "InDesign"],
             scope: "Branding and promotional material design",
-            timeline: "4 weeks (Jan - Feb 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
         },
@@ -3264,8 +3251,8 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/ANONYMOUS/kijan_boone.png",
                 "assets/projects/ANONYMOUS/kijan_boone_poster.png"
             ],
-            description: "Event branding for Kijan Boone, a christian hip-hop artist. The project includes logo design, event poster, and social media graphics.",
-            technologies: ["Adobe Illustrator", "InDesign"],
+            description: "Event branding for Kijan Boone, a christian hip-hop artist. This project included logo design, event poster, and social media graphics.",
+            technologies: ["Adobe Photoshop", "Adobe Illustrator"],
             scope: "Event branding and promotional material design",
             timeline: "2 weeks (Mar 2023)",
             liveLink: "#",
@@ -3280,13 +3267,314 @@ const splide = new Splide('#experience-carousel', {
                 "assets/projects/REDMAVERICK/RED_MAVERICK.png",
                 "assets/projects/REDMAVERICK/red_maverick_thumbnails.png"
             ],
-            description: "YouTube channel branding and logo for a gaming content creator. The project includes logo design and video thumbnail templates.",
+            description: "YouTube channel branding and logo for a gaming content creator. This project included logo design and video thumbnail templates.",
             technologies: ["Adobe Illustrator", "Photoshop"],
             scope: "Logo and YouTube thumbnail design",
-            timeline: "1 week (Apr 2023)",
+            timeline: "",
             liveLink: "#",
             codeLink: "#"
-        }
+        },
+
+
+
+        ///////////////////////////////
+        // PACKAGING PROJECTS
+        /////////////////////////////
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #1",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/maple_bacon_burger.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "Prairie State Packaging #1",
+            category: "packaging",
+            images: [
+                "assets/projects/PSO/TRITIP.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+
+        // Midwest Outlaw Clothing + Extraction
+        {
+            title: "Midwest Outlaw Packaging #1",
+            category: "packaging",
+            images: [
+                "assets/projects/MWOUTLAW/CADILLACRAINBOW.png",
+            ],
+            description: "Branding for a dual clothing and cannabis extraction lab. This project included logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Branding and product packaging design",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #6",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/SWEETESCAPE.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // PSO
+        {
+            title: "Prairie State Packaging #2",
+            category: "packaging",
+            images: [
+                "assets/projects/PSO/TROPCHERRY.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // PrairieState
+        {
+            title: "Midwest Outlaw Packaging #2",
+            category: "packaging",
+            images: [
+                "assets/projects/MWOUTLAW/CANDYGRAPES.png",
+            ],
+            description: "Branding for a dual clothing and cannabis extraction lab. This project included logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Branding and product packaging design",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Midwest Outlaw Clothing + Extraction
+        {
+            title: "Midwest Outlaw Packaging #3",
+            category: "packaging",
+            images: [
+                "assets/projects/MWOUTLAW/GMO.png",
+            ],
+            description: "Branding for a dual clothing and cannabis extraction lab. This project included logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Branding and product packaging design",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Midwest Outlaw Clothing + Extraction
+        {
+            title: "Midwest Outlaw Packaging #4",
+            category: "packaging",
+            images: [
+                "assets/projects/MWOUTLAW/DONMEGA.png",
+            ],
+            description: "Branding for a dual clothing and cannabis extraction lab. This project included logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Branding and product packaging design",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Midwest Outlaw Clothing + Extraction
+        {
+            title: "Midwest Outlaw Packaging #5",
+            category: "packaging",
+            images: [
+                "assets/projects/MWOUTLAW/SOURSTRAWBERRY.png",
+            ],
+            description: "Branding for a dual clothing and cannabis extraction lab. This project included logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Branding and product packaging design",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // Midwest Outlaw Clothing + Extraction
+        {
+            title: "Midwest Outlaw Packaging #6",
+            category: "packaging",
+            images: [
+                "assets/projects/MWOUTLAW/GRAPECREAMCAKE.png",
+            ],
+            description: "Branding for a dual clothing and cannabis extraction lab. This project included logo design, clothing tags, and packaging for extracts.",
+            technologies: ["Adobe Illustrator"],
+            scope: "Branding and product packaging design",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #2",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/blackmaple.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // PrairieState
+        {
+            title: "Prairie State Packaging #3",
+            category: "packaging",
+            images: [
+                "assets/projects/PSO/GUAVABARS.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #3",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/cheeseburgers.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #4",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/BLACKBELT.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #5",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/FASTFOODMILKSHAKE.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #7",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/STRAWGUAVA.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #8",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/GRAPESHERB.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+
+
+        // High Rise Extracts Packaging
+        {
+            title: "High Rise Extracts Packaging #9",
+            category: "packaging",
+            images: [
+                "assets/projects/HIGHRISE/RKO.png",
+            ],
+            description: "Custom packaging design for a cannabis extracts company. This project included label design and packaging mockups.",
+            technologies: ["Adobe Illustrator", "Roland"],
+            scope: "Packaging design and mockups",
+            timeline: "",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+
+
+
+
+        // Little Hash Stars
+        {
+            title: "Little Hash Stars",
+            category: "packaging",
+            images: [
+                "assets/projects/LITTLEHASH/little_hash_stars.png",
+            ],
+            description: "Playful branding for a children's cannabis education initiative. This project included a logo, packaging design, and educational materials.",
+            technologies: ["Adobe Illustrator", "InDesign"],
+            scope: "Branding and educational material design",
+            timeline: "3 weeks (Apr 2023)",
+            liveLink: "#",
+            codeLink: "#"
+        },
+
+
+
     ];
 
     // 2. Render filter buttons dynamically (no "All" button)
@@ -3387,7 +3675,7 @@ const splide = new Splide('#experience-carousel', {
             btn.addEventListener('click', function() {
                 const projectTitle = this.dataset.title;
 
-                // Find the project data
+                // Find This project data
                 const project = projects.find(p => p.title === projectTitle);
                 if (!project) return;
 
@@ -3662,19 +3950,21 @@ const splide = new Splide('#experience-carousel', {
         transform: rotate(90deg);
     }
 
+    /* NEW LAYOUT: Gallery on top, details below */
     .portfolio-modal-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 2rem;
-        max-height: 70vh;
+        max-height: 75vh;
         overflow-y: auto;
     }
 
-    /* Gallery Styles */
+    /* Gallery Styles - Now Full Width */
     .portfolio-modal-gallery {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        width: 100%;
     }
 
     .portfolio-main-image {
@@ -3684,12 +3974,13 @@ const splide = new Splide('#experience-carousel', {
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         background: rgba(0, 0, 0, 0.2);
         aspect-ratio: 16/9;
+        max-height: 400px; /* Larger than before */
     }
 
     .portfolio-main-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain; /* Changed from cover to contain for better image viewing */
         object-position: center;
     }
 
@@ -3702,15 +3993,15 @@ const splide = new Splide('#experience-carousel', {
         justify-content: space-between;
         transform: translateY(-50%);
         padding: 0 1rem;
-        pointer-events: none; /* Ensures the container doesn't block clicks */
+        pointer-events: none;
     }
 
     .image-nav-btn {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(0, 0, 0, 0.6);
         color: white;
         border: none;
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -3719,43 +4010,35 @@ const splide = new Splide('#experience-carousel', {
         transition: all 0.3s;
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
-        pointer-events: auto; /* Allows buttons to be clickable */
-    }
-
-    .image-nav-btn:first-child {
-        position: absolute;
-        left: 0; /* Aligns the "prev" button to the left */
-        transform: translate(30%, 250%);
-    }
-
-    .image-nav-btn:last-child {
-        position: absolute;
-        right: 0; /* Aligns the "next" button to the right */
-        transform: translate(-20%, 250%);
+        pointer-events: auto;
+        font-size: 1.1rem;
     }
 
     .image-nav-btn:hover {
         background: var(--primary-purple);
+        transform: scale(1.1);
     }
 
     .portfolio-thumbnails {
         display: flex;
         gap: 0.75rem;
         overflow-x: auto;
-        padding-bottom: 0.5rem;
+        padding: 0.5rem 0;
         scrollbar-width: thin;
         scrollbar-color: var(--primary-purple) rgba(0, 0, 0, 0.2);
+        justify-content: center;
     }
 
     .thumbnail {
-        width: 80px;
-        height: 60px;
+        width: 100px; /* Larger thumbnails */
+        height: 75px;
         border-radius: 8px;
         overflow: hidden;
         cursor: pointer;
         opacity: 0.6;
         transition: all 0.3s;
         flex-shrink: 0;
+        border: 2px solid transparent;
     }
 
     .thumbnail img {
@@ -3766,7 +4049,8 @@ const splide = new Splide('#experience-carousel', {
 
     .thumbnail.active {
         opacity: 1;
-        box-shadow: 0 0 0 2px var(--primary-purple);
+        border-color: var(--primary-purple);
+        box-shadow: 0 0 0 1px var(--primary-purple);
     }
 
     .thumbnail:hover {
@@ -3774,15 +4058,23 @@ const splide = new Splide('#experience-carousel', {
         transform: translateY(-2px);
     }
 
-    /* Details Styles */
+    /* Details Styles - Now Below Gallery */
     .portfolio-modal-details {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
     }
 
-    .details-section {
+    /* Grid layout for details sections */
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
         margin-bottom: 1rem;
+    }
+
+    .details-section {
+        margin-bottom: 0;
     }
 
     .details-section h5 {
@@ -3827,21 +4119,57 @@ const splide = new Splide('#experience-carousel', {
     .project-links {
         display: flex;
         gap: 1rem;
-        margin-top: auto;
+        justify-content: center;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(139, 92, 246, 0.15);
     }
 
     .project-links a {
         flex: 1;
+        max-width: 200px;
         display: inline-flex;
         justify-content: center;
         align-items: center;
         gap: 8px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-purple {
+        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+        color: white;
+    }
+
+    .btn-outline-purple {
+        background: transparent;
+        color: var(--primary-purple);
+        border: 2px solid var(--primary-purple);
+    }
+
+    .btn-purple:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .btn-outline-purple:hover {
+        background: var(--primary-purple);
+        color: white;
+        transform: translateY(-2px);
     }
 
     /* Responsive Styles */
     @media (max-width: 992px) {
-        .portfolio-modal-container {
+        .details-grid {
             grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .portfolio-main-image {
+            max-height: 350px;
         }
     }
 
@@ -3852,24 +4180,56 @@ const splide = new Splide('#experience-carousel', {
 
         .portfolio-main-image {
             aspect-ratio: 4/3;
+            max-height: 280px;
         }
 
         .thumbnail {
-            width: 70px;
-            height: 50px;
+            width: 80px;
+            height: 60px;
         }
 
         .image-nav-btn {
-            width: 35px;
-            height: 35px;
-            font-size: 0.9rem;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
         }
 
         .project-links {
             flex-direction: column;
         }
+
+        .project-links a {
+            max-width: 100%;
+        }
+
+        .portfolio-thumbnails {
+            justify-content: flex-start;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .portfolio-modal-container {
+            gap: 1rem;
+        }
+
+        .portfolio-main-image {
+            max-height: 250px;
+        }
+
+        .details-grid {
+            gap: 0.75rem;
+        }
+    }
+
+    /* CSS Variables (add these if not already defined) */
+    :root {
+        --primary-purple: #8b5cf6;
+        --dark-purple: #7c3aed;
+        --light-purple: #a78bfa;
+        --white-87: rgba(255, 255, 255, 0.87);
     }
 </style>
+
 
 
 

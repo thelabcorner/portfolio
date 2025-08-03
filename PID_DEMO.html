@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PID Controller Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fafafa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1650px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            color: #5f6368;
+            font-weight: 400;
+        }
+        
+        .main-layout {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        /* Controls on the left, rest on the right */
+        .controls-section {
+            flex: 0 0 340px;
+            min-width: 280px;
+            max-width: 370px;
+            background: white;
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            margin-right: 0;
+            /* sticky for desktop, disables on small screens */
+            position: sticky;
+            top: 30px;
+            align-self: flex-start;
+        }
+        
+        .right-panel {
+            flex: 1 1 0%;
+            min-width: 0;
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+        }
+
+        /* New: split right-panel into plots and state info */
+        .plots-info-layout {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            width: 100%;
+        }
+        .plots-section {
+            background: white;
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            flex: 2 1 0%;
+            min-width: 0;
+        }
+        .system-state-sidebar {
+            background: white;
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            padding: 30px 20px;
+            min-width: 280px;
+            max-width: 340px;
+            flex: 1 1 340px;
+            align-self: flex-start;
+            margin-left: 0;
+        }
+        
+        .pid-equation {
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .pid-equation .main-eq {
+            font-size: 1.8em;
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .pid-equation .terms {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .pid-equation .term {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px;
+            min-width: 120px;
+        }
+        
+        .pid-equation .term.p { background: rgba(52, 152, 219, 0.1); border-left: 4px solid #3498db; }
+        .pid-equation .term.i { background: rgba(243, 156, 18, 0.1); border-left: 4px solid #f39c12; }
+        .pid-equation .term.d { background: rgba(155, 89, 182, 0.1); border-left: 4px solid #9b59b6; }
+        
+        .pid-equation .term-label {
+            font-size: 0.9em;
+            color: #5f6368;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .pid-equation .term-eq {
+            font-size: 1.2em;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-weight: 500;
+            text-align: center;
+            border-bottom: 2px solid #f1f3f4;
+            padding-bottom: 10px;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .control-group {
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            padding: 20px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .control-group:hover {
+            border-color: #1a73e8;
+        }
+        
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+        
+        .control-group .parameter {
+            font-family: 'Courier New', monospace;
+            color: #5f6368;
+            font-size: 0.9em;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e8eaed;
+            outline: none;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #1a73e8;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .control-group .value {
+            background: white;
+            border: 1px solid #dadce0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #1a73e8;
+            font-size: 1.1em;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: 2px solid #1a73e8;
+            border-radius: 6px;
+            background: white;
+            color: #1a73e8;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-width: 100px;
+        }
+        
+        button:hover {
+            background: #1a73e8;
+            color: white;
+        }
+        
+        button:disabled {
+            border-color: #dadce0;
+            color: #9aa0a6;
+            background: #f8f9fa;
+            cursor: not-allowed;
+        }
+        
+        button:disabled:hover {
+            background: #f8f9fa;
+            color: #9aa0a6;
+        }
+        
+        button.active {
+            background: #1a73e8;
+            color: white;
+        }
+        
+        .plot-wrapper {
+            margin-bottom: 40px;
+        }
+        
+        .plot-wrapper:last-child {
+            margin-bottom: 0;
+        }
+        
+        .plot-title {
+            font-size: 1.3em;
+            color: #1a1a1a;
+            margin-bottom: 0px;
+            font-weight: 500;
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .plot-container {
+            height: 400px;
+            border: 1px solid #e8eaed;
+            border-radius: 4px;
+            background: white;
+            margin-bottom: 60px;
+        }
+
+        /* .info-section now sidebar */
+        .info-section {
+            /* Remove old background, border, padding, etc. for backward compatibility */
+            background: none;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            margin-bottom: 0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            transition: transform 0.2s ease;
+        }
+        
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .info-item .label {
+            font-size: 0.9em;
+            color: #5f6368;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .info-item .value {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #1a1a1a;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .info-item.error .value { color: #ea4335; }
+        .info-item.p-term .value { color: #3498db; }
+        .info-item.i-term .value { color: #f39c12; }
+        .info-item.d-term .value { color: #9b59b6; }
+        .info-item.output .value { color: #137333; }
+        
+        .calculus-note {
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            padding: 50px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #5f6368;
+
+        }
+        
+        @media (max-width: 1000px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            .controls-section {
+                position: static;
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 30px;
+                margin-right: 0;
+            }
+            .right-panel,
+            .plots-info-layout {
+                flex-direction: column;
+                gap: 0;
+            }
+            .system-state-sidebar {
+                max-width: 100%;
+                min-width: 0;
+                margin-left: 0;
+                margin-top: 30px;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 5px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .pid-equation .terms {
+                gap: 20px;
+            }
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .main-layout {
+                gap: 0;
+            }
+        }
+        /* Extra for the new external force slider */
+        .external-force-label {
+            color: #b71c1c;
+        }
+        .external-force-value {
+            color: #b71c1c;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.26.0/plotly.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PID Controller Demo</h1>
+            <p class="subtitle">Interactive Demonstration of Proportional-Integral-Derivative Control</p>
+        </div>
+
+        <div class="main-layout">
+            <!-- Controls on the left -->
+            <div class="controls-section">
+                <h2 class="section-title">Control Parameters</h2>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="kp">Proportional Gain <span class="parameter">(K<sub>p</sub>)</span></label>
+                        <input type="range" id="kp" min="0" max="5" step="0.1" value="1">
+                        <div class="value">1.0</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="ki">Integral Gain <span class="parameter">(K<sub>i</sub>)</span></label>
+                        <input type="range" id="ki" min="0" max="2" step="0.01" value="0.1">
+                        <div class="value">0.10</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="kd">Derivative Gain <span class="parameter">(K<sub>d</sub>)</span></label>
+                        <input type="range" id="kd" min="0" max="1" step="0.01" value="0.05">
+                        <div class="value">0.05</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="setpoint">Reference Signal <span class="parameter">(r)</span></label>
+                        <input type="range" id="setpoint" min="0" max="100" step="1" value="50">
+                        <div class="value">50</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="externalForce" class="external-force-label">
+                            External Force <span class="parameter">(Disturbance)</span>
+                        </label>
+                        <input type="range" id="externalForce" min="-20" max="20" step="0.1" value="0">
+                        <div class="value external-force-value">0.0</div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button id="startBtn">Start Simulation</button>
+                    <button id="stopBtn" disabled>Stop</button>
+                    <button id="resetBtn">Reset</button>
+                    <button id="stepBtn">Step Response</button>
+                </div>
+            </div>
+
+            <!-- Main content on the right -->
+            <div class="right-panel">
+                <div style="flex: 1 1 0%; width: 100%;">
+                    <div class="pid-equation">
+                        <div class="main-eq">
+                            $$u(t) = K_p e(t) + K_i \int e(\tau) d\tau + K_d \frac{de}{dt}$$
+                        </div>
+
+                        <div class="terms">
+                            <div class="term p">
+                                <div class="term-label">Proportional</div>
+                                <div class="term-eq">K<sub>p</sub> × error</div>
+                            </div>
+                            <div class="term i">
+                                <div class="term-label">Integral</div>
+                                <div class="term-eq">K<sub>i</sub> × ∫error dt</div>
+                            </div>
+                            <div class="term d">
+                                <div class="term-label">Derivative</div>
+                                <div class="term-eq">K<sub>d</sub> × d(error)/dt</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calculus-note">
+                        <ul>
+                            <li><strong>Proportional (P):</strong> Your immediate reaction to how far you are from the target. Like steering a car back to the center of the lane based on how far off you are.</li>
+                            <li><strong>Integral (I):</strong> Considers the history of errors. If you’ve been off course for a while, it builds up to nudge you back. Like gradually correcting a persistent drift.</li>
+                            <li><strong>Derivative (D):</strong> Predicts future errors by observing how quickly the error is changing. It slows you down if you’re about to overcorrect. Like easing off the wheel to avoid overshooting.</li>
+                            <li><strong>Reference (Setpoint/Target):</strong> The goal or desired state, such as the temperature you want a thermostat to maintain.</li>
+                            <li><strong>External Force (Disturbance):</strong> Unexpected influences that push you off course, like a gust of wind or an open window, which the controller must compensate for.</li>
+                        </ul>
+                    </div>
+                    <!-- Plots and info grid side-by-side for desktop -->
+                    <div class="plots-info-layout">
+                        <div class="plots-section">
+                            <div class="plot-wrapper">
+                                <div class="plot-title">System Response: Output y(t) vs Reference r(t)</div>
+                                <div class="plot-container">
+                                    <div id="responsePlot"></div>
+                                </div>
+                            </div>
+                            <div class="plot-wrapper">
+                                <div class="plot-title">PID Components: Error Signal and Control Terms</div>
+                                <div class="plot-container">
+                                    <div id="pidPlot"></div>
+                                </div>
+                            </div>
+                            <div class="plot-wrapper">
+                                <div class="plot-title">External Force (Disturbance) Over Time</div>
+                                <div class="plot-container">
+                                    <div id="forcePlot"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- System state sidebar -->
+                        <div class="system-state-sidebar">
+                            <div class="info-section">
+                                <h2 class="section-title">Real-time System State</h2>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="label">Current Output y(t)</div>
+                                        <div class="value" id="currentValue">0.0</div>
+                                    </div>
+                                    <div class="info-item error">
+                                        <div class="label">Error e(t)</div>
+                                        <div class="value" id="error">50.0</div>
+                                    </div>
+                                    <div class="info-item p-term">
+                                        <div class="label">P Term</div>
+                                        <div class="value" id="pTerm">0.0</div>
+                                    </div>
+                                    <div class="info-item i-term">
+                                        <div class="label">I Term</div>
+                                        <div class="value" id="iTerm">0.0</div>
+                                    </div>
+                                    <div class="info-item d-term">
+                                        <div class="label">D Term</div>
+                                        <div class="value" id="dTerm">0.0</div>
+                                    </div>
+                                    <div class="info-item output">
+                                        <div class="label">Control Signal u(t)</div>
+                                        <div class="value" id="output">0.0</div>
+                                    </div>
+                                    <div class="info-item" style="color: #b71c1c;">
+                                        <div class="label">External Force</div>
+                                        <div class="value" id="externalForceValue">0.0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.plots-info-layout -->
+                </div>
+            </div>
+        </div><!-- /.main-layout -->
+    </div>
+
+<footer style="position: fixed; bottom: 0; left: 0; width: 100%; text-align: center; padding: 20px; background: #f8f9fa; border-top: 1px solid #dadce0; font-size: 0.9em; color: #5f6368;">
+    <p>&copy; 2025 - xHue (Jackson Cummings)</p>
+</footer>
+
+
+    <script>
+        class PIDController {
+            constructor(kp = 1, ki = 0.1, kd = 0.05) {
+                this.kp = kp;
+                this.ki = ki;
+                this.kd = kd;
+                this.setpoint = 50;
+                this.integral = 0;
+                this.previousError = 0;
+                this.dt = 0.1;
+            }
+
+            update(currentValue) {
+                const error = this.setpoint - currentValue;
+
+                this.integral += error * this.dt;
+                const derivative = (error - this.previousError) / this.dt;
+
+                const pTerm = this.kp * error;
+                const iTerm = this.ki * this.integral;
+                const dTerm = this.kd * derivative;
+
+                const output = pTerm + iTerm + dTerm;
+
+                this.previousError = error;
+
+                return {
+                    output: output,
+                    error: error,
+                    pTerm: pTerm,
+                    iTerm: iTerm,
+                    dTerm: dTerm
+                };
+            }
+
+            reset() {
+                this.integral = 0;
+                this.previousError = 0;
+            }
+        }
+
+        class System {
+            constructor() {
+                this.value = 0;
+                this.velocity = 0;
+                this.mass = 1;
+                this.damping = 0.1;
+            }
+
+            update(force, externalForce) {
+                // External force acts in opposition (disturbance)
+                const totalForce = force + externalForce; // If you want the disturbance to always oppose, use -externalForce
+                const acceleration = (totalForce - this.damping * this.velocity) / this.mass;
+                this.velocity += acceleration * 0.1;
+                this.value += this.velocity * 0.1;
+
+                this.value = Math.max(0, Math.min(100, this.value));
+            }
+
+            reset() {
+                this.value = 0;
+                this.velocity = 0;
+            }
+        }
+
+        // Initialize components
+        const pid = new PIDController();
+        const system = new System();
+
+        // Data storage
+        let timeData = [];
+        let valueData = [];
+        let setpointData = [];
+        let errorData = [];
+        let pTermData = [];
+        let iTermData = [];
+        let dTermData = [];
+        let forceData = [];
+        let time = 0;
+        let isRunning = false;
+        let animationId;
+
+        // Control elements
+        const kpSlider = document.getElementById('kp');
+        const kiSlider = document.getElementById('ki');
+        const kdSlider = document.getElementById('kd');
+        const setpointSlider = document.getElementById('setpoint');
+        const externalForceSlider = document.getElementById('externalForce');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const stepBtn = document.getElementById('stepBtn');
+
+        // Initialize plots
+        function initializePlots() {
+            const plotConfig = {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['pan2d', 'select2d', 'lasso2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian'],
+                displaylogo: false
+            };
+
+            // Response plot
+            const responseLayout = {
+                xaxis: {
+                    title: { text: 'Time (s)', font: { size: 14, color: '#1a1a1a' } },
+                    range: [0, 50],
+                    gridcolor: '#e8eaed',
+                    gridwidth: 1
+                },
+                yaxis: {
+                    title: { text: 'Amplitude', font: { size: 14, color: '#1a1a1a' } },
+                    range: [0, 100],
+                    gridcolor: '#e8eaed',
+                    gridwidth: 1
+                },
+                margin: { t: 20, r: 40, b: 60, l: 60 },
+                showlegend: true,
+                legend: { x: 0.02, y: 0.98, bgcolor: 'rgba(255,255,255,0.8)' },
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: { family: 'Segoe UI, sans-serif', size: 12, color: '#1a1a1a' }
+            };
+
+            const responseData = [
+                {
+                    x: [],
+                    y: [],
+                    name: 'Reference r(t)',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#ea4335', dash: 'dash', width: 3 }
+                },
+                {
+                    x: [],
+                    y: [],
+                    name: 'Output y(t)',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#1a73e8', width: 3 }
+                }
+            ];
+
+            Plotly.newPlot('responsePlot', responseData, responseLayout, plotConfig);
+
+            // PID terms plot
+            const pidLayout = {
+                xaxis: {
+                    title: { text: 'Time (s)', font: { size: 14, color: '#1a1a1a' } },
+                    range: [0, 50],
+                    gridcolor: '#e8eaed',
+                    gridwidth: 1
+                },
+                yaxis: {
+                    title: { text: 'Magnitude', font: { size: 14, color: '#1a1a1a' } },
+                    gridcolor: '#e8eaed',
+                    gridwidth: 1
+                },
+                margin: { t: 20, r: 40, b: 60, l: 60 },
+                showlegend: true,
+                legend: { x: 0.02, y: 0.98, bgcolor: 'rgba(255,255,255,0.8)' },
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: { family: 'Segoe UI, sans-serif', size: 12, color: '#1a1a1a' }
+            };
+
+            const pidData = [
+                {
+                    x: [],
+                    y: [],
+                    name: 'Error e(t)',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#ea4335', width: 2 }
+                },
+                {
+                    x: [],
+                    y: [],
+                    name: 'P Term',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#3498db', width: 2 }
+                },
+                {
+                    x: [],
+                    y: [],
+                    name: 'I Term',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#f39c12', width: 2 }
+                },
+                {
+                    x: [],
+                    y: [],
+                    name: 'D Term',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#9b59b6', width: 2 }
+                }
+            ];
+
+            Plotly.newPlot('pidPlot', pidData, pidLayout, plotConfig);
+
+            // External force plot
+            const forceLayout = {
+                xaxis: {
+                    title: { text: 'Time (s)', font: { size: 14, color: '#1a1a1a' } },
+                    range: [0, 50],
+                    gridcolor: '#e8eaed',
+                    gridwidth: 1
+                },
+                yaxis: {
+                    title: { text: 'External Force', font: { size: 14, color: '#1a1a1a' } },
+                    gridcolor: '#e8eaed',
+                    gridwidth: 1
+                },
+                margin: { t: 20, r: 40, b: 60, l: 60 },
+                showlegend: false,
+                plot_bgcolor: 'white',
+                paper_bgcolor: 'white',
+                font: { family: 'Segoe UI, sans-serif', size: 12, color: '#1a1a1a' }
+            };
+            const forceDataPlot = [
+                {
+                    x: [],
+                    y: [],
+                    name: 'External Force',
+                    type: 'scatter',
+                    mode: 'lines',
+                    line: { color: '#b71c1c', width: 2 }
+                }
+            ];
+            Plotly.newPlot('forcePlot', forceDataPlot, forceLayout, plotConfig);
+        }
+
+        // Update display functions
+        function updateSliderDisplays() {
+            kpSlider.nextElementSibling.textContent = parseFloat(kpSlider.value).toFixed(1);
+            kiSlider.nextElementSibling.textContent = parseFloat(kiSlider.value).toFixed(2);
+            kdSlider.nextElementSibling.textContent = parseFloat(kdSlider.value).toFixed(2);
+            setpointSlider.nextElementSibling.textContent = setpointSlider.value;
+            externalForceSlider.nextElementSibling.textContent = parseFloat(externalForceSlider.value).toFixed(1);
+        }
+
+        function updateInfoDisplay(result) {
+            document.getElementById('currentValue').textContent = system.value.toFixed(1);
+            document.getElementById('error').textContent = result.error.toFixed(1);
+            document.getElementById('pTerm').textContent = result.pTerm.toFixed(1);
+            document.getElementById('iTerm').textContent = result.iTerm.toFixed(1);
+            document.getElementById('dTerm').textContent = result.dTerm.toFixed(1);
+            document.getElementById('output').textContent = result.output.toFixed(1);
+            document.getElementById('externalForceValue').textContent = parseFloat(externalForceSlider.value).toFixed(1);
+        }
+
+        // Update plots
+        function updatePlots() {
+            if (timeData.length === 0) return;
+
+            const maxTime = Math.max(50, timeData[timeData.length - 1]);
+            const minTime = Math.max(0, maxTime - 50);
+
+            const visibleIndices = timeData.map((t, i) => t >= minTime ? i : -1).filter(i => i !== -1);
+            const visibleTime = visibleIndices.map(i => timeData[i]);
+            const visibleValue = visibleIndices.map(i => valueData[i]);
+            const visibleSetpoint = visibleIndices.map(i => setpointData[i]);
+            const visibleError = visibleIndices.map(i => errorData[i]);
+            const visiblePTerm = visibleIndices.map(i => pTermData[i]);
+            const visibleITerm = visibleIndices.map(i => iTermData[i]);
+            const visibleDTerm = visibleIndices.map(i => dTermData[i]);
+            const visibleForce = visibleIndices.map(i => forceData[i]);
+
+            // Update response plot
+            const responseUpdate = {
+                x: [visibleTime, visibleTime],
+                y: [visibleSetpoint, visibleValue]
+            };
+
+            const responseLayout = {
+                xaxis: { range: [minTime, maxTime] }
+            };
+
+            Plotly.restyle('responsePlot', responseUpdate, [0, 1]);
+            Plotly.relayout('responsePlot', responseLayout);
+
+            // Update PID plot
+            const pidUpdate = {
+                x: [visibleTime, visibleTime, visibleTime, visibleTime],
+                y: [visibleError, visiblePTerm, visibleITerm, visibleDTerm]
+            };
+
+            const pidLayout = {
+                xaxis: { range: [minTime, maxTime] }
+            };
+
+            Plotly.restyle('pidPlot', pidUpdate, [0, 1, 2, 3]);
+            Plotly.relayout('pidPlot', pidLayout);
+
+            // Update external force plot
+            const forceUpdate = {
+                x: [visibleTime],
+                y: [visibleForce]
+            };
+            const forceLayout = {
+                xaxis: { range: [minTime, maxTime] }
+            };
+            Plotly.restyle('forcePlot', forceUpdate, [0]);
+            Plotly.relayout('forcePlot', forceLayout);
+        }
+
+        // Animation loop
+        function animate() {
+            if (!isRunning) return;
+
+            pid.kp = parseFloat(kpSlider.value);
+            pid.ki = parseFloat(kiSlider.value);
+            pid.kd = parseFloat(kdSlider.value);
+            pid.setpoint = parseFloat(setpointSlider.value);
+            const extForce = parseFloat(externalForceSlider.value);
+
+            const result = pid.update(system.value);
+            // System update: force from PID and external force (disturbance)
+            system.update(result.output, extForce);
+
+            timeData.push(time);
+            valueData.push(system.value);
+            setpointData.push(pid.setpoint);
+            errorData.push(result.error);
+            pTermData.push(result.pTerm);
+            iTermData.push(result.iTerm);
+            dTermData.push(result.dTerm);
+            forceData.push(extForce);
+
+            if (timeData.length > 1000) {
+                timeData.shift();
+                valueData.shift();
+                setpointData.shift();
+                errorData.shift();
+                pTermData.shift();
+                iTermData.shift();
+                dTermData.shift();
+                forceData.shift();
+            }
+
+            time += 0.1;
+
+            updateInfoDisplay(result);
+            updatePlots();
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Event listeners
+        [kpSlider, kiSlider, kdSlider, setpointSlider, externalForceSlider].forEach(slider => {
+            slider.addEventListener('input', updateSliderDisplays);
+        });
+
+        startBtn.addEventListener('click', () => {
+            isRunning = true;
+            startBtn.disabled = true;
+            startBtn.classList.remove('active');
+            stopBtn.disabled = false;
+            stopBtn.classList.add('active');
+            animate();
+        });
+
+        stopBtn.addEventListener('click', () => {
+            isRunning = false;
+            startBtn.disabled = false;
+            startBtn.classList.add('active');
+            stopBtn.disabled = true;
+            stopBtn.classList.remove('active');
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            isRunning = false;
+            startBtn.disabled = false;
+            startBtn.classList.remove('active');
+            stopBtn.disabled = true;
+            stopBtn.classList.remove('active');
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+
+            pid.reset();
+            system.reset();
+            timeData = [];
+            valueData = [];
+            setpointData = [];
+            errorData = [];
+            pTermData = [];
+            iTermData = [];
+            dTermData = [];
+            forceData = [];
+            time = 0;
+
+            updateInfoDisplay({
+                error: pid.setpoint - system.value,
+                pTerm: 0,
+                iTerm: 0,
+                dTerm: 0,
+                output: 0
+            });
+
+            updatePlots();
+        });
+
+        stepBtn.addEventListener('click', () => {
+            const currentSetpoint = parseFloat(setpointSlider.value);
+            const newSetpoint = currentSetpoint === 50 ? 75 : 50;
+            setpointSlider.value = newSetpoint;
+            updateSliderDisplays();
+        });
+
+        // Initialize everything
+        initializePlots();
+        updateSliderDisplays();
+        updateInfoDisplay({
+            error: pid.setpoint - system.value,
+            pTerm: 0,
+            iTerm: 0,
+            dTerm: 0,
+            output: 0
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

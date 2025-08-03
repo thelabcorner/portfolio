@@ -197,7 +197,15 @@
 <body>
 
 <div id="preloader">
-    <img id="preloaderImage" src="/assets/projects/JACKSON/8000w/GLOBE.png" alt="Jackson Cummings Logo" style="width: 300px; height: auto; margin-top: 20px;">
+    <svg id="preloaderSVG" xmlns="http://www.w3.org/2000/svg" viewBox="-120 -250 1000 1000">
+        <g id="Layer_1">
+            <path class="st1" d="M 548.293 123.888 C 548.293 271.188 428.893 390.588 281.593 390.588 C 134.293 390.588 14.893 271.188 14.893 123.888 C 14.893 -23.412 134.293 -142.81 281.593 -142.81 C 428.893 -142.81 548.293 -23.412 548.293 123.888 Z" style="fill: none; stroke-miterlimit: 133.3; stroke-width: 50; stroke: rgb(82, 0, 139);"></path>
+            <path class="st0" d="M 476.593 -69.712 C 543.693 -82.112 592.893 -76.712 609.293 -50.612 C 642.993 3.288 523.593 125.088 342.693 221.488 C 161.793 317.888 -12.307 352.388 -46.007 298.488 C -63.807 270.088 -39.007 222.788 14.993 170.288" style="fill: none; isolation: isolate; opacity: 0.5; stroke-miterlimit: 133.3; stroke-width: 50; stroke: rgb(64, 0, 137); stroke-linecap: round;"></path>
+            <circle class="st2" cx="-41.662" cy="231.628" r="44.7" style="stroke-width: 1; fill: rgb(111, 0, 196);">
+                <animateTransform type="translate" additive="sum" attributeName="transform" values="0 0;-11 50;40 91;230 55;362 0;480 -68;647 -222;646 -289;595 -318;390 -258;280 -210;200 -155;0 0" dur="1.13s" fill="freeze" begin="0.06s" keyTimes="0; 0.046787; 0.100067; 0.15139; 0.2036; 0.25428; 0.32308; 0.41674; 0.51439; 0.624684; 0.72408; 0.87656; 1" calcMode="spline" keySplines="0.7 0 0.84 0; 0.42 0 0.58 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1" repeatCount="indefinite"></animateTransform>
+            </circle>
+        </g>
+    </svg>
 </div>
 
 <style>
@@ -214,7 +222,8 @@
         z-index: 9999;
     }
 
-    #preloader img {
+    #preloader svg {
+        width: 200px;
         transition: opacity 0.5s ease;
     }
 </style>
@@ -222,7 +231,7 @@
 <script>
     window.addEventListener('load', () => {
         const preloader = document.getElementById('preloader');
-        const preloaderImage = document.getElementById('preloaderImage');
+        const preloaderImage = document.getElementById('preloaderSVG');
         preloader.style.transition = 'opacity 0.5s ease';
 
         // Fade out the image first
@@ -3061,7 +3070,23 @@ const splide = new Splide('#experience-carousel', {
             technologies: ["Cloudflare", "Flask", "SQLite", "Bootstrap", "JavaScript/HTML5", "Python", "Google APIs"],
             scope: "Frontend development, authentication system, real-time chat functionality",
             timeline: "",
-            liveLink: "#",
+            liveLink: "https://engineeringminds.co/book/ochem",
+            codeLink: "#"
+        },
+
+        // PID Demo
+        {
+            title: "PID Control Demo",
+            category: "web",
+            images: [
+                "assets/projects/JACKSON/PID.png",
+                "assets/projects/JACKSON/PID_DEMO_IMAGE.png",
+            ],
+            description: "A simple web-based simulation of a PID controller for educational purposes. This project demonstrates the principles of PID control in a user-friendly interface.",
+            technologies: ["Plot.ly", "HTML",  "CSS", "JavaScript", "P.I.D."],
+            scope: "Frontend development, backend integration, and simulation logic",
+            timeline: "",
+            liveLink: "/PID_DEMO.html",
             codeLink: "#"
         },
 
@@ -4549,7 +4574,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
+<!-- Footer -->
+<footer class="footer mt-5 py-4">
+  <div class="container text-center">
+    <div class="mb-2">
+      <a href="https://github.com/yourusername" class="mx-2 text-light-purple" target="_blank" rel="noopener" aria-label="GitHub">
+        <i class="fab fa-github fa-lg"></i>
+      </a>
+      <a href="https://linkedin.com/in/yourusername" class="mx-2 text-light-purple" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <i class="fab fa-linkedin fa-lg"></i>
+      </a>
+      <a href="mailto:your@email.com" class="mx-2 text-light-purple" aria-label="Email">
+        <i class="fas fa-envelope fa-lg"></i>
+      </a>
+    </div>
+    <p class="text-muted mb-0">&copy; 2024 Jackson Cummings. All rights reserved.</p>
+  </div>
+</footer>
+<style>
+.footer {
+    position: fixed;
+  background: #100921;
+  border-top: 1.5px solid rgba(139, 92, 246, 0.15);
+  color: var(--white-60);
+  font-size: 1rem;
+  z-index: 10;
+}
+.footer a {
+  color: var(--light-purple);
+  transition: color 0.2s;
+}
+.footer a:hover {
+  color: var(--primary-purple);
+  text-decoration: none;
+}
+</style>
 
 
 

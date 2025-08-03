@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FABRIK Chain Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #1a1a1a;
+            padding: 20px;
+            border-right: 2px solid #333;
+            overflow-y: auto;
+        }
+        
+        .main-canvas {
+            flex: 1;
+            position: relative;
+            background: #111;
+        }
+        
+        canvas {
+            display: block;
+            cursor: crosshair;
+            width: 100%;
+            height: 100%;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #00ff88;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #00ff88;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #00ff88;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .value-display {
+            color: #00ff88;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .info-text {
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #ccc;
+        }
+        
+        .stats {
+            background: #1f1f1f;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #aaa;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        
+        .reset-btn:hover {
+            background: #444;
+        }
+        
+        .instructions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            color: #ccc;
+            font-size: 14px;
+            border: 1px solid #333;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Add tooltip styling */
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border: 1px solid #333;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            max-width: 200px;
+            backdrop-filter: blur(5px);
+        }
+
+        .tooltip-content {
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        .tooltip-value {
+            color: #00ff88;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>FABRIK Demo</h1>
+            
+            <div class="info-text">
+                FABRIK (Forward And Backward Reaching Inverse Kinematics) is an iterative solver that works by alternating between forward and backward passes through the kinematic chain.
+            </div>
+            
+            <div class="control-group">
+                <h2>Chain Settings</h2>
+                <label>
+                    Number of Joints: <span class="value-display" id="jointCount">5</span>
+                </label>
+                <input type="range" id="jointSlider" min="3" max="10" value="5">
+                
+                <label>
+                    Segment Length: <span class="value-display" id="segmentLength">60</span>
+                </label>
+                <input type="range" id="lengthSlider" min="30" max="100" value="60">
+            </div>
+            
+            <div class="control-group">
+                <h2>Algorithm</h2>
+                <label>
+                    Max Iterations: <span class="value-display" id="maxIter">10</span>
+                </label>
+                <input type="range" id="iterSlider" min="1" max="20" value="10">
+                
+                <label>
+                    Tolerance: <span class="value-display" id="tolerance">1.0</span>
+                </label>
+                <input type="range" id="tolSlider" min="0.1" max="5" value="1" step="0.1">
+            </div>
+            
+            <button class="reset-btn" id="resetBtn">Reset Chain</button>
+            
+            <div class="stats" id="stats">
+                Iterations: 0<br>
+                Error: 0.0<br>
+                Target Distance: 0
+            </div>
+        </div>
+        
+        <div class="main-canvas">
+            <canvas id="canvas"></canvas>
+            <div class="instructions">
+                <strong>Instructions:</strong><br>
+                • Drag the green target to move the end effector<br>
+                • Watch the chain solve using FABRIK algorithm<br>
+                • Adjust parameters in the sidebar<br>
+                • The chain alternates forward/backward passes<br>
+                • Hover over joints to see joint specs
+            </div>
+            <!-- Add tooltip element -->
+            <div class="tooltip" id="jointTooltip">
+                <div class="tooltip-content" id="tooltipContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Add tooltip references
+            const tooltip = document.getElementById('jointTooltip');
+            const tooltipContent = document.getElementById('tooltipContent');
+
+            let canvasWidth, canvasHeight;
+            
+            // Resize canvas function
+            function resizeCanvas() {
+                const container = canvas.parentElement;
+                canvasWidth = container.clientWidth;
+                canvasHeight = container.clientHeight;
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                
+                // Reinitialize chain with new dimensions
+                if (window.chain) {
+                    chain.baseX = canvasWidth * 0.5;
+                    chain.baseY = canvasHeight * 0.5;
+                    chain.initializeChain();
+                    chain.solve();
+                }
+            }
+            
+            // FABRIK Chain class
+            class FABRIKChain {
+                constructor(baseX, baseY, numJoints, segmentLength) {
+                    this.baseX = baseX;
+                    this.baseY = baseY;
+                    this.numJoints = numJoints;
+                    this.segmentLength = segmentLength;
+                    this.joints = [];
+                    this.target = { x: baseX + segmentLength * (numJoints - 1), y: baseY };
+                    this.tolerance = 1.0;
+                    this.maxIterations = 10;
+                    this.lastIterations = 0;
+                    this.lastError = 0;
+                    
+                    this.initializeChain();
+                }
+                
+                initializeChain() {
+                    this.joints = [];
+                    for (let i = 0; i < this.numJoints; i++) {
+                        this.joints.push({
+                            x: this.baseX + i * this.segmentLength,
+                            y: this.baseY
+                        });
+                    }
+                }
+                
+                solve() {
+                    let iterations = 0;
+                    let error = this.getDistanceToTarget();
+                    
+                    while (error > this.tolerance && iterations < this.maxIterations) {
+                        // Forward pass - start from target
+                        this.forwardPass();
+                        
+                        // Backward pass - start from base
+                        this.backwardPass();
+                        
+                        error = this.getDistanceToTarget();
+                        iterations++;
+                    }
+                    
+                    this.lastIterations = iterations;
+                    this.lastError = error;
+                    
+                    this.updateStats();
+                }
+                
+                forwardPass() {
+                    // Set end effector to target
+                    const endIndex = this.joints.length - 1;
+                    this.joints[endIndex].x = this.target.x;
+                    this.joints[endIndex].y = this.target.y;
+                    
+                    // Work backwards through the chain
+                    for (let i = endIndex - 1; i >= 0; i--) {
+                        const current = this.joints[i];
+                        const next = this.joints[i + 1];
+                        
+                        const dx = current.x - next.x;
+                        const dy = current.y - next.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 0) {
+                            const ratio = this.segmentLength / distance;
+                            current.x = next.x + dx * ratio;
+                            current.y = next.y + dy * ratio;
+                        }
+                    }
+                }
+                
+                backwardPass() {
+                    // Set base to original position
+                    this.joints[0].x = this.baseX;
+                    this.joints[0].y = this.baseY;
+                    
+                    // Work forwards through the chain
+                    for (let i = 1; i < this.joints.length; i++) {
+                        const prev = this.joints[i - 1];
+                        const current = this.joints[i];
+                        
+                        const dx = current.x - prev.x;
+                        const dy = current.y - prev.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance > 0) {
+                            const ratio = this.segmentLength / distance;
+                            current.x = prev.x + dx * ratio;
+                            current.y = prev.y + dy * ratio;
+                        }
+                    }
+                }
+                
+                getDistanceToTarget() {
+                    const endJoint = this.joints[this.joints.length - 1];
+                    const dx = endJoint.x - this.target.x;
+                    const dy = endJoint.y - this.target.y;
+                    return Math.sqrt(dx * dx + dy * dy);
+                }
+                
+                updateStats() {
+                    const targetDist = Math.sqrt(
+                        Math.pow(this.target.x - this.baseX, 2) + 
+                        Math.pow(this.target.y - this.baseY, 2)
+                    );
+                    
+                    document.getElementById('stats').innerHTML = `
+                        Iterations: ${this.lastIterations}<br>
+                        Error: ${this.lastError.toFixed(2)}<br>
+                        Target Distance: ${targetDist.toFixed(0)}
+                    `;
+                }
+
+                // Add method to calculate joint angle
+                calculateJointAngles() {
+                    const angles = [];
+
+                    for (let i = 0; i < this.joints.length; i++) {
+                        if (i === 0) {
+                            // Base joint angle (compared to horizontal)
+                            const dx = this.joints[1].x - this.joints[0].x;
+                            const dy = this.joints[1].y - this.joints[0].y;
+                            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                            angles.push(angle);
+                        } else if (i < this.joints.length - 1) {
+                            // Middle joints (angle between segments)
+                            const prev = this.joints[i-1];
+                            const current = this.joints[i];
+                            const next = this.joints[i+1];
+
+                            const dx1 = prev.x - current.x;
+                            const dy1 = prev.y - current.y;
+                            const dx2 = next.x - current.x;
+                            const dy2 = next.y - current.y;
+
+                            const angle1 = Math.atan2(dy1, dx1);
+                            const angle2 = Math.atan2(dy2, dx2);
+                            let angle = (angle2 - angle1) * 180 / Math.PI;
+
+                            // Normalize angle to be between -180 and 180
+                            if (angle > 180) angle -= 360;
+                            if (angle < -180) angle += 360;
+
+                            angles.push(angle);
+                        } else {
+                            // End effector
+                            const dx = this.joints[i].x - this.joints[i-1].x;
+                            const dy = this.joints[i].y - this.joints[i-1].y;
+                            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                            angles.push(angle);
+                        }
+                    }
+
+                    return angles;
+                }
+            }
+            
+            // Initialize canvas and chain
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            const chain = new FABRIKChain(
+                canvasWidth * 0.2, 
+                canvasHeight * 0.5, 
+                5, 
+                60
+            );
+            window.chain = chain; // Make it global for resize
+            
+            // Mouse interaction variables
+            let isDragging = false;
+            let mouseX = 0;
+            let mouseY = 0;
+            let hoveredJointIndex = -1; // Track which joint is being hovered
+
+            function getMousePos(e) {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+            }
+            
+            // Add these variables
+            let isDraggingTarget = false;
+            let isDraggingBase = false;
+
+            // Update mousedown event
+            canvas.addEventListener('mousedown', (e) => {
+                const pos = getMousePos(e);
+                mouseX = pos.x;
+                mouseY = pos.y;
+
+                // Check if near base
+                const dxBase = mouseX - chain.baseX;
+                const dyBase = mouseY - chain.baseY;
+                const distBase = Math.sqrt(dxBase * dxBase + dyBase * dyBase);
+
+                // Check if near target
+                const dxTarget = mouseX - chain.target.x;
+                const dyTarget = mouseY - chain.target.y;
+                const distTarget = Math.sqrt(dxTarget * dxTarget + dyTarget * dyTarget);
+
+                if (distBase < 16) {
+                    isDraggingBase = true;
+                    canvas.style.cursor = 'grabbing';
+                } else if (distTarget < 20) {
+                    isDraggingTarget = true;
+                    canvas.style.cursor = 'grabbing';
+                }
+            });
+
+            // Update mousemove event
+            canvas.addEventListener('mousemove', (e) => {
+                const pos = getMousePos(e);
+                mouseX = pos.x;
+                mouseY = pos.y;
+
+                if (isDraggingBase) {
+                    chain.baseX = mouseX;
+                    chain.baseY = mouseY;
+                    chain.initializeChain();
+                    chain.solve();
+                } else if (isDraggingTarget) {
+                    chain.target.x = mouseX;
+                    chain.target.y = mouseY;
+                    chain.solve();
+                } else {
+                    // Check if hovering over any joint
+                    hoveredJointIndex = -1;
+                    for (let i = 0; i < chain.joints.length; i++) {
+                        const joint = chain.joints[i];
+                        const dx = mouseX - joint.x;
+                        const dy = mouseY - joint.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < 12) { // Slightly larger than the joint radius for easier hovering
+                            hoveredJointIndex = i;
+                            break;
+                        }
+                    }
+
+                    // Handle tooltip visibility
+                    if (hoveredJointIndex >= 0) {
+                        // Calculate joint angles
+                        const angles = chain.calculateJointAngles();
+
+                        // Format different tooltips based on joint type
+                        if (hoveredJointIndex === 0) {
+                            tooltipContent.innerHTML = `
+                                <strong>Base Joint</strong><br>
+                                Position: <span class="tooltip-value">(${Math.round(chain.joints[0].x)}, ${Math.round(chain.joints[0].y)})</span><br>
+                                Angle: <span class="tooltip-value">${angles[0].toFixed(1)}°</span>
+                            `;
+                        } else if (hoveredJointIndex === chain.joints.length - 1) {
+                            tooltipContent.innerHTML = `
+                                <strong>End Effector</strong><br>
+                                Position: <span class="tooltip-value">(${Math.round(chain.joints[hoveredJointIndex].x)}, ${Math.round(chain.joints[hoveredJointIndex].y)})</span><br>
+                                Angle: <span class="tooltip-value">${angles[hoveredJointIndex].toFixed(1)}°</span><br>
+                                Error: <span class="tooltip-value">${chain.lastError.toFixed(2)}</span>
+                            `;
+                        } else {
+                            tooltipContent.innerHTML = `
+                                <strong>Joint ${hoveredJointIndex}</strong><br>
+                                Position: <span class="tooltip-value">(${Math.round(chain.joints[hoveredJointIndex].x)}, ${Math.round(chain.joints[hoveredJointIndex].y)})</span><br>
+                                Angle: <span class="tooltip-value">${angles[hoveredJointIndex].toFixed(1)}°</span>
+                            `;
+                        }
+
+                        // Position and show the tooltip
+                        tooltip.style.left = (mouseX + 15) + 'px';
+                        tooltip.style.top = (mouseY - 15) + 'px';
+                        tooltip.style.opacity = '1';
+                    } else {
+                        // Hide tooltip when not hovering over any joint
+                        tooltip.style.opacity = '0';
+                    }
+
+                    // Cursor feedback
+                    const dxBase = mouseX - chain.baseX;
+                    const dyBase = mouseY - chain.baseY;
+                    const distBase = Math.sqrt(dxBase * dxBase + dyBase * dyBase);
+
+                    const dxTarget = mouseX - chain.target.x;
+                    const dyTarget = mouseY - chain.target.y;
+                    const distTarget = Math.sqrt(dxTarget * dxTarget + dyTarget * dyTarget);
+
+                    if (distBase < 16) {
+                        canvas.style.cursor = 'grab';
+                    } else if (distTarget < 20) {
+                        canvas.style.cursor = 'grab';
+                    } else if (hoveredJointIndex >= 0) {
+                        canvas.style.cursor = 'pointer'; // Change cursor for joint hover
+                    } else {
+                        canvas.style.cursor = 'crosshair';
+                    }
+                }
+            });
+
+            // Update mouseup and mouseleave events
+            canvas.addEventListener('mouseup', () => {
+                isDraggingBase = false;
+                isDraggingTarget = false;
+                canvas.style.cursor = 'crosshair';
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                isDraggingBase = false;
+                isDraggingTarget = false;
+                canvas.style.cursor = 'crosshair';
+                tooltip.style.opacity = '0'; // Hide tooltip when mouse leaves canvas
+            });
+            
+            // Control panel event listeners
+            document.getElementById('jointSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('jointCount').textContent = value;
+                chain.numJoints = value;
+                chain.initializeChain();
+                chain.solve();
+            });
+            
+            document.getElementById('lengthSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('segmentLength').textContent = value;
+                chain.segmentLength = value;
+                chain.solve();
+            });
+            
+            document.getElementById('iterSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('maxIter').textContent = value;
+                chain.maxIterations = value;
+                chain.solve();
+            });
+            
+            document.getElementById('tolSlider').addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                document.getElementById('tolerance').textContent = value.toFixed(1);
+                chain.tolerance = value;
+                chain.solve();
+            });
+            
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                chain.initializeChain();
+                chain.target.x = chain.baseX + chain.segmentLength * (chain.numJoints - 1);
+                chain.target.y = chain.baseY;
+                chain.solve();
+            });
+            
+            // Render function
+            function render() {
+                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                
+                // Draw subtle grid
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < canvasWidth; x += 50) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvasHeight);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < canvasHeight; y += 50) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvasWidth, y);
+                    ctx.stroke();
+                }
+                
+                // Draw chain segments
+                ctx.strokeStyle = '#00aaff';
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                for (let i = 0; i < chain.joints.length - 1; i++) {
+                    ctx.moveTo(chain.joints[i].x, chain.joints[i].y);
+                    ctx.lineTo(chain.joints[i + 1].x, chain.joints[i + 1].y);
+                }
+                ctx.stroke();
+                
+                // Draw joints
+                for (let i = 0; i < chain.joints.length; i++) {
+                    if (i === 0) {
+                        // Base joint (red square)
+                        ctx.fillStyle = '#ff4444';
+                        ctx.fillRect(chain.joints[i].x - 8, chain.joints[i].y - 8, 16, 16);
+
+                        // Highlight if hovered
+                        if (hoveredJointIndex === i) {
+                            ctx.strokeStyle = '#ffffff';
+                            ctx.lineWidth = 2;
+                            ctx.strokeRect(chain.joints[i].x - 10, chain.joints[i].y - 10, 20, 20);
+                        }
+                    } else {
+                        // Regular joints (white circles)
+                        ctx.fillStyle = '#ffffff';
+                        ctx.beginPath();
+                        ctx.arc(chain.joints[i].x, chain.joints[i].y, 6, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Highlight if hovered
+                        if (hoveredJointIndex === i) {
+                            ctx.strokeStyle = '#00ff88';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            ctx.arc(chain.joints[i].x, chain.joints[i].y, 9, 0, Math.PI * 2);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                
+                // Draw target with glow effect
+                ctx.fillStyle = '#00ff88';
+                ctx.beginPath();
+                ctx.arc(chain.target.x, chain.target.y, 10, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Target outer ring
+                ctx.strokeStyle = '#00ff88';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(chain.target.x, chain.target.y, 15, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Draw reach indicator (circle showing max reach)
+                const maxReach = chain.segmentLength * (chain.numJoints - 1);
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.arc(chain.baseX, chain.baseY, maxReach, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                requestAnimationFrame(render);
+            }
+            
+            // Start the demo
+            chain.solve();
+            render();
+        });
+
+
+
+
+
+
+    </script>
+</body>
+</html>

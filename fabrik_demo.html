@@ -75,6 +75,7 @@
             height: 6px;
             background: #333;
             border-radius: 3px;
+            margin-bottom: 15px;
             outline: none;
             -webkit-appearance: none;
         }
@@ -201,6 +202,12 @@
                     Segment Length: <span class="value-display" id="segmentLength">60</span>
                 </label>
                 <input type="range" id="lengthSlider" min="30" max="100" value="60">
+
+                <!-- Joint constraint slider -->
+                <label>
+                    Joint Constraint (&deg;): <span class="value-display" id="jointConstraintValue">180</span>
+                </label>
+                <input type="range" id="jointConstraintSlider" min="10" max="180" value="180" step="1">
             </div>
             
             <div class="control-group">
@@ -285,6 +292,8 @@
                     this.lastIterations = 0;
                     this.lastError = 0;
                     
+                    this.jointConstraint = 180; // degrees, default unconstrained
+
                     this.initializeChain();
                 }
                 
@@ -336,8 +345,12 @@
                         
                         if (distance > 0) {
                             const ratio = this.segmentLength / distance;
-                            current.x = next.x + dx * ratio;
-                            current.y = next.y + dy * ratio;
+                            current.x = next.x + (current.x - next.x) * ratio;
+                            current.y = next.y + (current.y - next.y) * ratio;
+                        }
+                        // Joint constraint (except for base)
+                        if (i > 0 && this.jointConstraint < 180) {
+                            this.applyJointConstraint(i, i + 1, i - 1);
                         }
                     }
                 }
@@ -358,12 +371,47 @@
                         
                         if (distance > 0) {
                             const ratio = this.segmentLength / distance;
-                            current.x = prev.x + dx * ratio;
-                            current.y = prev.y + dy * ratio;
+                            current.x = prev.x + (current.x - prev.x) * ratio;
+                            current.y = prev.y + (current.y - prev.y) * ratio;
+                        }
+                        // Joint constraint (except for base)
+                        if (i < this.joints.length - 1 && this.jointConstraint < 180) {
+                            this.applyJointConstraint(i, i - 1, i + 1);
                         }
                     }
                 }
-                
+
+                // Helper to clamp joint angle between two segments
+                applyJointConstraint(jointIdx, prevIdx, nextIdx) {
+                    const a = this.joints[prevIdx];
+                    const b = this.joints[jointIdx];
+                    const c = this.joints[nextIdx];
+
+                    // Vectors
+                    const v1x = a.x - b.x;
+                    const v1y = a.y - b.y;
+                    const v2x = c.x - b.x;
+                    const v2y = c.y - b.y;
+
+                    // Angles
+                    const angle1 = Math.atan2(v1y, v1x);
+                    const angle2 = Math.atan2(v2y, v2x);
+                    let diff = angle2 - angle1;
+
+                    // Normalize to [-PI, PI]
+                    while (diff > Math.PI) diff -= 2 * Math.PI;
+                    while (diff < -Math.PI) diff += 2 * Math.PI;
+
+                    const maxRad = this.jointConstraint * Math.PI / 180;
+                    if (Math.abs(diff) > maxRad) {
+                        // Clamp angle
+                        const clamped = angle1 + Math.sign(diff) * maxRad;
+                        const len = Math.sqrt(v2x * v2x + v2y * v2y);
+                        this.joints[nextIdx].x = b.x + Math.cos(clamped) * len;
+                        this.joints[nextIdx].y = b.y + Math.sin(clamped) * len;
+                    }
+                }
+
                 getDistanceToTarget() {
                     const endJoint = this.joints[this.joints.length - 1];
                     const dx = endJoint.x - this.target.x;
@@ -620,7 +668,15 @@
                 chain.target.y = chain.baseY;
                 chain.solve();
             });
-            
+
+            // Joint constraint slider event
+            document.getElementById('jointConstraintSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('jointConstraintValue').textContent = value;
+                chain.jointConstraint = value;
+                chain.solve();
+            });
+
             // Render function
             function render() {
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);

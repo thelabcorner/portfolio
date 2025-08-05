@@ -50,7 +50,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
+            background-color: #000;
             color: var(--text-light);
             line-height: 1.6;
         }
@@ -199,8 +199,9 @@
 <div id="preloader">
     <svg id="preloaderSVG" xmlns="http://www.w3.org/2000/svg" viewBox="-120 -250 1000 1000">
         <g id="Layer_1">
-            <path class="st1" d="M 548.293 123.888 C 548.293 271.188 428.893 390.588 281.593 390.588 C 134.293 390.588 14.893 271.188 14.893 123.888 C 14.893 -23.412 134.293 -142.81 281.593 -142.81 C 428.893 -142.81 548.293 -23.412 548.293 123.888 Z" style="fill: none; stroke-miterlimit: 133.3; stroke-width: 50; stroke: rgb(82, 0, 139);"></path>
             <path class="st0" d="M 476.593 -69.712 C 543.693 -82.112 592.893 -76.712 609.293 -50.612 C 642.993 3.288 523.593 125.088 342.693 221.488 C 161.793 317.888 -12.307 352.388 -46.007 298.488 C -63.807 270.088 -39.007 222.788 14.993 170.288" style="fill: none; isolation: isolate; opacity: 0.5; stroke-miterlimit: 133.3; stroke-width: 50; stroke: rgb(64, 0, 137); stroke-linecap: round;"></path>
+            <path class="st1" d="M 548.293 123.888 C 548.293 271.188 428.893 390.588 281.593 390.588 C 134.293 390.588 14.893 271.188 14.893 123.888 C 14.893 -23.412 134.293 -142.81 281.593 -142.81 C 428.893 -142.81 548.293 -23.412 548.293 123.888 Z" style="fill: none; stroke-miterlimit: 133.3; stroke-width: 50; stroke: rgb(82, 0, 139);"></path>
+
             <circle class="st2" cx="-41.662" cy="231.628" r="44.7" style="stroke-width: 1; fill: rgb(111, 0, 196);">
                 <animateTransform type="translate" additive="sum" attributeName="transform" values="0 0;-11 50;40 91;230 55;362 0;480 -68;647 -222;646 -289;595 -318;390 -258;280 -210;200 -155;0 0" dur="1.13s" fill="freeze" begin="0.06s" keyTimes="0; 0.046787; 0.100067; 0.15139; 0.2036; 0.25428; 0.32308; 0.41674; 0.51439; 0.624684; 0.72408; 0.87656; 1" calcMode="spline" keySplines="0.7 0 0.84 0; 0.42 0 0.58 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1; 0 0 1 1" repeatCount="indefinite"></animateTransform>
             </circle>
@@ -292,6 +293,7 @@
         overflow: hidden;
     }
 
+
     @media (max-width: 768px) {
         .hero-container {
             height: 100vh;
@@ -357,117 +359,10 @@
         to { transform: rotateY(360deg); }
     }
 
-    /* 3D Sphere Creation */
-    .sphere-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-    }
-
-    .sphere-face {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 40px;
-        height: 40px;
-        margin: -20px 0 0 -20px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(124, 58, 237, 0.9));
-        transform-style: preserve-3d;
-        backface-visibility: hidden;
-        box-shadow:
-                inset 2px 2px 5px rgba(255, 255, 255, 0.2),
-                inset -2px -2px 5px rgba(0, 0, 0, 0.6);
-    }
-
-    /* Atmospheric glow */
-    /*.planet-glow {*/
-    /*    position: absolute;*/
-    /*    top: -30px;*/
-    /*    left: -30px;*/
-    /*    width: calc(100% + 60px);*/
-    /*    height: calc(100% + 60px);*/
-    /*    border-radius: 50%;*/
-    /*    background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, rgba(139, 92, 246, 0.1) 50%, transparent 70%);*/
-    /*    filter: blur(20px);*/
-    /*    animation: glowPulse 4s ease-in-out infinite;*/
-    /*}*/
 
     @keyframes glowPulse {
         0%, 100% { opacity: 0.7; }
         50% { opacity: 1; }
-    }
-
-    .planet-sphere-ring {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        border-radius: 50%;
-        transform-style: preserve-3d;
-        border: 1.7px solid rgba(182, 128, 255, 0.23);
-    }
-
-    /* Improved Ring System */
-    .ring-system {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 600px;
-        height: 600px;
-        transform-style: preserve-3d;
-        transform: translate(-50%, -50%) rotateX(75deg);
-    }
-
-    .ring {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        border-style: solid;
-        box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
-        overflow: hidden;
-        transform-style: preserve-3d;
-    }
-
-    .ring-inner {
-        width: 400px;
-        height: 400px;
-        border: 15px solid rgba(139, 92, 246, 0.4);
-    }
-
-    .ring-middle {
-        width: 480px;
-        height: 480px;
-        border: 12px solid rgba(139, 92, 246, 0.3);
-    }
-
-    .ring-outer {
-        width: 560px;
-        height: 560px;
-        border: 8px solid rgba(139, 92, 246, 0.2);
-    }
-
-    /* Ring detail overlay */
-    .ring-detail {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        opacity: 0.5;
-        background:
-                repeating-radial-gradient(
-                        circle at center,
-                        transparent 0px,
-                        transparent 4px,
-                        rgba(0, 0, 0, 0.3) 5px,
-                        rgba(0, 0, 0, 0.3) 6px
-                );
     }
 
     /* Particle field */
@@ -479,13 +374,6 @@
         transform: rotate(-340deg) translate(340px, 350px);
     }
 
-    .space-particle {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-        transform-style: preserve-3d;
-    }
-
     /* Star field with depth */
     .star-field {
         position: absolute;
@@ -493,11 +381,6 @@
         height: 100%;
     }
 
-    .star {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-    }
 
     /* Nebula clouds */
     .nebula-layer {
@@ -1158,6 +1041,24 @@
 
 </div>
 
+<!-- Overlap Shape Divider -->
+<div class="section-divider">
+    <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" style="fill: #3b006e; width: 100%; height: 57px;">
+        <path d="M1200 120L0 16.48V0h1200v120z"></path>
+    </svg>
+
+</div>
+<style>
+.section-divider {
+    position: absolute;
+    width: 99vw;
+    height: 0px;
+    margin-top: -10px; /* Overlap hero-container */
+    z-index: 10;
+    pointer-events: none;
+}
+</style>
+
 <!-- Bootstrap Contact Modal -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -1705,1138 +1606,205 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <section id="experience">
-
     <div class="bg-grid"></div>
-    <div class="bg-dots"></div>
-    <div class="bg-glow"></div>
-    <div class="bg-glow"></div>
-    <div class="bg-glow"></div>
+    <div class="floating-particles"></div>
 
     <div class="experience-container">
+        <div class="section-header">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="title-line"></div>
+        </div>
 
-        <h2 class="section-title">Professional Experience</h2>
-
-        <!-- Experience Carousel -->
-        <div class="splide" id="experience-carousel">
-            <div class="splide__track">
-                <ul class="splide__list">
-                    <!-- Experience 1 -->
-                    <li class="splide__slide">
-                        <div class="experience-card">
-                            <div class="experience-header">
-                                <div class="role-company">
-                                    <h3><i class="fas fa-laptop-code me-3"></i>Design & Development Specialist</h3>
-                                    <p><i class="fas fa-building me-2"></i>TheDabCorner™ LLC</p>
-                                </div>
-                                <div class="period-location">
-                                    <span class="period"><i class="far fa-calendar-alt me-2"></i>Sep 2021 – Present</span>
-                                    <span class="location"><i class="fas fa-map-marker-alt me-2"></i>St. Louis, MO</span>
-                                </div>
-                                <div class="badges">
-                                    <span><i class="fas fa-home me-1"></i> Remote</span>
-                                    <span><i class="fas fa-sync-alt me-1"></i> Hybrid</span>
-                                    <span><i class="fas fa-code me-1"></i> Full-Stack</span>
-                                </div>
-                            </div>
-
-                            <div class="experience-content">
-                                <div class="content-tabs">
-                                    <button class="tab-btn active" data-target="highlights-1"><i class="fas fa-star me-1"></i> Highlights</button>
-                                    <button class="tab-btn" data-target="skills-1"><i class="fas fa-tools me-1"></i> Skills</button>
-                                    <button class="tab-btn" data-target="details-1"><i class="fas fa-info-circle me-1"></i> Details</button>
-                                </div>
-
-                                <div class="tab-content active" id="highlights-1">
-                                    <ul class="highlights-list">
-                                        <li><i class="fas fa-rocket me-2"></i> Founded profitable freelance business after high school</li>
-                                        <li><i class="fas fa-check-circle me-2"></i> Executed <span class="highlight-number" data-value="112">112</span>+ successful projects across branding, packaging &amp; web</li>
-                                        <li><i class="fas fa-print me-2"></i> Managed print production operations (2022-2023)</li>
-                                        <li><i class="fas fa-graduation-cap me-2"></i> Mastered <span class="highlight-number" data-value="25">25</span>+ professional design &amp; development tools</li>
-                                    </ul>
-                                </div>
-
-                                <div class="tab-content" id="skills-1">
-                                    <div class="skills-grid">
-                                        <span><i class="fab fa-adobe me-1"></i> Adobe Suite</span>
-                                        <span><i class="fas fa-paint-brush me-1"></i> UI/UX Design</span>
-                                        <span><i class="fas fa-code me-1"></i> Web Development</span>
-                                        <span><i class="fas fa-trademark me-1"></i> Brand Design</span>
-                                        <span><i class="fas fa-print me-1"></i> Print Production</span>
-                                        <span><i class="fas fa-chart-line me-1"></i> Business Management</span>
-                                    </div>
-                                </div>
-
-                                <div class="tab-content" id="details-1">
-                                    <p><i class="fas fa-quote-left me-2"></i>
-                                        Built TheDabCorner™ from the ground up, turning a passion for design into a thriving business.
-                                        Specialized in branding, packaging, and increasingly in web development, creating digital experiences that positively impact users.
-                                        The multidisciplinary approach combines design mastery with technical expertise.
-                                    </p>
-                                </div>
-                            </div>
+        <!-- Masonry Grid Layout -->
+        <div class="experience-grid">
+            <!-- Experience 1 -->
+            <div class="experience-card featured">
+                <div class="card-badge">Current</div>
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="role-details">
+                        <h3>Design & Development Specialist</h3>
+                        <p class="company">TheDabCorner™ LLC</p>
+                        <div class="meta">
+                            <span><i class="far fa-calendar"></i> Sep 2021 – Present</span>
+                            <span><i class="fas fa-map-marker-alt"></i> St. Louis, MO</span>
                         </div>
-                    </li>
+                    </div>
+                </div>
 
-                    <!-- Experience 2 -->
-                    <li class="splide__slide">
-                        <div class="experience-card">
-                            <div class="experience-header">
-                                <div class="role-company">
-                                    <h3><i class="fas fa-cogs me-3"></i>Process Engineering Lead</h3>
-                                    <p><i class="fas fa-flask me-2"></i>Carboxyl R&D Group</p>
-                                </div>
-                                <div class="period-location">
-                                    <span class="period"><i class="far fa-calendar-alt me-2"></i>May 2022 – 2024</span>
-                                    <span class="location"><i class="fas fa-user-secret me-2"></i>Confidential (NDA)</span>
-                                </div>
-                                <div class="badges">
-                                    <span><i class="fas fa-microchip me-1"></i> IoT Systems</span>
-                                    <span><i class="fas fa-sync-alt me-1"></i> Hybrid</span>
-                                    <span><i class="fas fa-flask me-1"></i> R&D</span>
-                                </div>
-                            </div>
+                <div class="stats-row">
+                    <div class="stat">
+                        <span class="stat-number"><i class="fas fa-project-diagram me-2"></i>112+</span>
+                        <span class="stat-label">Projects</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number"><i class="fas fa-tools me-2"></i>25+</span>
+                        <span class="stat-label">Tools</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number"><i class="fas fa-calendar-alt me-2"></i>3+</span>
+                        <span class="stat-label">Years</span>
+                    </div>
+                </div>
 
-                            <div class="experience-content">
-                                <div class="content-tabs">
-                                    <button class="tab-btn active" data-target="highlights-2"><i class="fas fa-star me-1"></i> Highlights</button>
-                                    <button class="tab-btn" data-target="skills-2"><i class="fas fa-tools me-1"></i> Skills</button>
-                                    <button class="tab-btn" data-target="details-2"><i class="fas fa-info-circle me-1"></i> Details</button>
-                                </div>
+                <div class="highlights">
+                    <div class="highlight">
+                        <i class="fas fa-rocket"></i>
+                        <span>Founded profitable freelance business after high school</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Executed 112+ successful projects across branding, packaging & web</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-print"></i>
+                        <span>Managed print production operations (2022-2023)</span>
+                    </div>
+                </div>
 
-                                <div class="tab-content active" id="highlights-2">
-                                    <ul class="highlights-list">
-                                        <li><i class="fas fa-project-diagram me-2"></i> Led IoT crystallization incubator development</li>
-                                        <li><i class="fas fa-bolt me-2"></i> Improved freeze-drying efficiency by <span class="highlight-number" data-value="44">44</span>%</li>
-                                        <li><i class="fas fa-thermometer-half me-2"></i> Engineered precision temperature monitoring systems</li>
-                                        <li><i class="fas fa-microscope me-2"></i> Developed specialized analytical research tools</li>
-                                    </ul>
-                                </div>
-
-                                <div class="tab-content" id="skills-2">
-                                    <div class="skills-grid">
-                                        <span><i class="fab fa-raspberry-pi me-1"></i> Raspberry Pi</span>
-                                        <span><i class="fas fa-network-wired me-1"></i> IoT Development</span>
-                                        <span><i class="fab fa-python me-1"></i> Python</span>
-                                        <span><i class="fas fa-vial me-1"></i> R&D Engineering</span>
-                                        <span><i class="fas fa-chart-pie me-1"></i> Process Optimization</span>
-                                        <span><i class="fas fa-sitemap me-1"></i> Systems Integration</span>
-                                    </div>
-                                </div>
-
-                                <div class="tab-content" id="details-2">
-                                    <p><i class="fas fa-quote-left me-2"></i>
-                                        Evolved from UI design consultant to lead engineer, tackling complex process challenges.
-                                        Reduced freeze-drying cycle times from 8+ to ~4.5 hours by reverse-engineering systems and applying thermodynamic principles.
-                                        Created custom IoT monitoring dashboards and engineered specialized laboratory equipment.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- Experience 3 -->
-                    <li class="splide__slide">
-                        <div class="experience-card">
-                            <div class="experience-header">
-                                <div class="role-company">
-                                    <h3><i class="fas fa-chalkboard-teacher me-3"></i>Technical Mentor & Moderator</h3>
-                                    <p><i class="fas fa-users me-2"></i>Engineering Minds</p>
-                                </div>
-                                <div class="period-location">
-                                    <span class="period"><i class="far fa-calendar-alt me-2"></i>Jan 2025 – Present</span>
-                                    <span class="location"><i class="fas fa-globe me-2"></i>Remote</span>
-                                </div>
-                                <div class="badges">
-                                    <span><i class="fas fa-atom me-1"></i> STEM Education</span>
-                                    <span><i class="fas fa-users me-1"></i> Community</span>
-                                </div>
-                            </div>
-
-                            <div class="experience-content">
-                                <div class="content-tabs">
-                                    <button class="tab-btn active" data-target="highlights-3"><i class="fas fa-star me-1"></i> Highlights</button>
-                                    <button class="tab-btn" data-target="skills-3"><i class="fas fa-tools me-1"></i> Skills</button>
-                                    <button class="tab-btn" data-target="details-3"><i class="fas fa-info-circle me-1"></i> Details</button>
-                                </div>
-
-                                <div class="tab-content active" id="highlights-3">
-                                    <ul class="highlights-list">
-                                        <li><i class="fas fa-book me-2"></i> Curated learning resources & engineering case studies</li>
-                                        <li><i class="fas fa-users-cog me-2"></i> Managed <span class="highlight-number" data-value="200">200</span>+ member STEM learning community</li>
-                                        <li><i class="fas fa-user-graduate me-2"></i> Mentored students in practical application of theory</li>
-                                        <li><i class="fas fa-bridge me-2"></i> Bridged academic-industry knowledge gaps</li>
-                                    </ul>
-                                </div>
-
-                                <div class="tab-content" id="skills-3">
-                                    <div class="skills-grid">
-                                        <span><i class="fas fa-users me-1"></i> Community Leadership</span>
-                                        <span><i class="fas fa-atom me-1"></i> STEM Expertise</span>
-                                        <span><i class="fas fa-hands-helping me-1"></i> Mentoring</span>
-                                        <span><i class="fas fa-comments me-1"></i> Communication</span>
-                                    </div>
-                                </div>
-
-                                <div class="tab-content" id="details-3">
-                                    <p><i class="fas fa-quote-left me-2"></i>
-                                        Joined Engineering Minds through research inquiries and became a key mentor.
-                                        Focus on translating academic theory into practical industry knowledge.
-                                        Guide emerging engineers through complex problems in math, physics, and engineering, developing resources that foster critical thinking and confidence.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                <div class="skills">
+                    <span>Adobe Suite</span>
+                    <span>UI/UX Design</span>
+                    <span>Web Development</span>
+                    <span>Brand Design</span>
+                    <span>Print Production</span>
+                    <span>Business Management</span>
+                </div>
             </div>
 
-            <!-- Custom Navigation -->
-            <div class="splide-nav">
-                <button class="nav-btn prev" aria-label="Previous slide">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="pagination-wrapper">
-                    <div class="splide__pagination"></div>
+            <!-- Experience 2 -->
+            <div class="experience-card">
+                <div class="card-header">
+                    <div class="icon-wrapper engineering">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="role-details">
+                        <h3>Process Engineering Lead</h3>
+                        <p class="company">Carboxyl R&D Group</p>
+                        <div class="meta">
+                            <span><i class="far fa-calendar"></i> May 2022 – 2024</span>
+                            <span><i class="fas fa-user-secret"></i> Confidential (NDA)</span>
+                        </div>
+                    </div>
                 </div>
-                <button class="nav-btn next" aria-label="Next slide">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+
+                <div class="efficiency-highlight">
+                    <div class="efficiency-number">44%</div>
+                    <div class="efficiency-text">Efficiency Improvement</div>
+                </div>
+
+                <div class="highlights">
+                    <div class="highlight">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Led IoT crystallization incubator development</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-thermometer-half"></i>
+                        <span>Engineered precision temperature monitoring systems</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-microscope"></i>
+                        <span>Developed specialized analytical research tools</span>
+                    </div>
+                </div>
+
+                <div class="skills">
+                    <span>Raspberry Pi</span>
+                    <span>IoT Development</span>
+                    <span>Python</span>
+                    <span>R&D Engineering</span>
+                    <span>Process Optimization</span>
+                </div>
+            </div>
+
+            <!-- Experience 3 -->
+            <div class="experience-card">
+                <div class="card-header">
+                    <div class="icon-wrapper mentor">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="role-details">
+                        <h3>Technical Mentor & Moderator</h3>
+                        <p class="company">Engineering Minds</p>
+                        <div class="meta">
+                            <span><i class="far fa-calendar"></i> Jan 2025 – Present</span>
+                            <span><i class="fas fa-globe"></i> Remote</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="community-stats">
+                    <div class="community-number">200+</div>
+                    <div class="community-text">Community Members</div>
+                </div>
+
+                <div class="highlights">
+                    <div class="highlight">
+                        <i class="fas fa-book"></i>
+                        <span>Curated learning resources & engineering case studies</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Mentored students in practical application of theory</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-bridge"></i>
+                        <span>Bridged academic-industry knowledge gaps</span>
+                    </div>
+                </div>
+
+                <div class="skills">
+                    <span>Community Leadership</span>
+                    <span>STEM Expertise</span>
+                    <span>Mentoring</span>
+                    <span>Communication</span>
+                </div>
+            </div>
+
+            <!-- Additional Info Card -->
+            <div class="info-card">
+                <div class="info-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Career Highlights</h4>
+                </div>
+                <div class="career-stats">
+                    <div class="career-stat">
+                        <span class="number">3</span>
+                        <span class="label">Industries</span>
+                    </div>
+                    <div class="career-stat">
+                        <span class="number">300+</span>
+                        <span class="label">People Impacted</span>
+                    </div>
+                    <div class="career-stat">
+                        <span class="number">15+</span>
+                        <span class="label">Technologies</span>
+                    </div>
+                </div>
+                <div class="specialties">
+                    <h5>Core Specialties</h5>
+                    <div class="specialty-list">
+                        <span><i class="fas fa-palette"></i> Creative Design</span>
+                        <span><i class="fas fa-code"></i> Full-Stack Development</span>
+                        <span><i class="fas fa-cogs"></i> Process Engineering</span>
+                        <span><i class="fas fa-chalkboard-teacher"></i> Technical Mentoring</span>
+                        <span><i class="fas fa-robot"></i> Automation & Scripting</span>
+                        <span><i class="fas fa-database"></i> Data Analysis</span>
+                        <span><i class="fas fa-server"></i> Infrastructure & DevOps</span>
+                        <span><i class="fas fa-balance-scale"></i> Compliance & Documentation</span>
+                        <span><i class="fas fa-tools"></i> Rapid Prototyping</span>
+                        <span><i class="fas fa-pen-nib"></i> Technical Writing</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 
-<style>
-    /* Base Variables */
-    :root {
-        --bg-primary: #1A0B2E;
-        --bg-secondary: #2D1B4E;
-        --purple-primary: #8B5CF6;
-        --purple-light: #A78BFA;
-        --purple-dark: #6D28D9;
-        --purple-glow: rgba(139, 92, 246, 0.4);
-        --white: #FFFFFF;
-        --white-87: rgba(255, 255, 255, 0.87);
-        --white-60: rgba(255, 255, 255, 0.6);
-        --white-38: rgba(255, 255, 255, 0.38);
-        --card-bg: rgba(30, 15, 50, 0.7);
-        --card-border: rgba(139, 92, 246, 0.3);
-        --glass-effect: blur(12px);
-    }
-
-
-    .highlight-number {
-      color: #A78BFA;
-      font-weight: 900;
-      letter-spacing: 1px;
-      background: linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-/* Section Styling with Advanced Effects */
-    #experience {
-        background: linear-gradient(135deg, #000 0%, var(--bg-secondary) 100%);
-        padding: 120px 0 100px;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-    }
-
-    /* Decorative Elements */
-    #experience::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg,
-            transparent 0%,
-            var(--purple-light) 20%,
-            var(--purple-primary) 50%,
-            var(--purple-light) 80%,
-            transparent 100%);
-        box-shadow: 0 0 25px 3px var(--purple-glow);
-        z-index: 3;
-    }
-
-    #experience::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background:
-            radial-gradient(circle at 20% 30%, var(--purple-glow) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(109, 40, 217, 0.2) 0%, transparent 40%);
-        opacity: 0.4;
-        z-index: -1;
-    }
-
-    /* Additional background elements */
-    #experience .bg-grid {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image:
-            linear-gradient(to right, rgba(139, 92, 246, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
-        background-size: 30px 30px;
-        z-index: -2;
-    }
-
-    #experience .bg-dots {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: radial-gradient(rgba(139, 92, 246, 0.15) 2px, transparent 2px);
-        background-size: 50px 50px;
-        z-index: -3;
-        opacity: 0.5;
-    }
-
-    #experience .bg-glow {
-        position: absolute;
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.15;
-        background: var(--purple-primary);
-        animation: float 20s infinite alternate ease-in-out;
-    }
-
-    #experience .bg-glow:nth-child(1) {
-        top: 20%;
-        left: 10%;
-        animation-delay: 0s;
-    }
-
-    #experience .bg-glow:nth-child(2) {
-        top: 60%;
-        right: 15%;
-        width: 200px;
-        height: 200px;
-        animation-delay: -5s;
-    }
-
-    #experience .bg-glow:nth-child(3) {
-        bottom: 10%;
-        left: 30%;
-        width: 120px;
-        height: 120px;
-        animation-delay: -10s;
-    }
-
-    @keyframes float {
-        0% { transform: translateY(0) translateX(0); }
-        33% { transform: translateY(-30px) translateX(20px); }
-        66% { transform: translateY(20px) translateX(-20px); }
-        100% { transform: translateY(-10px) translateX(10px); }
-    }
-
-
-    /* Grid Pattern Background */
-    .experience-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        position: relative;
-    }
-
-    .experience-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image:
-            linear-gradient(var(--white-38) 1px, transparent 1px),
-            linear-gradient(90deg, var(--white-38) 1px, transparent 1px);
-        background-size: 40px 40px;
-        background-position: -1px -1px;
-        opacity: 0.03;
-        z-index: -1;
-    }
-
-    /* Modern Section Title */
-    .section-title {
-        font-size: 3rem;
-        color: var(--white);
-        text-align: center;
-        margin-bottom: 3.5rem;
-        font-weight: 700;
-        letter-spacing: -1px;
-        position: relative;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        transform: perspective(500px);
-    }
-
-    .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: -16px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 120px;
-        height: 4px;
-        border-radius: 2px;
-        background: linear-gradient(90deg,
-            transparent 0%,
-            var(--purple-dark) 20%,
-            transparent 100%);
-    }
-
-    .section-title::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 7rem;
-        font-weight: 800;
-        color: rgba(139, 92, 246, 0.03);
-        z-index: -1;
-        width: 100%;
-        text-align: center;
-        letter-spacing: -4px;
-    }
-
-    /* Enhanced Splide Carousel */
-    .splide {
-        margin: 0 auto;
-        padding: 0 0 3.5rem;
-    }
-
-    .splide__track {
-        overflow: visible;
-        padding: 20px 0;
-    }
-
-    .splide__slide {
-        padding: 20px;
-        opacity: 0.5;
-        transform: scale(0.9);
-        transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1.0);
-        filter: saturate(0.7) brightness(0.8);
-    }
-
-    .splide__slide.is-active {
-        opacity: 1;
-        z-index: 2;
-        filter: saturate(1) brightness(1);
-    }
-
-    /* Experience Card - Glass Morphism Design */
-    .experience-card {
-        background: linear-gradient(145deg,
-            rgba(40, 20, 70, 0.8) 0%,
-            rgba(25, 10, 50, 0.95) 100%);
-        border-radius: 16px;
-        border: 1px solid var(--card-border);
-        overflow: hidden;
-        box-shadow:
-            0 10px 30px rgba(0, 0, 0, 0.3),
-            0 0 0 1px rgba(139, 92, 246, 0.1),
-            inset 0 0 20px rgba(139, 92, 246, 0.05);
-        backdrop-filter: var(--glass-effect);
-        -webkit-backdrop-filter: var(--glass-effect);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        transform: translateZ(0);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        position: relative;
-    }
-
-    /* Holo Effect on Hover */
-    .experience-card::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: linear-gradient(125deg,
-            transparent,
-            transparent,
-            rgba(167, 139, 250, 0.1),
-            transparent,
-            transparent);
-        opacity: 0;
-        transition: opacity 0.6s;
-    }
-
-    .experience-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow:
-            0 20px 40px rgba(0, 0, 0, 0.4),
-            0 0 0 1px rgba(139, 92, 246, 0.2),
-            0 0 20px rgba(139, 92, 246, 0.3);
-    }
-
-    .experience-card:hover::before {
-        opacity: 1;
-        animation: holoGradient 2s ease infinite;
-    }
-
-    @keyframes holoGradient {
-        0% { background-position: 0% 0%; }
-        50% { background-position: 100% 100%; }
-        100% { background-position: 0% 0%; }
-    }
-
-/* Enhanced Card Header - Redesigned */
-.experience-header {
-    background: transparent;
-    padding: 28px 25px 45px;
-    position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
-}
-
-/* Gradient Background Effect */
-.experience-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg,
-        rgba(139, 92, 246, 0.9) 0%,
-        rgba(109, 40, 217, 0.85) 100%);
-    clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%);
-    z-index: -1;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Floating Particles Effect */
-.experience-header::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 8px),
-        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 6px),
-        radial-gradient(circle at 70% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 10px),
-        radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.1) 0%, transparent 7px);
-    z-index: -1;
-}
-
-/* Improved Role & Company */
-.role-company {
-    position: relative;
-    padding-bottom: 8px;
-}
-
-.role-company h3 {
-    color: var(--white);
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin: 0 0 8px;
-    letter-spacing: -0.5px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.role-company p {
-    color: var(--white);
-    font-size: 1.1rem;
-    margin: 0;
-    opacity: 0.9;
-    font-weight: 500;
-}
-
-/* Redesigned Period Location */
-.period-location {
-    display: flex;
-    justify-content: flex-start;
-    gap: 16px;
-    margin: 18px 0 14px;
-    flex-wrap: wrap;
-}
-
-.period, .location {
-    color: var(--white);
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    backdrop-filter: blur(5px);
-}
-
-.period:hover, .location:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
-    background: rgba(139, 92, 246, 0.4);
-}
-
-/* Modernized Badges */
-.badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 15px;
-}
-
-.badges span {
-    background: rgba(255, 255, 255, 0.18);
-    color: var(--white);
-    padding: 6px 14px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.badges span i {
-    font-size: 0.9rem;
-}
-
-.badges span:hover {
-    background: rgb(0 0 0 / 90%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.badges span:hover::after {
-    opacity: 1;
-}
-
-/* Additional Decorative Element */
-.experience-header .decorative-icon {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 4rem;
-    color: rgba(255, 255, 255, 0.05);
-    transform: rotate(10deg);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .experience-header {
-        padding: 22px 20px 68px;
-    }
-
-    .role-company h3 {
-        font-size: 1.4rem;
-    }
-
-    .period-location {
-        gap: 10px;
-        margin: 14px 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .experience-header::before {
-        clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
-    }
-
-    .role-company h3 {
-        font-size: 1.25rem;
-    }
-
-    .role-company p {
-        font-size: 1rem;
-    }
-
-    .period, .location {
-        padding: 5px 12px;
-        font-size: 0.8rem;
-    }
-}
-
-    @keyframes patternShift {
-        0% { transform: translateX(0) translateY(0) rotate(30deg); }
-        100% { transform: translateX(-50px) translateY(-50px) rotate(30deg); }
-    }
-
-    .experience-header::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(
-            ellipse at top right,
-            rgba(255, 255, 255, 0.15) 0%,
-            transparent 60%
-        );
-    }
-
-    .role-company h3 {
-        color: var(--white);
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0 0 5px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        position: relative;
-        z-index: 1;
-    }
-
-    .role-company p {
-        color: var(--white-87);
-        font-size: 1.05rem;
-        margin: 0;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Elegant Period Location */
-    .period-location {
-        display: flex;
-        justify-content: space-between;
-        margin: 15px 0;
-        position: relative;
-        z-index: 1;
-    }
-
-    .period, .location {
-        color: var(--white-87);
-        font-size: 0.85rem;
-        background: rgba(0, 0, 0, 0.2);
-        padding: 6px 12px;
-        border-radius: 6px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* Animated Badges */
-    .badges {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 12px;
-        position: relative;
-        z-index: 1;
-    }
-
-    .badges span {
-        background: rgba(255, 255, 255, 0.15);
-        color: var(--white);
-        padding: 5px 12px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        border-radius: 6px;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .badges span::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            to right,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.1) 50%,
-            rgba(255, 255, 255, 0) 100%
-        );
-        transform: rotate(30deg);
-        animation: shimmer 4s infinite;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
-    .badges span:hover {
-        background: rgba(139, 92, 246, 0.3);
-        transform: translateY(-2px);
-    }
-
-    .badges span:hover::before {
-        opacity: 1;
-    }
-
-    @keyframes shimmer {
-        0% { transform: translateX(-150%) rotate(30deg); }
-        100% { transform: translateX(150%) rotate(30deg); }
-    }
-
-    /* Enhanced Card Content */
-    .experience-content {
-        padding: 25px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Modern Tab Design */
-    .content-tabs {
-        display: flex;
-        gap: 6px;
-        margin-bottom: 20px;
-        padding: 3px;
-        background: rgba(20, 10, 40, 0.4);
-        border-radius: 10px;
-        position: relative;
-        overflow: hidden;
-        box-shadow:
-            0 2px 8px rgba(0, 0, 0, 0.15),
-            inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    }
-
-    .tab-btn {
-        flex: 1;
-        padding: 10px 0;
-        background: transparent;
-        border: none;
-        color: var(--white-60);
-        font-size: 0.95rem;
-        font-weight: 500;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.0);
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-    }
-
-    .tab-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.05),
-            transparent
-        );
-        opacity: 0;
-        transition: opacity 0.3s;
-        z-index: -1;
-    }
-
-    .tab-btn:hover {
-        color: var(--white-87);
-    }
-
-    .tab-btn:hover::before {
-        opacity: 1;
-    }
-
-    .tab-btn.active {
-        background: var(--purple-primary);
-        color: var(--white);
-        font-weight: 600;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .tab-btn.active::after {
-        content: '';
-        position: absolute;
-        bottom: -3px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 40%;
-        height: 3px;
-        background: var(--white);
-        border-radius: 3px;
-        opacity: 0.7;
-    }
-
-    /* Enhanced Tab Content Animation */
-    .tab-content {
-        display: none;
-        animation: fadeInUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        flex-grow: 1;
-        position: relative;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Redesigned Highlights List */
-    .highlights-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .highlights-list li {
-        position: relative;
-        padding: 12px 0 12px 35px;
-        color: var(--white-87);
-        line-height: 1.5;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.3s;
-    }
-
-    .highlights-list li:last-child {
-        border-bottom: none;
-    }
-
-    .highlights-list li::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 20px;
-        width: 8px;
-        height: 8px;
-        background: var(--purple-primary);
-        border-radius: 2px;
-        box-shadow: 0 0 10px var(--purple-glow);
-        transform: rotate(45deg);
-        transition: all 0.3s ease;
-    }
-
-    .highlights-list li:hover {
-        padding-left: 40px;
-        background: rgba(139, 92, 246, 0.05);
-    }
-
-    .highlights-list li:hover::before {
-        transform: rotate(135deg) scale(1.4);
-        left: 10px;
-    }
-
-    /* Creative Skills Grid */
-    .skills-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 12px;
-    }
-
-    .skills-grid span {
-        background: linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.05) 0%,
-            rgba(255, 255, 255, 0.02) 100%
-        );
-        color: var(--white-87);
-        padding: 10px 12px;
-        font-size: 0.9rem;
-        text-align: center;
-        border-radius: 8px;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .skills-grid span::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.1),
-            transparent
-        );
-        transition: left 0.7s;
-    }
-
-    .skills-grid span:hover {
-        background: var(--purple-primary);
-        color: var(--white);
-        transform: translateY(-5px);
-        box-shadow:
-            0 10px 20px rgba(0, 0, 0, 0.2),
-            0 0 15px var(--purple-glow);
-    }
-
-    .skills-grid span:hover::before {
-        left: 100%;
-    }
-
-    /* Elegant Details Text */
-    #details-1, #details-2, #details-3 {
-        color: var(--white-87);
-        line-height: 1.7;
-        padding: 5px;
-        font-size: 1.02rem;
-        position: relative;
-        border-left: 2px solid rgba(139, 92, 246, 0.3);
-        padding-left: 15px;
-        margin-left: 5px;
-    }
-
-    /* Enhanced Splide Navigation */
-    .splide-nav {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 30px;
-    }
-
-    .nav-btn {
-        background: rgba(139, 92, 246, 0.15);
-        color: var(--white);
-        border: none;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s;
-        position: relative;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-    }
-
-    .nav-btn::before {
-        content: '';
-        position: absolute;
-        inset: 1px;
-        border-radius: 50%;
-        background: linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.1) 0%,
-            rgba(0, 0, 0, 0.1) 100%
-        );
-        z-index: -1;
-    }
-
-    .nav-btn:hover {
-        background: var(--purple-primary);
-        transform: translateY(-3px);
-        box-shadow:
-            0 8px 15px rgba(0, 0, 0, 0.3),
-            0 0 15px var(--purple-glow);
-    }
-
-    .nav-btn i {
-        font-size: 1.2rem;
-        transition: transform 0.3s;
-    }
-
-    .nav-btn:hover i {
-        transform: scale(1.2);
-    }
-
-    .pagination-wrapper {
-        margin: 0 25px;
-    }
-
-    .splide__pagination__page {
-        width: 10px;
-        height: 10px;
-        background: rgba(255, 255, 255, 0.2);
-        margin: 0 6px;
-        border-radius: 5px;
-        transition: all 0.4s;
-    }
-
-    .splide__pagination__page.is-active {
-        width: 25px;
-        background: linear-gradient(90deg, var(--purple-dark), var(--purple-primary));
-        transform: scale(1);
-    }
-
-    /* Responsive Enhancements */
-    @media (max-width: 768px) {
-        .experience-card {
-            max-width: 100%;
-        }
-
-        .skills-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .splide__slide {
-            padding: 0px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        #experience {
-            padding: 70px 0 50px;
-        }
-
-        .section-title {
-            font-size: 2.2rem;
-        }
-
-        .section-title::before {
-            font-size: 4rem;
-        }
-
-        .role-company h3 {
-            font-size: 1.3rem;
-        }
-
-        .period-location {
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .content-tabs {
-
-            overflow-x: auto;
-            padding-bottom: 5px;
-            justify-content: flex-start;
-        }
-
-        .tab-btn {
-            font-size: 0.75rem;
-            white-space: nowrap;
-            padding: 8px 18px;
-            flex: 0 0 auto;
-        }
-
-        .nav-btn {
-            width: 45px;
-            height: 45px;
-        }
-    }
-</style>
+<link rel="stylesheet" href="/css/work-experience.css">
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -2933,61 +1901,189 @@ const splide = new Splide('#experience-carousel', {
 </script>
 
 
+<!-- Overlap Shape Divider -->
+<div class="section-divider">
+    <svg preserveAspectRatio="none" viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" style="fill: #3b006e; width: 100%; height: 57px; transform: scaleX(-1);">
+        <path d="M1200 120L0 16.48V0h1200v120z"></path>
+    </svg>
+</div>
+
 
 <!--Portfolio Section-->
 <section id="portfolio">
-    <div class="container portfolio-container">
-        <!-- Add this loader element in the portfolio section -->
-<div id="portfolioLoader" class="loader"></div>
-
+<canvas id="portfolio-canvas"></canvas>
 <style>
-    /* Redesigned Loader Styles */
-    .loader {
+    #portfolio-canvas {
+        height: 100vh;
+        width: 100vw;
         position: absolute;
-        top: 70%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 60px;
-        height: 60px;
-        border: 6px solid rgba(255, 255, 255, 0.2);
-        border-top: 6px solid var(--primary-purple);
-        border-radius: 50%;
-        animation: spin 1s linear infinite, pulse 1.5s ease-in-out infinite;
-        z-index: 1000;
-        box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
-    }
-
-    @keyframes spin {
-        from {
-            transform: translate(-50%, -50%) rotate(0deg);
-        }
-        to {
-            transform: translate(-50%, -50%) rotate(360deg);
-        }
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
-        }
-        50% {
-            box-shadow: 0 0 25px rgba(139, 92, 246, 0.8);
-        }
+        top: 0;
+        left: 0;
+        opacity: 0;
     }
 </style>
-        <h2 class="section-title" data-text="PORTFOLIO">Portfolio</h2>
-        <div class="portfolio-filters" id="portfolioFilters">
-            <!-- Filter buttons will be injected here -->
-        </div>
-        <div class="portfolio-grid" id="portfolioGrid">
-            <!-- Cards will be injected here -->
-        </div>
-    </div>
+<script>
+var Space = {
+    init: function() {
+        var self = this;
+        this.config = {
+            perspective: 3,
+            star_color: '255, 255, 255',
+            speed: 1,
+            stars_count: 2
+        };
+        this.canvas = document.getElementById('portfolio-canvas');
+        this.context = this.canvas.getContext('2d');
+        this.start();
+
+        // Debounce resize event for better performance
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                self.start();
+            }, 250);
+        });
+    },
+
+    start: function() {
+        var dpr = window.devicePixelRatio || 1;
+
+        // Use window dimensions instead of parent
+        var displayWidth = window.innerWidth;
+        var displayHeight = window.innerHeight;
+
+        // Set canvas dimensions
+        this.canvas.width = displayWidth * dpr;
+        this.canvas.height = displayHeight * dpr;
+        this.canvas.style.width = displayWidth + 'px';
+        this.canvas.style.height = displayHeight + 'px';
+
+        // Reset transform and scale
+        this.context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // Calculate center points
+        this.canvas_center_x = displayWidth / 2;
+        this.canvas_center_y = displayHeight / 2;
+
+        // Adjust stars count based on screen size
+        this.stars_count = Math.floor((displayWidth * displayHeight) / 3000);
+        this.focal_length = displayWidth / this.config.perspective;
+        this.speed = this.config.speed * displayWidth / 2000;
+
+        // Initialize stars
+        this.stars = [];
+        for (var i = 0; i < this.stars_count; i++) {
+            this.stars.push({
+                x: Math.random() * displayWidth,
+                y: Math.random() * displayHeight,
+                z: Math.random() * displayWidth
+            });
+        }
+
+        // Cancel previous animation frame and start rendering
+        window.cancelAnimationFrame(this.animation_frame);
+        this.canvas.style.opacity = 1;
+        this.render();
+    },
+
+    render: function() {
+        var self = this;
+        this.animation_frame = window.requestAnimationFrame(function() {
+            self.render();
+        });
+
+        var dpr = window.devicePixelRatio || 1;
+        var displayWidth = window.innerWidth;
+        var displayHeight = window.innerHeight;
+
+        // Clear canvas with proper dimensions
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        for (var i = 0; i < this.stars.length; i++) {
+            var star = this.stars[i];
+            star.z -= this.speed;
+
+            // Reset star when it goes out of view
+            if (star.z <= 0) {
+                this.stars[i] = {
+                    x: Math.random() * displayWidth,
+                    y: Math.random() * displayHeight,
+                    z: displayWidth
+                };
+                star = this.stars[i];
+            }
+
+            // Calculate star position and properties
+            var star_x = (star.x - this.canvas_center_x) * (this.focal_length / star.z) + this.canvas_center_x;
+            var star_y = (star.y - this.canvas_center_y) * (this.focal_length / star.z) + this.canvas_center_y;
+            var star_radius = Math.max(0, 1.4 * (this.focal_length / star.z) / 2);
+            var star_opacity = 1.2 - star.z / displayWidth;
+
+            // Draw star
+            this.context.fillStyle = 'rgba(' + this.config.star_color + ',' + star_opacity + ')';
+            this.context.beginPath();
+            this.context.arc(star_x * dpr, star_y * dpr, star_radius * dpr, 0, Math.PI * 2);
+            this.context.fill();
+        }
+    }
+};
+</script>
+
+    <div class="container portfolio-container">
+        <!-- Add this loader element in the portfolio section -->
+        <div id="portfolioLoader" class="loader"></div>
+
+            <style>
+                /* Redesigned Loader Styles */
+                .loader {
+                    position: absolute;
+                    top: 70%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 60px;
+                    height: 60px;
+                    border: 6px solid rgba(255, 255, 255, 0.2);
+                    border-top: 6px solid var(--primary-purple);
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite, pulse 1.5s ease-in-out infinite;
+                    z-index: 1000;
+                    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+                }
+
+                @keyframes spin {
+                    from {
+                        transform: translate(-50%, -50%) rotate(0deg);
+                    }
+                    to {
+                        transform: translate(-50%, -50%) rotate(360deg);
+                    }
+                }
+
+                @keyframes pulse {
+                    0%, 100% {
+                        box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+                    }
+                    50% {
+                        box-shadow: 0 0 25px rgba(139, 92, 246, 0.8);
+                    }
+                }
+            </style>
+                <h2 class="section-title" data-text="PORTFOLIO">Portfolio</h2>
+                <div class="portfolio-filters" id="portfolioFilters">
+                    <!-- Filter buttons will be injected here -->
+                </div>
+                <div class="portfolio-grid" id="portfolioGrid">
+                    <!-- Cards will be injected here -->
+                </div>
+            </div>
 </section>
+
 
 <!-- Enhanced Portfolio Modal -->
 <!-- Enhanced Portfolio Modal -->
 <div class="modal fade" id="portfolioModal" tabindex="-1" aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content glass-modal">
             <div class="modal-header">
@@ -4147,6 +3243,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     loader.style.display = 'none';
                     portfolioGrid.style.opacity = '1';
                 });
+
+                Space.init()
+
             });
         }, 500);
     };
@@ -4166,502 +3265,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<style>
-    #portfolio {
-        background: linear-gradient(135deg, #100921 0%, #0f0025 100%);
-        padding: 100px 0 80px;
-        position: relative;
-        z-index: 1;
-    }
-    .portfolio-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-    .portfolio-filters {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 2.5rem;
-    }
-    .filter-btn {
-        background: rgba(139,92,246,0.12);
-        color: #fff;
-        border: none;
-        padding: 10px 28px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-    .filter-btn.active,
-    .filter-btn:hover {
-        background: var(--primary-purple);
-        color: #fff;
-        box-shadow: 0 4px 16px rgba(139,92,246,0.15);
-    }
-
-    .single-card {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 2rem;
-    }
-
-    .portfolio-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2rem;
-    }
-    .portfolio-card {
-        background: rgba(38, 30, 59, 0.7);
-        border-radius: 18px;
-        box-shadow: 0 8px 32px rgba(139,92,246,0.12), 0 1.5px 0 0 rgba(139,92,246,0.08);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: transform 0.3s, box-shadow 0.3s;
-        border: 1.5px solid rgba(139,92,246,0.18);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        position: relative;
-    }
-    .portfolio-card:hover {
-        transform: translateY(-8px) scale(1.03);
-        box-shadow: 0 16px 40px rgba(139,92,246,0.22);
-    }
-    .portfolio-image {
-        width: 100%;
-        height: 200px;
-        background-size: cover;
-        background-position: center;
-        border-bottom: 1.5px solid rgba(139, 92, 246, 0.12);
-    }
-    .portfolio-content {
-        padding: 1.5rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    .portfolio-content h3 {
-        color: #fff;
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-    .portfolio-content p {
-        color: #cbd5e1;
-        font-size: 1rem;
-        margin-bottom: 1.2rem;
-    }
-    .portfolio-details-btn {
-        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 22px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.3s;
-        align-self: flex-start;
-        box-shadow: 0 2px 8px rgba(139,92,246,0.18);
-    }
-    .portfolio-details-btn:hover {
-        background: var(--light-purple);
-        color: #fff;
-        transform: translateY(-2px);
-    }
-    .glass-modal {
-        background: rgba(30, 15, 50, 0.95);
-        border-radius: 18px;
-        border: 1px solid rgba(139, 92, 246, 0.25);
-        box-shadow:
-                0 15px 35px rgba(0, 0, 0, 0.3),
-                0 0 0 1px rgba(139, 92, 246, 0.1),
-                0 0 30px rgba(139, 92, 246, 0.2);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        overflow: hidden;
-    }
-
-    .modal-header {
-        background: linear-gradient(90deg,
-        rgba(139, 92, 246, 0.2) 0%,
-        rgba(139, 92, 246, 0.1) 100%);
-        border-bottom: 1px solid rgba(139, 92, 246, 0.15);
-        padding: 1.25rem 1.5rem;
-        position: relative;
-    }
-
-    .modal-title {
-        color: white;
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 0;
-        letter-spacing: -0.5px;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .portfolio-modal-close {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border: none;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    .portfolio-modal-close:hover {
-        background: var(--primary-purple);
-        transform: rotate(90deg);
-    }
-
-    /* NEW LAYOUT: Gallery on top, details below */
-    .portfolio-modal-container {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        max-height: 75vh;
-        overflow-y: auto;
-    }
-
-    /* Gallery Styles - Now Full Width */
-    .portfolio-modal-gallery {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        width: 100%;
-    }
-
-    .portfolio-main-image {
-        position: relative;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        background: rgba(0, 0, 0, 0.2);
-        aspect-ratio: 16/9;
-        max-height: 400px; /* Larger than before */
-    }
-
-    .portfolio-main-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Changed from cover to contain for better image viewing */
-        object-position: center;
-    }
-
-    .image-nav {
-        position: absolute;
-        top: 50%;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        transform: translateY(-50%);
-        pointer-events: none; /* Keeps the container non-interactive */
-    }
-
-    .image-nav-btn {
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        border: none;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        pointer-events: auto; /* Makes the buttons interactive */
-        font-size: 1.1rem;
-        position: absolute; /* Explicitly position the buttons */
-    }
-
-    .image-nav-btn:first-child {
-        left: 10px; /* Position the "prev" button on the left */
-    }
-
-    .image-nav-btn:last-child {
-        right: 10px; /* Position the "next" button on the right */
-    }
-
-    .image-nav-btn:hover {
-        background: var(--primary-purple);
-        transform: scale(1.1);
-    }
-
-    .portfolio-thumbnails {
-        display: flex;
-        gap: 0.75rem;
-        overflow-x: auto;
-        padding: 0.5rem 0;
-        scrollbar-width: thin;
-        scrollbar-color: var(--primary-purple) rgba(0, 0, 0, 0.2);
-        justify-content: center;
-    }
-
-    .thumbnail {
-        width: 100px; /* Larger thumbnails */
-        height: 75px;
-        border-radius: 8px;
-        overflow: hidden;
-        cursor: pointer;
-        opacity: 0.6;
-        transition: all 0.3s;
-        flex-shrink: 0;
-        border: 2px solid transparent;
-    }
-
-    .thumbnail img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .thumbnail.active {
-        opacity: 1;
-        border-color: var(--primary-purple);
-        box-shadow: 0 0 0 1px var(--primary-purple);
-    }
-
-    .thumbnail:hover {
-        opacity: 0.9;
-        transform: translateY(-2px);
-    }
-
-    /* Details Styles - Now Below Gallery */
-    .portfolio-modal-details {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    /* Grid layout for details sections */
-    .details-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .details-section {
-        margin-bottom: 0;
-    }
-
-    .details-section h5 {
-        color: var(--primary-purple);
-        font-weight: 600;
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .project-description {
-        color: var(--white-87);
-        line-height: 1.6;
-        font-size: 1rem;
-    }
-
-    .tech-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .tech-tags span {
-        background: rgba(139, 92, 246, 0.15);
-        color: var(--white-87);
-        padding: 5px 12px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        border: 1px solid rgba(139, 92, 246, 0.2);
-        display: inline-block;
-        transition: all 0.3s;
-    }
-
-    .tech-tags span:hover {
-        background: var(--primary-purple);
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    .project-links {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(139, 92, 246, 0.15);
-    }
-
-    .project-links a {
-        flex: 1;
-        max-width: 200px;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 24px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s;
-    }
-
-    .btn-purple {
-        background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
-        color: white;
-    }
-
-    .btn-outline-purple {
-        background: transparent;
-        color: var(--primary-purple);
-        border: 2px solid var(--primary-purple);
-    }
-
-    .btn-purple:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-    }
-
-    .btn-outline-purple:hover {
-        background: var(--primary-purple);
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    /* Responsive Styles */
-    @media (max-width: 992px) {
-        .details-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .portfolio-main-image {
-            max-height: 350px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .modal-title {
-            font-size: 1.5rem;
-        }
-
-        .portfolio-modal-gallery {
-            width: 99%;
-        }
-
-        .portfolio-main-image {
-            aspect-ratio: 4/3;
-            max-height: 280px;
-        }
-
-        .thumbnail {
-            width: 80px;
-            height: 60px;
-        }
-
-        .image-nav-btn {
-            width: 40px;
-            height: 40px;
-            font-size: 1rem;
-        }
-
-        .project-links {
-            flex-direction: column;
-        }
-
-        .project-links a {
-            max-width: 100%;
-        }
-
-        .portfolio-thumbnails {
-            justify-content: flex-start;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .portfolio-modal-container {
-            gap: 1rem;
-        }
-
-        .portfolio-main-image {
-            max-height: 250px;
-        }
-
-        .details-grid {
-            gap: 0.75rem;
-        }
-    }
-
-    /* CSS Variables (add these if not already defined) */
-    :root {
-        --primary-purple: #8b5cf6;
-        --dark-purple: #7c3aed;
-        --light-purple: #a78bfa;
-        --white-87: rgba(255, 255, 255, 0.87);
-    }
-</style>
+<link rel="stylesheet" href="/css/portfolio-section.css">
 
 
 
 
 <!-- Footer -->
 <footer class="footer py-3">
-  <div class="container d-flex justify-content-center align-items-center gap-3 flex-wrap">
-    <a href="mailto:admin@thedabcorner.site" class="text-light-purple" aria-label="Email">
-      <i class="fas fa-envelope fa-lg"></i>
-    </a>
-    <a href="https://t.me/yourusername" class="text-light-purple" target="_blank" rel="noopener" aria-label="Telegram">
-      <i class="fab fa-telegram fa-lg"></i>
-    </a>
-    <a href="https://wa.me/13143052041" class="text-light-purple" target="_blank" rel="noopener" aria-label="WhatsApp">
-      <i class="fab fa-whatsapp fa-lg"></i>
-    </a>
-    <a href="tel:+13143052041" class="text-light-purple" aria-label="Phone">
-      <i class="fas fa-phone fa-lg"></i>
-    </a>
-    <span class="text-muted ms-3">&copy; 2022-2025 Jackson Cummings. All rights reserved.</span>
+  <div class="container footer-nav-split d-flex align-items-center flex-wrap">
+    <div class="footer-links d-flex align-items-center flex-wrap">
+      <a href="mailto:admin@thedabcorner.site" class="text-light-purple" aria-label="Email">
+        <i class="fas fa-envelope fa-lg"></i>
+      </a>
+      <a href="https://t.me/thedabcorner" class="text-light-purple" target="_blank" rel="noopener" aria-label="Telegram">
+        <i class="fab fa-telegram fa-lg"></i>
+      </a>
+      <a href="https://wa.me/13143052041" class="text-light-purple" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp fa-lg"></i>
+      </a>
+      <a href="tel:+13143052041" class="text-light-purple" aria-label="Phone">
+        <i class="fas fa-phone fa-lg"></i>
+      </a>
+    </div>
+    <span class="text-muted ms-3 footer-copyright">&copy; 2022-2025 Jackson Cummings. All rights reserved.</span>
   </div>
 </footer>
-<style>
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #100921;
-  border-top: 1.5px solid rgba(139, 92, 246, 0.15);
-  color: var(--white-60);
-  font-size: 1rem;
-  z-index: 10000;
-}
-.footer a {
-  color: var(--light-purple);
-  transition: color 0.2s;
-  margin: 0 0.5rem;
-}
-.footer a:hover {
-  color: var(--primary-purple);
-  text-decoration: none;
-}
-.footer .text-muted {
-  color: var(--white-60) !important;
-  font-size: 1rem;
-}
-</style>
-
+<link rel="stylesheet" href="/css/footer.css">
 
 
 

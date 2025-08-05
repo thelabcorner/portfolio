@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quaternions Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: #1a1a1a;
+            padding: 20px;
+            border-right: 2px solid #333;
+            overflow-y: auto;
+        }
+        
+        .main-canvas {
+            flex: 1;
+            position: relative;
+            background: #111;
+        }
+        
+        canvas {
+            display: block;
+            cursor: grab;
+            width: 100%;
+            height: 100%;
+        }
+        
+        canvas:active {
+            cursor: grabbing;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #ff6b35;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #ff6b35;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #ff6b35;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .value-display {
+            color: #ff6b35;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .info-text {
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #ccc;
+        }
+        
+        .quaternion-display {
+            background: #1f1f1f;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #aaa;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #333;
+        }
+        
+        .quat-component {
+            margin: 5px 0;
+            padding: 5px;
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
+        
+        .quat-w { color: #ff6b35; }
+        .quat-x { color: #00ff88; }
+        .quat-y { color: #00aaff; }
+        .quat-z { color: #ff88ff; }
+        
+        .reset-btn, .operation-btn {
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px 0;
+            transition: background 0.2s;
+        }
+        
+        .reset-btn:hover, .operation-btn:hover {
+            background: #444;
+        }
+        
+        .operation-btn {
+            background: #2a4a6b;
+        }
+        
+        .operation-btn:hover {
+            background: #3a5a7b;
+        }
+        
+        .instructions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            color: #ccc;
+            font-size: 14px;
+            border: 1px solid #333;
+            backdrop-filter: blur(10px);
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 8px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #ff6b35;
+        }
+
+        .mode-btn:hover {
+            background: #444;
+        }
+
+        .mode-btn.active:hover {
+            background: #ff7b45;
+        }
+
+        .interpolation-controls {
+            margin-top: 15px;
+        }
+
+        .axis-vector {
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+
+        .euler-display {
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+
+        .preset-rotations {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .preset-btn {
+            padding: 6px;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .input-mode-toggle {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            padding: 5px;
+            background: #333;
+            border-radius: 6px;
+        }
+
+        .input-mode-toggle .mode-btn {
+            flex: 1;
+            padding: 8px;
+            background: transparent;
+            color: #ccc;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .input-mode-toggle .mode-btn.active {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .input-mode-toggle .mode-btn:hover {
+            background: #444;
+        }
+
+        .input-mode-toggle .mode-btn.active:hover {
+            background: #ff7b45;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Quaternions</h1>
+            
+            <div class="info-text">
+                Quaternions represent rotations in 3D space using 4 components (w, x, y, z). They avoid gimbal lock and provide smooth interpolation between rotations.
+            </div>
+
+            <div class="mode-selector">
+                <button class="mode-btn active" id="singleMode">Single</button>
+                <button class="mode-btn" id="slerpMode">SLERP</button>
+                <button class="mode-btn" id="multiplyMode">Multiply</button>
+            </div>
+            
+            <div class="control-group" id="singleControls">
+                <h2>Rotation Control</h2>
+                
+                <!-- Input Mode Toggle -->
+                <div class="input-mode-toggle">
+                    <button class="mode-btn active" id="eulerInputBtn">Euler</button>
+                    <button class="mode-btn" id="quaternionInputBtn">Quaternion</button>
+                </div>
+                
+                <!-- Euler Controls -->
+                <div id="eulerInputControls">
+                    <label>
+                        X Axis: <span class="value-display" id="xRotValue">0°</span>
+                    </label>
+                    <input type="range" id="xRotSlider" min="-180" max="180" value="0" step="1">
+                    
+                    <label>
+                        Y Axis: <span class="value-display" id="yRotValue">0°</span>
+                    </label>
+                    <input type="range" id="yRotSlider" min="-180" max="180" value="0" step="1">
+                    
+                    <label>
+                        Z Axis: <span class="value-display" id="zRotValue">0°</span>
+                    </label>
+                    <input type="range" id="zRotSlider" min="-180" max="180" value="0" step="1">
+                </div>
+                
+                <!-- Quaternion Controls -->
+                <div id="quaternionInputControls" style="display: none;">
+                    <label>
+                        W: <span class="value-display" id="wQuatValue">1.000</span>
+                    </label>
+                    <input type="range" id="wQuatSlider" min="-1" max="1" value="1" step="0.001">
+                    
+                    <label>
+                        X: <span class="value-display" id="xQuatValue">0.000</span>
+                    </label>
+                    <input type="range" id="xQuatSlider" min="-1" max="1" value="0" step="0.001">
+                    
+                    <label>
+                        Y: <span class="value-display" id="yQuatValue">0.000</span>
+                    </label>
+                    <input type="range" id="yQuatSlider" min="-1" max="1" value="0" step="0.001">
+                    
+                    <label>
+                        Z: <span class="value-display" id="zQuatValue">0.000</span>
+                    </label>
+                    <input type="range" id="zQuatSlider" min="-1" max="1" value="0" step="0.001">
+                    
+                    <div style="margin-top: 10px; font-size: 12px; color: #999;">
+                        * Quaternion will be automatically normalized
+                    </div>
+                </div>
+
+                <div class="preset-rotations">
+                    <button class="preset-btn" data-rot="0,0,0">Identity</button>
+                    <button class="preset-btn" data-rot="90,0,0">X 90°</button>
+                    <button class="preset-btn" data-rot="0,90,0">Y 90°</button>
+                    <button class="preset-btn" data-rot="0,0,90">Z 90°</button>
+                    <button class="preset-btn" data-rot="45,45,0">XY 45°</button>
+                    <button class="preset-btn" data-rot="30,60,90">Complex</button>
+                </div>
+            </div>
+
+            <div class="control-group" id="slerpControls" style="display: none;">
+                <h2>SLERP Interpolation</h2>
+                <label>
+                    Interpolation: <span class="value-display" id="slerpValue">0.0</span>
+                </label>
+                <input type="range" id="slerpSlider" min="0" max="1" value="0" step="0.01">
+
+                <button class="operation-btn" id="setStartBtn">Set Start Rotation</button>
+                <button class="operation-btn" id="setEndBtn">Set End Rotation</button>
+                <button class="operation-btn" id="animateSlerpBtn">Animate SLERP</button>
+            </div>
+
+            <div class="control-group" id="multiplyControls" style="display: none;">
+                <h2>Quaternion Multiplication</h2>
+                <button class="operation-btn" id="setFirstBtn">Set First Quaternion</button>
+                <button class="operation-btn" id="setSecondBtn">Set Second Quaternion</button>
+                <button class="operation-btn" id="multiplyBtn">Multiply Q1 × Q2</button>
+                <button class="operation-btn" id="swapBtn">Swap Q1 ↔ Q2</button>
+            </div>
+            
+            <div class="quaternion-display" id="quaternionDisplay">
+                <div class="quat-component quat-w">w: 1.000</div>
+                <div class="quat-component quat-x">x: 0.000</div>
+                <div class="quat-component quat-y">y: 0.000</div>
+                <div class="quat-component quat-z">z: 0.000</div>
+            </div>
+
+            <div class="axis-vector" id="axisDisplay">
+                <strong>Rotation Axis:</strong><br>
+                Axis: (0.000, 0.000, 1.000)<br>
+                Angle: 0.0°
+            </div>
+
+            <div class="euler-display" id="eulerDisplay">
+                <strong>Euler Angles:</strong><br>
+                X: 0.0° Y: 0.0° Z: 0.0°
+            </div>
+            
+            <button class="reset-btn" id="resetBtn">Reset Rotation</button>
+            <button class="reset-btn" id="resetCameraBtn">Reset Camera</button>
+        </div>
+        
+        <div class="main-canvas">
+            <canvas id="canvas"></canvas>
+            <div class="instructions">
+                <strong>Instructions:</strong><br>
+                • Drag to rotate the view<br>
+                • Use sliders to control rotation<br>
+                • Switch modes to explore SLERP and multiplication<br>
+                • Watch the quaternion components update<br>
+                • Try preset rotations for common cases
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quaternion class
+        class Quaternion {
+            constructor(w = 1, x = 0, y = 0, z = 0) {
+                this.w = w;
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            }
+
+            static fromEuler(x, y, z) {
+                // Convert degrees to radians
+                x = x * Math.PI / 180 / 2;
+                y = y * Math.PI / 180 / 2;
+                z = z * Math.PI / 180 / 2;
+
+                const cx = Math.cos(x);
+                const sx = Math.sin(x);
+                const cy = Math.cos(y);
+                const sy = Math.sin(y);
+                const cz = Math.cos(z);
+                const sz = Math.sin(z);
+
+                return new Quaternion(
+                    cx * cy * cz + sx * sy * sz,
+                    sx * cy * cz - cx * sy * sz,
+                    cx * sy * cz + sx * cy * sz,
+                    cx * cy * sz - sx * sy * cz
+                );
+            }
+
+            static fromAxisAngle(axis, angle) {
+                const halfAngle = angle / 2;
+                const s = Math.sin(halfAngle);
+                return new Quaternion(
+                    Math.cos(halfAngle),
+                    axis.x * s,
+                    axis.y * s,
+                    axis.z * s
+                );
+            }
+
+            multiply(other) {
+                return new Quaternion(
+                    this.w * other.w - this.x * other.x - this.y * other.y - this.z * other.z,
+                    this.w * other.x + this.x * other.w + this.y * other.z - this.z * other.y,
+                    this.w * other.y - this.x * other.z + this.y * other.w + this.z * other.x,
+                    this.w * other.z + this.x * other.y - this.y * other.x + this.z * other.w
+                );
+            }
+
+            normalize() {
+                const magnitude = Math.sqrt(this.w * this.w + this.x * this.x + this.y * this.y + this.z * this.z);
+                if (magnitude === 0) return new Quaternion(1, 0, 0, 0);
+                return new Quaternion(this.w / magnitude, this.x / magnitude, this.y / magnitude, this.z / magnitude);
+            }
+
+            conjugate() {
+                return new Quaternion(this.w, -this.x, -this.y, -this.z);
+            }
+
+            toEuler() {
+                // Convert to Euler angles (in degrees)
+                const sinr_cosp = 2 * (this.w * this.x + this.y * this.z);
+                const cosr_cosp = 1 - 2 * (this.x * this.x + this.y * this.y);
+                const roll = Math.atan2(sinr_cosp, cosr_cosp) * 180 / Math.PI;
+
+                const sinp = 2 * (this.w * this.y - this.z * this.x);
+                let pitch;
+                if (Math.abs(sinp) >= 1) {
+                    pitch = Math.sign(sinp) * 90;
+                } else {
+                    pitch = Math.asin(sinp) * 180 / Math.PI;
+                }
+
+                const siny_cosp = 2 * (this.w * this.z + this.x * this.y);
+                const cosy_cosp = 1 - 2 * (this.y * this.y + this.z * this.z);
+                const yaw = Math.atan2(siny_cosp, cosy_cosp) * 180 / Math.PI;
+
+                return { x: roll, y: pitch, z: yaw };
+            }
+
+            toAxisAngle() {
+                const angle = 2 * Math.acos(Math.abs(this.w));
+                const s = Math.sqrt(1 - this.w * this.w);
+                
+                if (s < 0.001) {
+                    return {
+                        axis: { x: 1, y: 0, z: 0 },
+                        angle: 0
+                    };
+                }
+
+                return {
+                    axis: {
+                        x: this.x / s,
+                        y: this.y / s,
+                        z: this.z / s
+                    },
+                    angle: angle * 180 / Math.PI
+                };
+            }
+
+            static slerp(q1, q2, t) {
+                let dot = q1.w * q2.w + q1.x * q2.x + q1.y * q2.y + q1.z * q2.z;
+                
+                // If dot product is negative, use -q1 to take the shorter path
+                if (dot < 0.0) {
+                    q1 = new Quaternion(-q1.w, -q1.x, -q1.y, -q1.z);
+                    dot = -dot;
+                }
+
+                if (dot > 0.9995) {
+                    // Linear interpolation for very close quaternions
+                    return new Quaternion(
+                        q1.w + t * (q2.w - q1.w),
+                        q1.x + t * (q2.x - q1.x),
+                        q1.y + t * (q2.y - q1.y),
+                        q1.z + t * (q2.z - q1.z)
+                    ).normalize();
+                }
+
+                const theta_0 = Math.acos(Math.abs(dot));
+                const sin_theta_0 = Math.sin(theta_0);
+                const theta = theta_0 * t;
+                const sin_theta = Math.sin(theta);
+
+                const s0 = Math.cos(theta) - dot * sin_theta / sin_theta_0;
+                const s1 = sin_theta / sin_theta_0;
+
+                return new Quaternion(
+                    s0 * q1.w + s1 * q2.w,
+                    s0 * q1.x + s1 * q2.x,
+                    s0 * q1.y + s1 * q2.y,
+                    s0 * q1.z + s1 * q2.z
+                );
+            }
+
+            rotateVector(vector) {
+                const qvec = new Quaternion(0, vector.x, vector.y, vector.z);
+                const result = this.multiply(qvec).multiply(this.conjugate());
+                return { x: result.x, y: result.y, z: result.z };
+            }
+
+            copy() {
+                return new Quaternion(this.w, this.x, this.y, this.z);
+            }
+        }
+
+        // Demo application
+        class QuaternionDemo {
+            constructor() {
+                this.canvas = document.getElementById('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.mode = 'single';
+                this.inputMode = 'euler'; // 'euler' or 'quaternion'
+                
+                // Current quaternion
+                this.quaternion = new Quaternion();
+                
+                // SLERP quaternions
+                this.slerpStart = new Quaternion();
+                this.slerpEnd = new Quaternion();
+                
+                // Multiply quaternions
+                this.quat1 = new Quaternion();
+                this.quat2 = new Quaternion();
+                
+                // Camera controls
+                this.cameraRotX = -20;
+                this.cameraRotY = 0;
+                this.isDragging = false;
+                this.lastMouseX = 0;
+                this.lastMouseY = 0;
+                
+                // Animation
+                this.animationId = null;
+                this.slerpTime = 0;
+                this.isAnimating = false;
+                
+                // Flag to prevent feedback loops during updates
+                this.isUpdating = false;
+                
+                this.setupCanvas();
+                this.setupControls();
+                this.updateDisplay();
+                this.render();
+            }
+
+            setupCanvas() {
+                const resizeCanvas = () => {
+                    const container = this.canvas.parentElement;
+                    this.canvas.width = container.clientWidth;
+                    this.canvas.height = container.clientHeight;
+                };
+                
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                
+                // Mouse controls
+                this.canvas.addEventListener('mousedown', (e) => {
+                    this.isDragging = true;
+                    this.lastMouseX = e.clientX;
+                    this.lastMouseY = e.clientY;
+                });
+                
+                this.canvas.addEventListener('mousemove', (e) => {
+                    if (!this.isDragging) return;
+                    
+                    const deltaX = e.clientX - this.lastMouseX;
+                    const deltaY = e.clientY - this.lastMouseY;
+                    
+                    this.cameraRotY += deltaX * 0.5;
+                    this.cameraRotX += deltaY * 0.5;
+                    
+                    this.cameraRotX = Math.max(-90, Math.min(90, this.cameraRotX));
+                    
+                    this.lastMouseX = e.clientX;
+                    this.lastMouseY = e.clientY;
+                });
+                
+                this.canvas.addEventListener('mouseup', () => {
+                    this.isDragging = false;
+                });
+                
+                this.canvas.addEventListener('mouseleave', () => {
+                    this.isDragging = false;
+                });
+            }
+
+            setupControls() {
+                // Mode buttons
+                document.getElementById('singleMode').addEventListener('click', () => this.setMode('single'));
+                document.getElementById('slerpMode').addEventListener('click', () => this.setMode('slerp'));
+                document.getElementById('multiplyMode').addEventListener('click', () => this.setMode('multiply'));
+                
+                // Input mode toggle
+                document.getElementById('eulerInputBtn').addEventListener('click', () => this.setInputMode('euler'));
+                document.getElementById('quaternionInputBtn').addEventListener('click', () => this.setInputMode('quaternion'));
+                
+                // Euler mode controls
+                document.getElementById('xRotSlider').addEventListener('input', (e) => {
+                    if (this.isUpdating) return;
+                    document.getElementById('xRotValue').textContent = e.target.value + '°';
+                    this.updateFromEuler();
+                });
+                
+                document.getElementById('yRotSlider').addEventListener('input', (e) => {
+                    if (this.isUpdating) return;
+                    document.getElementById('yRotValue').textContent = e.target.value + '°';
+                    this.updateFromEuler();
+                });
+                
+                document.getElementById('zRotSlider').addEventListener('input', (e) => {
+                    if (this.isUpdating) return;
+                    document.getElementById('zRotValue').textContent = e.target.value + '°';
+                    this.updateFromEuler();
+                });
+                
+                // Quaternion mode controls
+                document.getElementById('wQuatSlider').addEventListener('input', (e) => {
+                    if (this.isUpdating) return;
+                    document.getElementById('wQuatValue').textContent = parseFloat(e.target.value).toFixed(3);
+                    this.updateFromQuaternion();
+                });
+                
+                document.getElementById('xQuatSlider').addEventListener('input', (e) => {
+                    if (this.isUpdating) return;
+                    document.getElementById('xQuatValue').textContent = parseFloat(e.target.value).toFixed(3);
+                    this.updateFromQuaternion();
+                });
+                
+                document.getElementById('yQuatSlider').addEventListener('input', (e) => {
+                    if (this.isUpdating) return;
+                    document.getElementById('yQuatValue').textContent = parseFloat(e.target.value).toFixed(3);
+                    this.updateFromQuaternion();
+                });
+                
+                document.getElementById('zQuatSlider').addEventListener('input', (e) => {
+                    if (this.isUpdating) return;
+                    document.getElementById('zQuatValue').textContent = parseFloat(e.target.value).toFixed(3);
+                    this.updateFromQuaternion();
+                });
+                
+                // Preset buttons
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const [x, y, z] = btn.dataset.rot.split(',').map(Number);
+                        this.setEulerAngles(x, y, z);
+                    });
+                });
+                
+                // SLERP controls
+                document.getElementById('slerpSlider').addEventListener('input', (e) => {
+                    const t = parseFloat(e.target.value);
+                    document.getElementById('slerpValue').textContent = t.toFixed(2);
+                    this.quaternion = Quaternion.slerp(this.slerpStart, this.slerpEnd, t);
+                    this.updateDisplay();
+                });
+                
+                document.getElementById('setStartBtn').addEventListener('click', () => {
+                    this.slerpStart = this.quaternion.copy();
+                });
+                
+                document.getElementById('setEndBtn').addEventListener('click', () => {
+                    this.slerpEnd = this.quaternion.copy();
+                });
+                
+                document.getElementById('animateSlerpBtn').addEventListener('click', () => {
+                    this.toggleSlerpAnimation();
+                });
+                
+                // Multiply controls
+                document.getElementById('setFirstBtn').addEventListener('click', () => {
+                    this.quat1 = this.quaternion.copy();
+                });
+                
+                document.getElementById('setSecondBtn').addEventListener('click', () => {
+                    this.quat2 = this.quaternion.copy();
+                });
+                
+                document.getElementById('multiplyBtn').addEventListener('click', () => {
+                    this.quaternion = this.quat1.multiply(this.quat2);
+                    this.updateDisplay();
+                    this.syncSlidersToQuaternion();
+                });
+                
+                document.getElementById('swapBtn').addEventListener('click', () => {
+                    const temp = this.quat1.copy();
+                    this.quat1 = this.quat2.copy();
+                    this.quat2 = temp;
+                });
+                
+                // Reset button
+                document.getElementById('resetBtn').addEventListener('click', () => {
+                    this.quaternion = new Quaternion();
+                    this.setEulerAngles(0, 0, 0);
+                });
+                
+                // Reset camera button
+                document.getElementById('resetCameraBtn').addEventListener('click', () => {
+                    this.resetCamera();
+                });
+            }
+
+            setInputMode(mode) {
+                this.inputMode = mode;
+                
+                // Update button states
+                document.getElementById('eulerInputBtn').classList.toggle('active', mode === 'euler');
+                document.getElementById('quaternionInputBtn').classList.toggle('active', mode === 'quaternion');
+                
+                // Show/hide control groups
+                document.getElementById('eulerInputControls').style.display = mode === 'euler' ? 'block' : 'none';
+                document.getElementById('quaternionInputControls').style.display = mode === 'quaternion' ? 'block' : 'none';
+                
+                // Sync sliders to current quaternion
+                this.syncSlidersToQuaternion();
+            }
+
+            syncSlidersToQuaternion() {
+                this.isUpdating = true;
+                
+                if (this.inputMode === 'euler') {
+                    // Update Euler sliders from current quaternion
+                    const euler = this.quaternion.toEuler();
+                    document.getElementById('xRotSlider').value = Math.round(euler.x);
+                    document.getElementById('yRotSlider').value = Math.round(euler.y);
+                    document.getElementById('zRotSlider').value = Math.round(euler.z);
+                    document.getElementById('xRotValue').textContent = Math.round(euler.x) + '°';
+                    document.getElementById('yRotValue').textContent = Math.round(euler.y) + '°';
+                    document.getElementById('zRotValue').textContent = Math.round(euler.z) + '°';
+                } else {
+                    // Update quaternion sliders from current quaternion
+                    document.getElementById('wQuatSlider').value = this.quaternion.w;
+                    document.getElementById('xQuatSlider').value = this.quaternion.x;
+                    document.getElementById('yQuatSlider').value = this.quaternion.y;
+                    document.getElementById('zQuatSlider').value = this.quaternion.z;
+                    document.getElementById('wQuatValue').textContent = this.quaternion.w.toFixed(3);
+                    document.getElementById('xQuatValue').textContent = this.quaternion.x.toFixed(3);
+                    document.getElementById('yQuatValue').textContent = this.quaternion.y.toFixed(3);
+                    document.getElementById('zQuatValue').textContent = this.quaternion.z.toFixed(3);
+                }
+                
+                setTimeout(() => { this.isUpdating = false; }, 10);
+            }
+
+            updateFromQuaternion() {
+                // Get values from quaternion sliders
+                const w = parseFloat(document.getElementById('wQuatSlider').value);
+                const x = parseFloat(document.getElementById('xQuatSlider').value);
+                const y = parseFloat(document.getElementById('yQuatSlider').value);
+                const z = parseFloat(document.getElementById('zQuatSlider').value);
+                
+                // Create and normalize quaternion
+                this.quaternion = new Quaternion(w, x, y, z).normalize();
+                this.updateDisplay();
+                
+                // Update the slider values to show normalized values
+                this.isUpdating = true;
+                document.getElementById('wQuatSlider').value = this.quaternion.w;
+                document.getElementById('xQuatSlider').value = this.quaternion.x;
+                document.getElementById('yQuatSlider').value = this.quaternion.y;
+                document.getElementById('zQuatSlider').value = this.quaternion.z;
+                document.getElementById('wQuatValue').textContent = this.quaternion.w.toFixed(3);
+                document.getElementById('xQuatValue').textContent = this.quaternion.x.toFixed(3);
+                document.getElementById('yQuatValue').textContent = this.quaternion.y.toFixed(3);
+                document.getElementById('zQuatValue').textContent = this.quaternion.z.toFixed(3);
+                setTimeout(() => { this.isUpdating = false; }, 10);
+            }
+
+            setMode(mode) {
+                this.mode = mode;
+                
+                // Update button states
+                document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(mode + 'Mode').classList.add('active');
+                
+                // Show/hide control groups
+                document.getElementById('singleControls').style.display = mode === 'single' ? 'block' : 'none';
+                document.getElementById('slerpControls').style.display = mode === 'slerp' ? 'block' : 'none';
+                document.getElementById('multiplyControls').style.display = mode === 'multiply' ? 'block' : 'none';
+                
+                // Stop animation if switching modes
+                if (this.isAnimating) {
+                    this.toggleSlerpAnimation();
+                }
+            }
+
+            setEulerAngles(x, y, z) {
+                document.getElementById('xRotSlider').value = x;
+                document.getElementById('yRotSlider').value = y;
+                document.getElementById('zRotSlider').value = z;
+                document.getElementById('xRotValue').textContent = x + '°';
+                document.getElementById('yRotValue').textContent = y + '°';
+                document.getElementById('zRotValue').textContent = z + '°';
+                this.updateFromEuler();
+            }
+
+            updateFromEuler() {
+                const x = parseFloat(document.getElementById('xRotSlider').value);
+                const y = parseFloat(document.getElementById('yRotSlider').value);
+                const z = parseFloat(document.getElementById('zRotSlider').value);
+                
+                this.quaternion = Quaternion.fromEuler(x, y, z);
+                this.updateDisplay();
+                
+                // Update quaternion sliders if we're in quaternion mode
+                if (this.inputMode === 'quaternion') {
+                    this.syncSlidersToQuaternion();
+                }
+            }
+
+            resetCamera() {
+                this.cameraRotX = -20;
+                this.cameraRotY = 0;
+            }
+
+            toggleSlerpAnimation() {
+                if (this.isAnimating) {
+                    cancelAnimationFrame(this.animationId);
+                    this.isAnimating = false;
+                    document.getElementById('animateSlerpBtn').textContent = 'Animate SLERP';
+                } else {
+                    this.isAnimating = true;
+                    this.slerpTime = 0;
+                    document.getElementById('animateSlerpBtn').textContent = 'Stop Animation';
+                    this.animateSlerp();
+                }
+            }
+
+            animateSlerp() {
+                if (!this.isAnimating) return;
+                
+                this.slerpTime += 0.01;
+                if (this.slerpTime > 1) this.slerpTime = 0;
+                
+                document.getElementById('slerpSlider').value = this.slerpTime;
+                document.getElementById('slerpValue').textContent = this.slerpTime.toFixed(2);
+                
+                this.quaternion = Quaternion.slerp(this.slerpStart, this.slerpEnd, this.slerpTime);
+                this.updateDisplay();
+                
+                this.animationId = requestAnimationFrame(() => this.animateSlerp());
+            }
+
+            updateDisplay() {
+                // Update quaternion display
+                document.getElementById('quaternionDisplay').innerHTML = `
+                    <div class="quat-component quat-w">w: ${this.quaternion.w.toFixed(3)}</div>
+                    <div class="quat-component quat-x">x: ${this.quaternion.x.toFixed(3)}</div>
+                    <div class="quat-component quat-y">y: ${this.quaternion.y.toFixed(3)}</div>
+                    <div class="quat-component quat-z">z: ${this.quaternion.z.toFixed(3)}</div>
+                `;
+                
+                // Update axis-angle display
+                const axisAngle = this.quaternion.toAxisAngle();
+                document.getElementById('axisDisplay').innerHTML = `
+                    <strong>Rotation Axis:</strong><br>
+                    Axis: (${axisAngle.axis.x.toFixed(3)}, ${axisAngle.axis.y.toFixed(3)}, ${axisAngle.axis.z.toFixed(3)})<br>
+                    Angle: ${axisAngle.angle.toFixed(1)}°
+                `;
+                
+                // Update Euler display
+                const euler = this.quaternion.toEuler();
+                document.getElementById('eulerDisplay').innerHTML = `
+                    <strong>Euler Angles:</strong><br>
+                    X: ${euler.x.toFixed(1)}° Y: ${euler.y.toFixed(1)}° Z: ${euler.z.toFixed(1)}°
+                `;
+            }
+
+            render() {
+                const ctx = this.ctx;
+                const width = this.canvas.width;
+                const height = this.canvas.height;
+                
+                ctx.clearRect(0, 0, width, height);
+                
+                // Set up 3D projection
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const scale = Math.min(width, height) * 0.3;
+                
+                // Create rotation matrix from camera angles
+                const camQuat = Quaternion.fromEuler(this.cameraRotX, this.cameraRotY, 0);
+                
+                // Define cube vertices
+                const cubeVertices = [
+                    { x: -1, y: -1, z: -1 }, { x: 1, y: -1, z: -1 },
+                    { x: 1, y: 1, z: -1 }, { x: -1, y: 1, z: -1 },
+                    { x: -1, y: -1, z: 1 }, { x: 1, y: -1, z: 1 },
+                    { x: 1, y: 1, z: 1 }, { x: -1, y: 1, z: 1 }
+                ];
+                
+                // Apply quaternion rotation and camera rotation
+                const transformedVertices = cubeVertices.map(vertex => {
+                    // First apply the quaternion rotation
+                    let rotated = this.quaternion.rotateVector(vertex);
+                    // Then apply camera rotation
+                    rotated = camQuat.rotateVector(rotated);
+                    return rotated;
+                });
+                
+                // Project to 2D
+                const projectedVertices = transformedVertices.map(vertex => ({
+                    x: centerX + vertex.x * scale,
+                    y: centerY + vertex.y * scale,
+                    z: vertex.z
+                }));
+                
+                // Draw cube edges
+                const edges = [
+                    [0, 1], [1, 2], [2, 3], [3, 0], // front face
+                    [4, 5], [5, 6], [6, 7], [7, 4], // back face
+                    [0, 4], [1, 5], [2, 6], [3, 7]  // connecting edges
+                ];
+                
+                // Sort edges by average z-depth for proper rendering
+                const edgesWithDepth = edges.map(edge => ({
+                    edge,
+                    depth: (transformedVertices[edge[0]].z + transformedVertices[edge[1]].z) / 2
+                }));
+                edgesWithDepth.sort((a, b) => a.depth - b.depth);
+                
+                // Draw edges
+                edgesWithDepth.forEach(({ edge }, index) => {
+                    const [i, j] = edge;
+                    const v1 = projectedVertices[i];
+                    const v2 = projectedVertices[j];
+                    
+                    // Color based on depth
+                    const alpha = 0.3 + 0.7 * (index / edges.length);
+                    ctx.strokeStyle = `rgba(0, 170, 255, ${alpha})`;
+                    ctx.lineWidth = 2;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(v1.x, v1.y);
+                    ctx.lineTo(v2.x, v2.y);
+                    ctx.stroke();
+                });
+                
+                // Draw coordinate axes
+                const axisLength = 1.5;
+                const axes = [
+                    { vector: { x: axisLength, y: 0, z: 0 }, color: '#ff6b35', label: 'X' },
+                    { vector: { x: 0, y: axisLength, z: 0 }, color: '#00ff88', label: 'Y' },
+                    { vector: { x: 0, y: 0, z: axisLength }, color: '#ff88ff', label: 'Z' }
+                ];
+                
+                axes.forEach(axis => {
+                    // Transform axis vector
+                    let rotated = this.quaternion.rotateVector(axis.vector);
+                    rotated = camQuat.rotateVector(rotated);
+                    
+                    const endX = centerX + rotated.x * scale;
+                    const endY = centerY + rotated.y * scale;
+                    
+                    // Draw axis line
+                    ctx.strokeStyle = axis.color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
+                    
+                    // Draw arrow head
+                    const angle = Math.atan2(endY - centerY, endX - centerX);
+                    const arrowLength = 15;
+                    const arrowAngle = 0.5;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(endX, endY);
+                    ctx.lineTo(
+                        endX - arrowLength * Math.cos(angle - arrowAngle),
+                        endY - arrowLength * Math.sin(angle - arrowAngle)
+                    );
+                    ctx.moveTo(endX, endY);
+                    ctx.lineTo(
+                        endX - arrowLength * Math.cos(angle + arrowAngle),
+                        endY - arrowLength * Math.sin(angle + arrowAngle)
+                    );
+                    ctx.stroke();
+                    
+                    // Draw axis label
+                    ctx.fillStyle = axis.color;
+                    ctx.font = '16px Arial';
+                    ctx.fillText(axis.label, endX + 10, endY - 10);
+                });
+                
+                // Draw center point
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Draw grid
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                for (let i = -200; i <= 200; i += 50) {
+                    if (i === 0) continue;
+                    
+                    // Vertical lines
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + i, 0);
+                    ctx.lineTo(centerX + i, height);
+                    ctx.stroke();
+                    
+                    // Horizontal lines
+                    ctx.beginPath();
+                    ctx.moveTo(0, centerY + i);
+                    ctx.lineTo(width, centerY + i);
+                    ctx.stroke();
+                }
+                
+                // Draw center axes (reference)
+                ctx.strokeStyle = '#666';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(width, centerY);
+                ctx.moveTo(centerX, 0);
+                ctx.lineTo(centerX, height);
+                ctx.stroke();
+                
+                // Draw rotation visualization based on mode
+                if (this.mode === 'slerp') {
+                    this.drawSlerpVisualization(ctx, centerX, centerY, scale);
+                } else if (this.mode === 'multiply') {
+                    this.drawMultiplyVisualization(ctx, centerX, centerY, scale);
+                }
+                
+                requestAnimationFrame(() => this.render());
+            }
+            
+            drawSlerpVisualization(ctx, centerX, centerY, scale) {
+                // Draw start and end quaternion representations
+                const axisLength = 0.8;
+                
+                // Start quaternion (green)
+                const startAxis = this.slerpStart.rotateVector({ x: axisLength, y: 0, z: 0 });
+                const camQuat = Quaternion.fromEuler(this.cameraRotX, this.cameraRotY, 0);
+                const rotatedStart = camQuat.rotateVector(startAxis);
+                
+                ctx.strokeStyle = 'rgba(0, 255, 136, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + rotatedStart.x * scale, centerY + rotatedStart.y * scale);
+                ctx.stroke();
+                
+                // End quaternion (red)
+                const endAxis = this.slerpEnd.rotateVector({ x: axisLength, y: 0, z: 0 });
+                const rotatedEnd = camQuat.rotateVector(endAxis);
+                
+                ctx.strokeStyle = 'rgba(255, 107, 53, 0.5)';
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + rotatedEnd.x * scale, centerY + rotatedEnd.y * scale);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            drawMultiplyVisualization(ctx, centerX, centerY, scale) {
+                // Draw first and second quaternion representations
+                const axisLength = 0.6;
+                const camQuat = Quaternion.fromEuler(this.cameraRotX, this.cameraRotY, 0);
+                
+                // First quaternion (cyan)
+                const axis1 = this.quat1.rotateVector({ x: axisLength, y: 0, z: 0 });
+                const rotated1 = camQuat.rotateVector(axis1);
+                
+                ctx.strokeStyle = 'rgba(0, 255, 255, 0.6)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([10, 5]);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + rotated1.x * scale, centerY + rotated1.y * scale);
+                ctx.stroke();
+                
+                // Second quaternion (yellow)
+                const axis2 = this.quat2.rotateVector({ x: axisLength, y: 0, z: 0 });
+                const rotated2 = camQuat.rotateVector(axis2);
+                
+                ctx.strokeStyle = 'rgba(255, 255, 0, 0.6)';
+                ctx.setLineDash([5, 10]);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(centerX + rotated2.x * scale, centerY + rotated2.y * scale);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+        }
+        
+        // Initialize the demo when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new QuaternionDemo();
+        });
+    </script>
+</body>
+</html>

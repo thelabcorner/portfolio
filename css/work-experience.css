@@ -189,6 +189,7 @@
 }
 
 .role-details h3 {
+    width: 70%;
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--white);
@@ -244,6 +245,10 @@
     font-weight: 700;
     color: white;
     line-height: 1;
+}
+
+.stat-number i {
+    color: var(--primary-purple) !important;
 }
 
 .stat-label {
@@ -317,12 +322,13 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    width: 70%;
 }
 
 .skills span {
     background: rgba(139, 92, 246, 0.15);
     color: var(--white-90);
-    padding: 4px 8px;
+    padding: 4px 15px;
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 500;
@@ -408,18 +414,40 @@
 }
 .specialty-list span {
     display: flex;
+    border: 1.56px solid #440080;
     align-items: center;
     font-size: 0.92rem;
     background: rgb(179 145 255 / 7%);
     border-radius: 5px;
-    padding: 0.22em 0.7em;
+    padding: 0.1em 0.4em;
     margin-bottom: 0.15em;
 }
 
 .specialty-list i {
     color: var(--purple-light);
     width: 12px;
-    margin-right: 15px;
+    margin-right: 12px;
+}
+
+
+.work-details-btn {
+    position: absolute;
+    top: 105px;
+    border: 2px solid #7f53ff85;
+    color: white;
+    right: 20px;
+    padding: 10px 33px;
+}
+
+.work-details-btn i {
+    color: var(--purple-primary);
+}
+
+.work-details-btn:hover {
+    background: rgb(78 0 255 / 10%);
+    border: 2px solid #8b00ff85;
+    color: var(--purple-primary);
+    transform: translateY(-2px);
 }
 
 /* Responsive Design */
@@ -478,7 +506,7 @@
     }
 
     .stats-row {
-        flex-direction: column;
+        flex-direction: row;
         gap: 8px;
         text-align: center;
     }
@@ -489,6 +517,6 @@
 
     .skills span {
         font-size: 0.7rem;
-        padding: 3px 6px;
+        padding: 3px 10px;
     }
 }

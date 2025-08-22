@@ -53,6 +53,7 @@
             background-color: #000;
             color: var(--text-light);
             line-height: 1.6;
+            overflow-x: clip;
         }
 
         /* Typography */
@@ -225,10 +226,17 @@
 
     #preloader svg {
         position: relative;
-        left: 35px;
+        left: 5px;
         width: 200px;
         transition: opacity 0.5s ease;
     }
+
+    @media (max-width: 768px) {
+        #preloader svg {
+            left: 12px;
+        }
+    }
+
 </style>
 
 <script>
@@ -297,7 +305,7 @@
     @media (max-width: 768px) {
         .hero-container {
             height: 100vh;
-            width: 100vw;
+            width: 99vw;
         }
     }
 
@@ -1682,7 +1690,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="role-details">
                         <h3>Process Engineering Lead</h3>
-                        <p class="company">Carboxyl R&D Group</p>
+                        <p class="company">Carboxyl R&amp;D Group</p>
                         <div class="meta">
                             <span><i class="far fa-calendar"></i> May 2022 – 2024</span>
                             <span><i class="fas fa-user-secret"></i> Confidential (NDA)</span>
@@ -1714,10 +1722,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Raspberry Pi</span>
                     <span>IoT Development</span>
                     <span>Python</span>
-                    <span>R&D Engineering</span>
+                    <span>R&amp;D Engineering</span>
                     <span>Process Optimization</span>
                 </div>
+
+                <button class="btn work-details-btn ms-3 align-self-start"
+                        data-bs-toggle="modal"
+                        data-bs-target="#experienceModal"
+                        data-experience-id="exp2">
+                    <i class="fas fa-id-card me-1"></i> Details
+                </button>
             </div>
+
+
+
 
             <!-- Experience 3 -->
             <div class="experience-card">
@@ -1726,7 +1744,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <i class="fas fa-users"></i>
                     </div>
                     <div class="role-details">
-                        <h3>Technical Mentor & Moderator</h3>
+                        <h3>Technical Mentor & Admin</h3>
                         <p class="company">Engineering Minds</p>
                         <div class="meta">
                             <span><i class="far fa-calendar"></i> Jan 2025 – Present</span>
@@ -1803,6 +1821,413 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
+
+<!-- Enhanced Experience Modal -->
+<div class="modal fade" id="experienceModal" tabindex="-1" aria-labelledby="experienceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content experience-modal-card">
+      <div class="modal-stars"></div>
+      <div class="modal-glow"></div>
+      <div class="modal-header experience-modal-header">
+        <div class="icon-wrapper" id="experienceModalIcon">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <div>
+          <h2 class="modal-title" id="experienceModalTitle">Experience Details</h2>
+          <p class="modal-company" id="experienceModalCompany">Company Name</p>
+          <span class="modal-date" id="experienceModalDate">2021 - Present</span>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body experience-modal-content">
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="status-badge" id="experienceModalStatus">Current Position</div>
+            <div class="overview-panel">
+              <p id="experienceModalOverview">Position overview and key responsibilities at the company.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h4><i class="fas fa-tasks me-2 text-purple"></i>Responsibilities</h4>
+            <ul class="responsibilities-list" id="experienceModalResponsibilities"></ul>
+          </div>
+          <div class="col-md-6">
+            <h4><i class="fas fa-trophy me-2 text-purple"></i>Achievements</h4>
+            <ul class="achievements-list" id="experienceModalAchievements"></ul>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-12">
+            <h4><i class="fas fa-project-diagram me-2 text-purple"></i>Projects</h4>
+            <div class="projects-grid" id="experienceModalProjects"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <h4><i class="fas fa-tools me-2 text-purple"></i>Technologies & Skills</h4>
+            <div class="tech-skills" id="experienceModalTechSkills"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer experience-modal-footer">
+        <a href="#" class="company-link" id="experienceModalLink" target="_blank">
+          <i class="fas fa-external-link-alt me-2"></i>Visit Company
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.experience-modal-card {
+  background: rgba(13, 0, 30, 0.85);
+  border-radius: 16px;
+  border: 1px solid var(--white-20);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(139, 92, 246, 0.2),
+    inset 0 1px 1px var(--white-10);
+  color: var(--white);
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.modal-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+  background-image: radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0, 0, 0, 0)),
+                    radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0, 0, 0, 0)),
+                    radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0, 0, 0, 0)),
+                    radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0, 0, 0, 0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+.modal-glow {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -100px;
+  right: -100px;
+  filter: blur(40px);
+  z-index: 0;
+}
+
+.experience-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-dark));
+  border-bottom: 1px solid var(--white-20);
+  padding: 28px 32px 24px 32px;
+  border-radius: 16px 16px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.experience-modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 3s infinite;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.experience-modal-header .icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+.experience-modal-header .icon-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--purple-light), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.experience-modal-header .icon-wrapper i {
+  font-size: 2.2rem;
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+}
+
+.experience-modal-header .modal-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 2px;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.experience-modal-header .modal-company {
+  font-size: 1.1rem;
+  color: var(--purple-light);
+  font-weight: 500;
+  margin: 0 0 5px 0;
+}
+
+.modal-date {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 10px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.btn-close-white {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  padding: 8px;
+  opacity: 0.8;
+  margin-left: auto;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.btn-close-white:hover {
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+.experience-modal-content {
+  padding: 2.5rem 2.5rem 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.status-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--purple-primary), var(--purple-dark));
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: 30px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
+}
+
+.overview-panel {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+
+.overview-panel p {
+  color: var(--white-90);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.experience-modal-content h4 {
+  margin-bottom: 1.2rem;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.experience-modal-content h4::after {
+  content: '';
+  flex-grow: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--purple-primary), transparent);
+  margin-left: 15px;
+}
+
+.experience-modal-content h4 i {
+  font-size: 1.1rem;
+}
+
+.responsibilities-list, .achievements-list {
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.responsibilities-list li, .achievements-list li {
+  margin-bottom: 0.75rem;
+  color: var(--white-90);
+  font-size: 1rem;
+  position: relative;
+}
+
+.responsibilities-list li::marker,
+.achievements-list li::marker {
+  color: var(--purple-primary);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+
+.project-item {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 10px;
+  padding: 1.2rem;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.project-item:hover {
+  transform: translateY(-3px);
+  background: rgba(139, 92, 246, 0.12);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.project-item h5 {
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+  color: var(--purple-light);
+  font-weight: 600;
+}
+
+.project-item p {
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--white-90);
+}
+
+.tech-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.tech-skill {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  color: var(--white-90);
+  border-radius: 50px;
+  padding: 0.4rem 1rem;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tech-skill:hover {
+  background: rgba(139, 92, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.tech-skill i {
+  margin-right: 0.6rem;
+  color: var(--purple-light);
+  font-size: 0.9rem;
+}
+
+.experience-modal-footer {
+  border-top: 1px solid rgba(139, 92, 246, 0.15);
+  background: rgba(13, 0, 30, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+}
+
+.company-link {
+  color: var(--purple-light);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.company-link:hover {
+  color: var(--white);
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .experience-modal-header {
+    padding: 20px 16px 16px;
+    gap: 15px;
+  }
+
+  .experience-modal-header .icon-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+
+  .experience-modal-header .icon-wrapper i {
+    font-size: 1.7rem;
+  }
+
+  .experience-modal-header .modal-title {
+    font-size: 1.4rem;
+  }
+
+  .experience-modal-content {
+    padding: 1.5rem 1.2rem 1rem;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .overview-panel {
+    padding: 12px 15px;
+  }
+
+  .experience-modal-content h4 {
+    font-size: 1.1rem;
+  }
+}
+</style>
 
 <link rel="stylesheet" href="/css/work-experience.css">
 
@@ -2172,7 +2597,7 @@ var Space = {
             technologies: ["Cloudflare", "Flask", "SQLite", "Bootstrap", "JavaScript/HTML5", "Python", "Google APIs"],
             scope: "Frontend development, authentication system, real-time chat functionality",
             timeline: "",
-            liveLink: "https://engineeringminds.co/book/ochem",
+            liveLink: "https://engineeringminds.co/home",
             codeLink: "#"
         },
 
@@ -2248,6 +2673,8 @@ var Space = {
             codeLink: "#"
         },
 
+
+
         // Zeya Capital Logo
         {
             title: "Zeya Capital Branding",
@@ -2297,6 +2724,23 @@ var Space = {
             liveLink: "#",
             codeLink: "#"
         },
+
+        // NEWTON
+        {
+            title: "Newton's Cradle Demo",
+            category: "web",
+            images: [
+                "assets/projects/JACKSON/NEWTON_LOGO.png",
+
+            ],
+            description: "Web based simulation of Newton's Cradle, demonstrating the principles of conservation of momentum and energy. The simulation allows users to interactively manipulate the cradle and observe the resulting motion.",
+            technologies: ["Physics", "JavaScript", "HTML5", "CSS"],
+            scope: "Full-stack development, UI/UX design, database architecture, and deployment",
+            timeline: "",
+            liveLink: "/newton_demo.html",
+            codeLink: "#"
+        },
+
 
         // Midwest Outlaw Clothing + Extraction
         {

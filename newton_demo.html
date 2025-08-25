@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newton's Cradle Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(26, 26, 26, 0.95);
+            padding: 20px;
+            border-right: 2px solid #333;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+        
+        .main-canvas {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 100%);
+        }
+        
+        canvas {
+            display: block;
+            cursor: crosshair;
+            width: 100%;
+            height: 100%;
+        }
+        
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        .value-display {
+            color: #00d4ff;
+            font-weight: bold;
+            margin-left: 10px;
+            text-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+        }
+        
+        .info-text {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #e0e0e0;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .stats {
+            background: rgba(31, 31, 31, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #aaa;
+            border: 1px solid #333;
+            line-height: 1.6;
+        }
+        
+        .control-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #333, #444);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 8px 0;
+            transition: all 0.3s;
+            border: 1px solid #555;
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(45deg, #444, #555);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+        
+        .control-btn.primary {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .control-btn.primary:hover {
+            background: linear-gradient(45deg, #0099cc, #007799);
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            color: #ccc;
+            font-size: 14px;
+            border: 1px solid #444;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 280px;
+        }
+
+        .physics-info {
+            background: rgba(0, 212, 255, 0.05);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #bbb;
+            border-left: 3px solid #00d4ff;
+        }
+
+        .energy-bar {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            border-radius: 4px;
+            transition: width 0.1s ease;
+        }
+
+        .ball-count-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 8px;
+            background: #333;
+            color: #ccc;
+            border: 1px solid #555;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #00d4ff;
+            color: #000;
+            border-color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Newton's Cradle</h1>
+            
+            <div class="info-text">
+                Newton's cradle demonstrates conservation of momentum and energy. When one ball strikes the stationary balls, the energy transfers through the chain, causing the ball on the opposite end to swing out with equal momentum.
+            </div>
+            
+            <div class="control-group">
+                <h2>Cradle Setup</h2>
+                <div class="ball-count-display">
+                    <span>Number of Balls:</span>
+                    <span class="value-display" id="ballCount">5</span>
+                </div>
+                <input type="range" id="ballSlider" min="3" max="8" value="5">
+                
+                <label>
+                    Ball Size: <span class="value-display" id="ballSize">25</span>px
+                </label>
+                <input type="range" id="sizeSlider" min="15" max="40" value="25">
+                
+                <label>
+                    String Length: <span class="value-display" id="stringLength">200</span>px
+                </label>
+                <input type="range" id="lengthSlider" min="150" max="300" value="200">
+            </div>
+            
+            <div class="control-group">
+                <h2>Physics Settings</h2>
+                <label>
+                    Gravity: <span class="value-display" id="gravityValue">0.7</span>
+                </label>
+                <input type="range" id="gravitySlider" min="0.1" max="1.0" value="0.7" step="0.1">
+                
+                <label>
+                    Damping: <span class="value-display" id="dampingValue">0.999</span>
+                </label>
+                <input type="range" id="dampingSlider" min="0.990" max="1.0" value="0.999" step="0.001">
+                
+                <label>
+                    Restitution: <span class="value-display" id="restitutionValue">0.95</span>
+                </label>
+                <input type="range" id="restitutionSlider" min="0.5" max="1.0" value="0.95" step="0.05">
+            </div>
+
+            <div class="control-group">
+                <h2>Launch Modes</h2>
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="single">Single</button>
+                    <button class="mode-btn" data-mode="double">Double</button>
+                    <button class="mode-btn" data-mode="opposite">Opposite</button>
+                </div>
+                
+                <label>
+                    Launch Force: <span class="value-display" id="forceValue">7</span>
+                </label>
+                <input type="range" id="forceSlider" min="1" max="10" value="7">
+            </div>
+            
+            <button class="control-btn primary" id="launchBtn">Launch!</button>
+            <button class="control-btn" id="resetBtn">Reset Position</button>
+            <button class="control-btn" id="stopBtn">Stop Motion</button>
+            
+            <div class="stats" id="stats">
+                <strong>System Energy:</strong><br>
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energyBar"></div>
+                </div>
+                Kinetic: <span id="kineticEnergy">0</span><br>
+                Potential: <span id="potentialEnergy">0</span><br>
+                Total: <span id="totalEnergy">0</span>
+                
+                <div class="physics-info">
+                    <strong>Physics Tip:</strong> Watch how energy transfers from ball to ball while the total system energy gradually decreases due to air resistance and friction.
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-canvas">
+            <canvas id="canvas"></canvas>
+            <div class="instructions">
+                <strong>Interactive Newton's Cradle</strong><br><br>
+                • <strong>Click & Drag</strong> any ball to lift it<br>
+                • <strong>Release</strong> to let it swing<br>
+                • Use <strong>Launch</strong> button for preset motions<br>
+                • Try different <strong>launch modes</strong><br>
+                • Adjust <strong>physics parameters</strong> in real-time<br><br>
+                <em>Observe momentum conservation in action!</em>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let canvasWidth, canvasHeight;
+            let animationId;
+
+            function resizeCanvas() {
+                const container = canvas.parentElement;
+                canvasWidth = container.clientWidth;
+                canvasHeight = container.clientHeight;
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+
+                if (window.cradle) {
+                    cradle.updateDimensions();
+                }
+            }
+
+            class Ball {
+                constructor(x, y, radius, mass) {
+                    this.startX = x;
+                    this.startY = y;
+                    this.x = x;
+                    this.y = y;
+                    this.radius = radius;
+                    this.mass = mass;
+                    this.vx = 0;
+                    this.vy = 0;
+                    this.angle = 0;
+                    this.angularVelocity = 0;
+                    this.stringLength = 200;
+                    this.anchorX = x;
+                    this.anchorY = y - this.stringLength;
+                    this.isDragging = false;
+                    this.trail = [];
+                }
+
+                update(gravity, damping) {
+                    if (this.isDragging) return;
+
+                    // Calculate angle from anchor
+                    const dx = this.x - this.anchorX;
+                    const dy = this.y - this.anchorY;
+                    this.angle = Math.atan2(dx, dy);
+
+                    // Pendulum physics
+                    const angularAcceleration = -(gravity / this.stringLength) * Math.sin(this.angle);
+                    this.angularVelocity += angularAcceleration;
+                    this.angularVelocity *= damping;
+                    this.angle += this.angularVelocity;
+
+                    // Update position based on angle
+                    this.x = this.anchorX + this.stringLength * Math.sin(this.angle);
+                    this.y = this.anchorY + this.stringLength * Math.cos(this.angle);
+
+                    // Calculate linear velocity for collision detection
+                    this.vx = this.stringLength * this.angularVelocity * Math.cos(this.angle);
+                    this.vy = -this.stringLength * this.angularVelocity * Math.sin(this.angle);
+
+                    // Add to trail for visual effect
+                    this.trail.push({x: this.x, y: this.y});
+                    if (this.trail.length > 15) {
+                        this.trail.shift();
+                    }
+                }
+
+                getKineticEnergy() {
+                    const v = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                    return 0.5 * this.mass * v * v;
+                }
+
+                getPotentialEnergy(gravity) {
+                    const height = this.anchorY + this.stringLength - this.y;
+                    return this.mass * gravity * height;
+                }
+
+                setPosition(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    const dx = x - this.anchorX;
+                    const dy = y - this.anchorY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance > this.stringLength) {
+                        this.x = this.anchorX + (dx / distance) * this.stringLength;
+                        this.y = this.anchorY + (dy / distance) * this.stringLength;
+                    }
+
+                    this.angle = Math.atan2(this.x - this.anchorX, this.y - this.anchorY);
+                    this.angularVelocity = 0;
+                }
+            }
+
+            class NewtonsCradle {
+                constructor() {
+                    this.balls = [];
+                    this.numBalls = 5;
+                    this.ballRadius = 25;
+                    this.stringLength = 200;
+                    this.gravity = 0.7;
+                    this.damping = 0.999;
+                    this.restitution = 0.95;
+                    this.launchMode = 'single';
+                    this.launchForce = 7;
+                    this.draggedBall = null;
+                    this.mouseOffset = { x: 0, y: 0 };
+
+                    this.initializeBalls();
+                    this.setupEventListeners();
+                }
+
+                initializeBalls() {
+                    this.balls = [];
+                    const spacing = this.ballRadius * 2;
+                    const totalWidth = (this.numBalls - 1) * spacing;
+                    const startX = canvasWidth / 2 - totalWidth / 2;
+                    const anchorY = canvasHeight * 0.2;
+
+                    for (let i = 0; i < this.numBalls; i++) {
+                        const x = startX + i * spacing;
+                        const y = anchorY + this.stringLength;
+                        const ball = new Ball(x, y, this.ballRadius, 1);
+                        ball.stringLength = this.stringLength;
+                        ball.anchorX = x;
+                        ball.anchorY = anchorY;
+                        this.balls.push(ball);
+                    }
+                }
+
+                updateDimensions() {
+                    this.initializeBalls();
+                }
+
+                setupEventListeners() {
+                    canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
+                    canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+                    canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+                    canvas.addEventListener('mouseleave', this.handleMouseUp.bind(this));
+                }
+
+                handleMouseDown(e) {
+                    const rect = canvas.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    for (let ball of this.balls) {
+                        const dx = mouseX - ball.x;
+                        const dy = mouseY - ball.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < ball.radius) {
+                            this.draggedBall = ball;
+                            ball.isDragging = true;
+                            this.mouseOffset.x = dx;
+                            this.mouseOffset.y = dy;
+                            canvas.style.cursor = 'grabbing';
+                            break;
+                        }
+                    }
+                }
+
+                handleMouseMove(e) {
+                    const rect = canvas.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    if (this.draggedBall) {
+                        const newX = mouseX - this.mouseOffset.x;
+                        const newY = mouseY - this.mouseOffset.y;
+                        this.draggedBall.setPosition(newX, newY);
+                    } else {
+                        // Check if hovering over a ball for cursor feedback
+                        let hovering = false;
+                        for (let ball of this.balls) {
+                            const dx = mouseX - ball.x;
+                            const dy = mouseY - ball.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            if (distance < ball.radius) {
+                                hovering = true;
+                                break;
+                            }
+                        }
+                        canvas.style.cursor = hovering ? 'grab' : 'crosshair';
+                    }
+                }
+
+                handleMouseUp() {
+                    if (this.draggedBall) {
+                        this.draggedBall.isDragging = false;
+                        this.draggedBall = null;
+                        canvas.style.cursor = 'crosshair';
+                    }
+                }
+
+                checkCollisions() {
+                    // Check all pairs of balls for collisions (spatial collision detection)
+                    for (let i = 0; i < this.balls.length; i++) {
+                        for (let j = i + 1; j < this.balls.length; j++) {
+                            const ball1 = this.balls[i];
+                            const ball2 = this.balls[j];
+
+                            const dx = ball2.x - ball1.x;
+                            const dy = ball2.y - ball1.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            const minDistance = ball1.radius + ball2.radius;
+
+                            if (distance < minDistance && distance > 0) {
+                                // Collision detected - separate balls
+                                const overlap = minDistance - distance;
+                                const separationX = (dx / distance) * overlap * 0.5;
+                                const separationY = (dy / distance) * overlap * 0.5;
+
+                                ball1.x -= separationX;
+                                ball1.y -= separationY;
+                                ball2.x += separationX;
+                                ball2.y += separationY;
+
+                                // More realistic collision response using conservation of momentum
+                                // Calculate relative velocity
+                                const relativeVx = ball2.vx - ball1.vx;
+                                const relativeVy = ball2.vy - ball1.vy;
+
+                                // Calculate relative velocity in collision normal direction
+                                const normalX = dx / distance;
+                                const normalY = dy / distance;
+                                const relativeVelocityInNormal = relativeVx * normalX + relativeVy * normalY;
+
+                                // Do not resolve if velocities are separating
+                                if (relativeVelocityInNormal > 0) return;
+
+                                // Calculate restitution
+                                const e = this.restitution;
+
+                                // Calculate impulse scalar
+                                const j = -(1 + e) * relativeVelocityInNormal;
+                                const impulse = j / (ball1.mass + ball2.mass);
+
+                                // Apply impulse
+                                const impulseX = impulse * normalX;
+                                const impulseY = impulse * normalY;
+
+                                ball1.vx -= impulseX * ball2.mass;
+                                ball1.vy -= impulseY * ball2.mass;
+                                ball2.vx += impulseX * ball1.mass;
+                                ball2.vy += impulseY * ball1.mass;
+
+                                // Convert back to angular velocity for pendulum constraint
+                                ball1.angularVelocity = ball1.vx / ball1.stringLength;
+                                ball2.angularVelocity = ball2.vx / ball2.stringLength;
+
+                                // Update angles to match new velocities
+                                ball1.angle = Math.atan2(ball1.x - ball1.anchorX, ball1.y - ball1.anchorY);
+                                ball2.angle = Math.atan2(ball2.x - ball2.anchorX, ball2.y - ball2.anchorY);
+                            }
+                        }
+                    }
+                }
+
+                launch() {
+                    switch (this.launchMode) {
+                        case 'single':
+                            this.balls[0].angularVelocity = this.launchForce * 0.01;
+                            break;
+                        case 'double':
+                            this.balls[0].angularVelocity = this.launchForce * 0.01;
+                            this.balls[1].angularVelocity = this.launchForce * 0.01;
+                            break;
+                        case 'opposite':
+                            this.balls[0].angularVelocity = this.launchForce * 0.01;
+                            this.balls[this.balls.length - 1].angularVelocity = -this.launchForce * 0.01;
+                            break;
+                    }
+                }
+
+                reset() {
+                    this.balls.forEach(ball => {
+                        ball.x = ball.startX;
+                        ball.y = ball.startY;
+                        ball.angle = 0;
+                        ball.angularVelocity = 0;
+                        ball.vx = 0;
+                        ball.vy = 0;
+                        ball.trail = [];
+                    });
+                }
+
+                stop() {
+                    this.balls.forEach(ball => {
+                        ball.angularVelocity = 0;
+                        ball.vx = 0;
+                        ball.vy = 0;
+                    });
+                }
+
+                update() {
+                    this.balls.forEach(ball => {
+                        ball.update(this.gravity, this.damping);
+                    });
+
+                    this.checkCollisions();
+                    this.updateStats();
+                }
+
+                updateStats() {
+                    let totalKinetic = 0;
+                    let totalPotential = 0;
+
+                    this.balls.forEach(ball => {
+                        totalKinetic += ball.getKineticEnergy();
+                        totalPotential += ball.getPotentialEnergy(this.gravity);
+                    });
+
+                    const totalEnergy = totalKinetic + totalPotential;
+
+                    document.getElementById('kineticEnergy').textContent = totalKinetic.toFixed(1);
+                    document.getElementById('potentialEnergy').textContent = totalPotential.toFixed(1);
+                    document.getElementById('totalEnergy').textContent = totalEnergy.toFixed(1);
+
+                    // Update energy bar
+                    const maxEnergy = 1000; // Approximate max for visualization
+                    const energyPercent = Math.min(totalEnergy / maxEnergy * 100, 100);
+                    document.getElementById('energyBar').style.width = energyPercent + '%';
+                }
+
+                render() {
+                    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+                    // Draw subtle background pattern
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+                    ctx.lineWidth = 1;
+                    for (let x = 0; x < canvasWidth; x += 40) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, canvasHeight);
+                        ctx.stroke();
+                    }
+
+                    // Draw support structure
+                    const supportY = this.balls[0].anchorY;
+                    ctx.strokeStyle = '#444';
+                    ctx.lineWidth = 4;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(this.balls[0].anchorX - 50, supportY);
+                    ctx.lineTo(this.balls[this.balls.length - 1].anchorX + 50, supportY);
+                    ctx.stroke();
+
+                    // Draw strings and balls
+                    this.balls.forEach((ball, index) => {
+                        // Draw trail
+                        // Replace the trail drawing block in render() with this:
+                        if (ball.trail.length > 2) {
+                            ctx.strokeStyle = 'rgba(0, 212, 255, 0.3)';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            ctx.moveTo(ball.trail[0].x, ball.trail[0].y);
+                            for (let i = 1; i < ball.trail.length - 1; i++) {
+                                const xc = (ball.trail[i].x + ball.trail[i + 1].x) / 2;
+                                const yc = (ball.trail[i].y + ball.trail[i + 1].y) / 2;
+                                ctx.quadraticCurveTo(ball.trail[i].x, ball.trail[i].y, xc, yc);
+                            }
+                            // Draw last segment
+                            ctx.lineTo(ball.trail[ball.trail.length - 1].x, ball.trail[ball.trail.length - 1].y);
+                            ctx.stroke();
+                        }
+
+                        // Draw string
+                        ctx.strokeStyle = '#666';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(ball.anchorX, ball.anchorY);
+                        ctx.lineTo(ball.x, ball.y);
+                        ctx.stroke();
+
+                        // Draw anchor point
+                        ctx.fillStyle = '#888';
+                        ctx.beginPath();
+                        ctx.arc(ball.anchorX, ball.anchorY, 4, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Draw ball with gradient and glow
+                        const gradient = ctx.createRadialGradient(
+                            ball.x - ball.radius * 0.3, ball.y - ball.radius * 0.3, 0,
+                            ball.x, ball.y, ball.radius
+                        );
+                        gradient.addColorStop(0, '#ffffff');
+                        gradient.addColorStop(0.7, '#cccccc');
+                        gradient.addColorStop(1, '#888888');
+
+                        // Glow effect
+                        ctx.shadowColor = 'rgba(0, 212, 255, 0.5)';
+                        ctx.shadowBlur = 10;
+
+                        ctx.fillStyle = gradient;
+                        ctx.beginPath();
+                        ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Reset shadow
+                        ctx.shadowBlur = 0;
+
+                        // Highlight
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                        ctx.beginPath();
+                        ctx.arc(ball.x - ball.radius * 0.3, ball.y - ball.radius * 0.3, ball.radius * 0.2, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Ball number
+                        ctx.fillStyle = '#333';
+                        ctx.font = '12px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(index + 1, ball.x, ball.y + 4);
+                    });
+                }
+            }
+
+            // Initialize
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const cradle = new NewtonsCradle();
+            window.cradle = cradle;
+
+            // Control event listeners
+            document.getElementById('ballSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('ballCount').textContent = value;
+                cradle.numBalls = value;
+                cradle.initializeBalls();
+            });
+
+            document.getElementById('sizeSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('ballSize').textContent = value;
+                cradle.ballRadius = value;
+                cradle.initializeBalls();
+            });
+
+            document.getElementById('lengthSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('stringLength').textContent = value;
+                cradle.stringLength = value;
+                cradle.initializeBalls();
+            });
+
+            document.getElementById('gravitySlider').addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                document.getElementById('gravityValue').textContent = value;
+                cradle.gravity = value;
+            });
+
+            document.getElementById('dampingSlider').addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                document.getElementById('dampingValue').textContent = value;
+                cradle.damping = value;
+            });
+
+            document.getElementById('restitutionSlider').addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                document.getElementById('restitutionValue').textContent = value;
+                cradle.restitution = value;
+            });
+
+            document.getElementById('forceSlider').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                document.getElementById('forceValue').textContent = value;
+                cradle.launchForce = value;
+            });
+
+            // Mode selector
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    cradle.launchMode = e.target.dataset.mode;
+                });
+            });
+
+            // Control buttons
+            document.getElementById('launchBtn').addEventListener('click', () => {
+                cradle.launch();
+            });
+
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                cradle.reset();
+            });
+
+            document.getElementById('stopBtn').addEventListener('click', () => {
+                cradle.stop();
+            });
+
+            // Animation loop
+            function animate() {
+                cradle.update();
+                cradle.render();
+                animationId = requestAnimationFrame(animate);
+            }
+
+            // Start animation
+            animate();
+        });
+    </script>
+</body>
+</html>
